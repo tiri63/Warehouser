@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="txt_search_display">Search shelves</string>
+    <string name="txt_import">In</string>
+    <string name="txt_profile">Profile</string>
+    <string name="txt_export">Out</string>
+    <string name="txt_appname">Warehouser</string>
+</resources>

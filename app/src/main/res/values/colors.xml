@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="AccentColor">#FF1296DB</color>
+    <color name="FontColor">#FF000000</color>
+    <color name="FontColorDim">#FF555555</color>
+    <color name="BackgroundColor">#FFFFFFFF</color>
+    <color name="BackgroundColorDim">#FFEEEEEE</color>
+</resources>

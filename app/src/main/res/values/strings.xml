@@ -1,0 +1,7 @@
+<resources>
+    <string name="txt_search_display">在货架中搜索</string>
+    <string name="txt_import">入库</string>
+    <string name="txt_export">出库</string>
+    <string name="txt_profile">个人信息</string>
+    <string name="txt_appname">库存管理</string>
+</resources>
