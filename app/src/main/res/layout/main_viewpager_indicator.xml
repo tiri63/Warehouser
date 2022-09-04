@@ -23,7 +23,9 @@
             android:padding="10dp"
             android:text="@string/txt_import"
             android:textColor="@color/FontColor"
-            android:textSize="16sp">
+            android:textSize="16sp"
+            android:background="@drawable/ripple_background"
+            android:clickable="true">
 
         </TextView>
 
@@ -35,7 +37,9 @@
             android:padding="10dp"
             android:text="@string/txt_export"
             android:textColor="@color/FontColor"
-            android:textSize="16sp">
+            android:textSize="16sp"
+            android:background="@drawable/ripple_background"
+            android:clickable="true">
 
         </TextView>
 
@@ -47,7 +51,9 @@
             android:padding="10dp"
             android:text="@string/txt_profile"
             android:textColor="@color/FontColor"
-            android:textSize="16sp">
+            android:textSize="16sp"
+            android:background="@drawable/ripple_background"
+            android:clickable="true">
 
         </TextView>
     </TableRow>
