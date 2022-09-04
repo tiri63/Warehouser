@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="50dp"
-                                                   android:layout_marginLeft="5dp"
-                                                   android:layout_marginRight="5dp"
-                                                   android:paddingLeft="5dp"
-                                                   android:paddingRight="5dp">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:clickable="true"
+    android:background="@drawable/ridius_border_with_ripple">
 
     <TextView
         android:id="@+id/ui_searchbar_txt"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/ripple_background"
-        android:clickable="true"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/txt_search_display"
         android:textColor="@color/FontColorDim"

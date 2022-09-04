@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/radius_border.xml" value="0.179" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/ridius_border_with_ripple.xml" value="0.1785" />
         <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/ripple_background.xml" value="0.1785" />
         <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_import_content.xml" value="0.22" />
         <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_layout.xml" value="0.22" />

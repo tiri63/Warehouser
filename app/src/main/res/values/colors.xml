@@ -3,6 +3,7 @@
     <color name="AccentColor">#FF1296DB</color>
     <color name="FontColor">#FF000000</color>
     <color name="FontColorDim">#FF555555</color>
+    <color name="FontColorExtraDim">#FFAAAAAA</color>
     <color name="BackgroundColor">#FFFFFFFF</color>
     <color name="BackgroundColorDim">#FFEEEEEE</color>
 </resources>
