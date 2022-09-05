@@ -3,15 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/radius_border.xml" value="0.179" />
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/ridius_border_with_ripple.xml" value="0.1785" />
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/ripple_background.xml" value="0.1785" />
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_import_content.xml" value="0.22" />
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_layout.xml" value="0.22" />
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_scroll_loading.xml" value="0.14130434782608695" />
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_searchbar.xml" value="0.14130434782608695" />
-        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_viewpager_indicator.xml" value="0.14130434782608695" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/radius_border.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/radius_circle_with_ripple.xml" value="0.1225" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/radius_oval.xml" value="0.1225" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ridius_border_with_ripple.xml" value="0.1235" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_scroll_loading.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_searchbar.xml" value="0.4" />
@@ -21,10 +16,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

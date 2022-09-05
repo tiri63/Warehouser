@@ -10,7 +10,7 @@
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
     android:clickable="true"
-    android:background="@drawable/ridius_border_with_ripple">
+    android:background="@drawable/radius_border_with_ripple">
 
     <TextView
         android:id="@+id/ui_searchbar_txt"
@@ -35,5 +35,6 @@
         android:contentDescription="@string/txt_search_display"
         android:src="@drawable/ic_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/radius_circle_without_boundries_with_ripple"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
