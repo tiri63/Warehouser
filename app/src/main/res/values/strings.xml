@@ -8,4 +8,7 @@
     <string name="txt_shelf_no_main">货架编号</string>
     <string name="txt_shelf_no_sub">层编号</string>
     <string name="txt_shelf_current_txt">货架上的物品：</string>
+    <string name="txt_username">用户名</string>
+    <string name="txt_function_profile">个人信息</string>
+    <string name="txt_function_info">关于</string>
 </resources>

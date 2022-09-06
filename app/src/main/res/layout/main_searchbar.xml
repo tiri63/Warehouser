@@ -37,4 +37,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/radius_circle_without_boundries_with_ripple"/>
+
+    <ImageView
+        android:id="@+id/ui_search_user"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/radius_circle_with_ripple"
+        android:contentDescription="@string/txt_profile"
+        android:src="@drawable/ic_user"
+        app:layout_constraintEnd_toEndOf="@+id/ui_searchbar_txt"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
