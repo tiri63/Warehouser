@@ -28,7 +28,7 @@ class MenuAdapter(
     inner class MenuViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         val mIcon: ImageView = itemView.findViewById(R.id.ui_sub_menu_item_icon)
-        val mText: TextView = itemView.findViewById(R.id.ui_sub_menu_item_text)
+        val mText: TextView = itemView.findViewById(R.id.ui_shelf_item_name)
 
         override fun toString(): String {
             return super.toString() + " '" + mText.text + "'"

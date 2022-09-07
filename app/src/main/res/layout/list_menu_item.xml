@@ -9,7 +9,7 @@
     android:clickable="true">
 
     <TextView
-        android:id="@+id/ui_sub_menu_item_text"
+        android:id="@+id/ui_shelf_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
