@@ -12,7 +12,8 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#55000000">
+        android:background="#55000000"
+        android:textColor="@color/FontColorDim">
 
     </TextView>
 
@@ -27,7 +28,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/FontColorDim">
 
         <ImageView
             android:id="@+id/ui_user_sub_logo"
@@ -64,7 +66,8 @@
             android:text="@string/txt_username"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/FontColorDim">
 
         </TextView>
 

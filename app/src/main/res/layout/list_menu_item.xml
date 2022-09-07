@@ -17,7 +17,8 @@
         android:text="..."
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/FontColorDim">
 
     </TextView>
 
