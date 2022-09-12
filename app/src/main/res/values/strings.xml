@@ -11,4 +11,14 @@
     <string name="txt_username">用户名</string>
     <string name="txt_function_profile">个人信息</string>
     <string name="txt_function_info">关于</string>
+    <string name="txt_dialog_item_info">项目详情</string>
+    <string name="txt_dialog_item_name">项目名称</string>
+    <string name="txt_dialog_item_shelf">货架位置（货架别名）</string>
+    <string name="txt_dialog_item_count_left">剩余%s</string>
+    <string name="txt_dialog_confirm">确认</string>
+    <string name="txt_dialog_cancel">取消</string>
+    <string name="txt_dialog_import_count">入库数量</string>
+    <string name="txt_dialog_export_count">出库数量</string>
+    <string name="txt_log_in">登录</string>
+    <string name="txt_log_in_tip">需要额外的信息来认证您的身份</string>
 </resources>

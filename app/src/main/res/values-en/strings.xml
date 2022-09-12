@@ -12,4 +12,14 @@
     <string name="txt_username">Username</string>
     <string name="txt_function_profile">Profile</string>
     <string name="txt_function_info">About</string>
+    <string name="txt_dialog_item_info">Item Infomation</string>
+    <string name="txt_dialog_item_name">Item Name</string>
+    <string name="txt_dialog_item_count_left">%s left</string>
+    <string name="txt_dialog_confirm">OK</string>
+    <string name="txt_dialog_cancel">Cancel</string>
+    <string name="txt_dialog_import_count">Import Count</string>
+    <string name="txt_dialog_export_count">Export Count</string>
+    <string name="txt_dialog_item_shelf">Shelf(Alias)</string>
+    <string name="txt_log_in">Log in</string>
+    <string name="txt_log_in_tip">Extra information required to identifiy you</string>
 </resources>
