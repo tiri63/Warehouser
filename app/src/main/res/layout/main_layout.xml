@@ -9,6 +9,21 @@
     tools:context=".MainActivity"
     android:fitsSystemWindows="true">
 
+    <include
+        android:id="@+id/ui_include_search_bar"
+        layout="@layout/main_searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </include>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ui_scroll_main"
         android:layout_width="match_parent"
@@ -17,16 +32,6 @@
         android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-
-        <include
-            android:id="@+id/ui_include_scroll_loading"
-            layout="@layout/main_scroll_loading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-40dp"
-            android:fitsSystemWindows="true">
-
-        </include>
 
         <include
             android:id="@+id/ui_include_viewpager_indicator"
@@ -43,22 +48,36 @@
 
         </include>
 
+        <include
+            android:id="@+id/ui_include_main_function"
+            layout="@layout/main_io_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fitsSystemWindows="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ui_include_viewpager_indicator">
+
+        </include>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include
-        android:id="@+id/ui_include_search_bar"
-        layout="@layout/main_searchbar"
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ui_submit_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/txt_submit"
+        android:textColor="@color/BackgroundColor"
+        android:textSize="16sp"
+        app:backgroundTint="@color/FontColor"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fitsSystemWindows="true">
-
-    </include>
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

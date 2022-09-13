@@ -27,4 +27,5 @@
     <string name="txt_login_failed">Login failed</string>
     <string name="txt_login_failed_notmatch">Username and password don\'t match</string>
     <string name="txt_back">Back</string>
+    <string name="txt_submit">Submit</string>
 </resources>

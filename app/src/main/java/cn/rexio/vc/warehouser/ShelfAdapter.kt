@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.EditText
@@ -48,7 +47,7 @@ class ShelfAdapter(
                 dialog.show()
                 if(io)
                 {
-                    view.findViewById<TextView>(R.id.dialog_left).visibility = INVISIBLE
+                    view.findViewById<TextView>(R.id.dialog_left).visibility = View.INVISIBLE
                 }
                 view.findViewById<EditText>(R.id.dialog_count).addTextChangedListener(object :
                     TextWatcher {
@@ -73,14 +72,13 @@ class ShelfAdapter(
                     override fun afterTextChanged(s: Editable?) {
                         val current = s.toString().toIntOrNull()
                         var fin : String = "0"
-                        if(current == null || current < 0)
-                            fin = "0"
-                        else
-                        {
+                        fin = if(current == null || current < 0)
+                            "0"
+                        else {
                             if(current > maxList[pos])
-                                fin = maxList[pos].toString()
+                                maxList[pos].toString()
                             else
-                                fin = current.toString()
+                                current.toString()
                         }
                         view.findViewById<EditText>(R.id.dialog_count).setText(fin)
                     }

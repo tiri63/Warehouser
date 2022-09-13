@@ -16,6 +16,7 @@
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ridius_border_with_ripple.xml" value="0.1235" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_menu.xml" value="0.2" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_profile.xml" value="0.1" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_search.xml" value="0.2" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_in_layout.xml" value="0.18568840579710144" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_io_layout.xml" value="0.536" />
@@ -27,7 +28,8 @@
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/list_shelf_item.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_import_content.xml" value="0.18568840579710144" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_io_common_content.xml" value="0.18568840579710144" />
-        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_layout.xml" value="0.18568840579710144" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_io_content.xml" value="0.176" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_layout.xml" value="0.20811965811965813" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_scroll_loading.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_searchbar.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/main_user_subwin.xml" value="0.264" />

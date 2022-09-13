@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" android:padding="5dp">
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/ui_import_shelf_no_txt"
@@ -30,7 +31,8 @@
         android:textColor="@color/FontColor"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/ui_import_shelf_no_txt"
-        app:layout_constraintTop_toTopOf="parent" tools:ignore="TextContrastCheck">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck">
 
     </EditText>
 
@@ -45,7 +47,8 @@
         android:textColor="@color/FontColor"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/ui_import_shelf_no_txt"
-        app:layout_constraintTop_toTopOf="parent" tools:ignore="TextContrastCheck">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck">
 
     </EditText>
 
@@ -54,9 +57,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="250dp"
+        android:src="@drawable/ic_qrcode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_qrcode">
+        app:layout_constraintTop_toTopOf="parent">
 
     </ImageView>
 
@@ -81,9 +84,23 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginTop="49dp"
+        android:src="@drawable/ic_refresh"
         app:layout_constraintStart_toEndOf="@+id/ui_import_shelf_current_txt"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_refresh"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ui_shelf_item_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_import_shelf_current_txt"
+        tools:context=".ItemFragment"
+        tools:listitem="@layout/list_shelf_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -87,7 +88,7 @@ class MainActivity : Activity() {
         }
     }
 
-    fun tryLogin(username: String?, secret: String?) {
+    private fun tryLogin(username: String?, secret: String?) {
         Toast.makeText(this,"尝试自动登录，但还没做",Toast.LENGTH_SHORT).show()
     }
 
@@ -97,12 +98,18 @@ class MainActivity : Activity() {
         ui_import_tv = ui_include_viewpager_indicator.findViewById(R.id.ui_import_tv)
         ui_export_tv = ui_include_viewpager_indicator.findViewById(R.id.ui_export_tv)
         ui_indicator_tv = ui_include_viewpager_indicator.findViewById(R.id.ui_indicator_tv)
+        var ui_search_bar : View = findViewById(R.id.ui_include_search_bar)
+        ui_search_bar.setOnClickListener {
+            val intent = Intent()
+            intent.setClass(this@MainActivity, SearchActivity::class.java)
+            startActivity(intent)
+        }
         var ui_profile_button: ImageView = findViewById(R.id.ui_search_user)
-        ui_profile_button.setOnClickListener({
+        ui_profile_button.setOnClickListener{
             val intent = Intent()
             intent.setClass(this@MainActivity, MenuActivity::class.java)
             startActivity(intent)
-        })
+        }
     }
 
     fun set_viewpager_indicator(target: Float) {

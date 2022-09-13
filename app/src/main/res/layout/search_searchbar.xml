@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="match_parent"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
     android:clickable="true"
-    android:background="@drawable/ripple_background">
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
     <EditText
         android:id="@+id/ui_search_bar"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:hint="@string/txt_search_display"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
         android:textColor="@color/FontColor"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ui_search_back"
-        app:layout_constraintTop_toTopOf="parent"
-        android:imeOptions="actionSearch"
-        android:singleLine="true">
+        app:layout_constraintTop_toTopOf="parent">
 
     </EditText>
 
@@ -35,9 +33,27 @@
         android:layout_height="30dp"
         android:layout_margin="5dp"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/txt_back"
         android:src="@drawable/ic_arrow_left"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_search_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ui_sub_win_functions_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="invisible"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_search_bar"
+        tools:context=".ItemFragment"
+        tools:listitem="@layout/list_shelf_item" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

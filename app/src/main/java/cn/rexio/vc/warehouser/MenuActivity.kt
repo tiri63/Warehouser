@@ -2,6 +2,8 @@ package cn.rexio.vc.warehouser
 
 import HiroUtils.Factory.setStatusBarColor
 import android.app.Activity
+import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -27,13 +29,20 @@ class MenuActivity : Activity() {
         var iconList = arrayListOf(R.drawable.ic_profile, R.drawable.ic_info)
         var textList = arrayListOf(R.string.txt_function_profile,R.string.txt_function_info)
         var onClickListenerList = arrayListOf(View.OnClickListener{
-            Toast.makeText(applicationContext,getText(textList[0]),LENGTH_LONG).show()
+            val intent = Intent()
+            intent.setClass(this@MenuActivity, ProfileActivity::class.java)
+            startActivity(intent)
         },View.OnClickListener{
             Toast.makeText(applicationContext,getText(textList[1]),LENGTH_LONG).show()
         })
         val mRecyclerView = findViewById<RecyclerView>(R.id.ui_sub_win_functions_list)
         var mRecyclerAdapter = MenuAdapter(textList, iconList, onClickListenerList)
         mRecyclerView.adapter = mRecyclerAdapter
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        setStatusBarColor(window,resources)
+        super.onConfigurationChanged(newConfig)
     }
 
 }
