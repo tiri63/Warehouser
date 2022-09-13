@@ -21,4 +21,9 @@
     <string name="txt_dialog_export_count">出库数量</string>
     <string name="txt_log_in">登录</string>
     <string name="txt_log_in_tip">需要额外的信息来认证您的身份</string>
+    <string name="txt_login_name">用户名</string>
+    <string name="txt_login_pwd">密码</string>
+    <string name="txt_login_failed">登录失败</string>
+    <string name="txt_login_failed_notmatch">用户名和密码不匹配</string>
+    <string name="txt_back">返回</string>
 </resources>

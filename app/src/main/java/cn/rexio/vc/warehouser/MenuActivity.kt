@@ -1,5 +1,6 @@
 package cn.rexio.vc.warehouser
 
+import HiroUtils.Factory.setStatusBarColor
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
@@ -18,6 +19,7 @@ class MenuActivity : Activity() {
         window.statusBarColor = Color.TRANSPARENT
         super.onCreate(savedInstanceState)
         setContentView(R.layout.menu_layout)
+        setStatusBarColor(window,resources)
         setFunctionsList()
     }
 

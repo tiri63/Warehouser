@@ -22,4 +22,9 @@
     <string name="txt_dialog_item_shelf">Shelf(Alias)</string>
     <string name="txt_log_in">Log in</string>
     <string name="txt_log_in_tip">Extra information required to identifiy you</string>
+    <string name="txt_login_name">Username</string>
+    <string name="txt_login_pwd">Password</string>
+    <string name="txt_login_failed">Login failed</string>
+    <string name="txt_login_failed_notmatch">Username and password don\'t match</string>
+    <string name="txt_back">Back</string>
 </resources>

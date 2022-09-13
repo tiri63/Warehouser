@@ -48,7 +48,7 @@
         android:background="@drawable/ripple_background"
         android:clickable="true"
         android:src="@drawable/ic_double_arrow_left"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_count"
         app:layout_constraintEnd_toStartOf="@+id/dialog_minus">
     </ImageView>
 
@@ -60,19 +60,21 @@
         android:background="@drawable/ripple_background"
         android:clickable="true"
         android:src="@drawable/ic_arrow_left"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
-        app:layout_constraintEnd_toStartOf="@+id/editText">
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_count"
+        app:layout_constraintEnd_toStartOf="@+id/dialog_count">
     </ImageView>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/dialog_count"
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:textColor="@color/FontColor"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/dialog_shelf">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_shelf"
+        android:inputType="number">
 
     </EditText>
 
@@ -84,7 +86,7 @@
         android:background="@drawable/ripple_background"
         android:clickable="true"
         android:src="@drawable/ic_double_arro_right"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_count"
         app:layout_constraintStart_toEndOf="@+id/dialog_plus">
     </ImageView>
 
@@ -96,8 +98,8 @@
         android:background="@drawable/ripple_background"
         android:clickable="true"
         android:src="@drawable/ic_arrow_right"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
-        app:layout_constraintStart_toEndOf="@+id/editText">
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_count"
+        app:layout_constraintStart_toEndOf="@+id/dialog_count">
     </ImageView>
 
     <TextView
