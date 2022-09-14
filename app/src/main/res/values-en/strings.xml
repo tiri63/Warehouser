@@ -14,7 +14,7 @@
     <string name="txt_function_info">About</string>
     <string name="txt_dialog_item_info">Item Infomation</string>
     <string name="txt_dialog_item_name">Item Name</string>
-    <string name="txt_dialog_item_count_left">%s left</string>
+    <string name="txt_dialog_item_count_left">%d left</string>
     <string name="txt_dialog_confirm">OK</string>
     <string name="txt_dialog_cancel">Cancel</string>
     <string name="txt_dialog_import_count">Import Count</string>
@@ -28,4 +28,6 @@
     <string name="txt_login_failed_notmatch">Username and password don\'t match</string>
     <string name="txt_back">Back</string>
     <string name="txt_submit">Submit</string>
+    <string name="txt_nomodel">No model</string>
+    <string name="txt_nofor">No Use</string>
 </resources>

@@ -2,11 +2,8 @@ package cn.rexio.vc.warehouser
 
 import HiroUtils
 import SharedPref
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -18,17 +15,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.*
+import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : Activity() {
     private var username: String? = null
     private var secret: String? = null
     private lateinit var ui_scroll_main: ConstraintLayout
-    private lateinit var ui_include_viewpager_indicator: ConstraintLayout
-    private lateinit var ui_import_tv: TextView
-    private lateinit var ui_export_tv: TextView
-    private lateinit var ui_indicator_tv: TextView
     private var ui_current = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +32,8 @@ class MainActivity : Activity() {
         setContentView(R.layout.main_layout)
         initalize_Components()
         setStatusBarColor()
-        ui_import_tv.setOnClickListener {
-            set_viewpager_indicator(ui_import_tv.marginLeft.toFloat())
-        }
-        ui_export_tv.setOnClickListener {
-            set_viewpager_indicator(ui_export_tv.marginLeft.toFloat())
-        }
         loadSettings()
+        fakeData()
     }
 
     fun loadSettings() {
@@ -55,6 +43,7 @@ class MainActivity : Activity() {
             login()
         else
             tryLogin(username, secret)
+
 
     }
 
@@ -94,10 +83,6 @@ class MainActivity : Activity() {
 
     fun initalize_Components() {
         ui_scroll_main = findViewById(R.id.ui_scroll_main)
-        ui_include_viewpager_indicator = findViewById(R.id.ui_include_viewpager_indicator)
-        ui_import_tv = ui_include_viewpager_indicator.findViewById(R.id.ui_import_tv)
-        ui_export_tv = ui_include_viewpager_indicator.findViewById(R.id.ui_export_tv)
-        ui_indicator_tv = ui_include_viewpager_indicator.findViewById(R.id.ui_indicator_tv)
         var ui_search_bar : View = findViewById(R.id.ui_include_search_bar)
         ui_search_bar.setOnClickListener {
             val intent = Intent()
@@ -112,13 +97,6 @@ class MainActivity : Activity() {
         }
     }
 
-    fun set_viewpager_indicator(target: Float) {
-        //
-        val currentX: Float = ui_indicator_tv.translationX
-        val animation = ObjectAnimator.ofFloat(ui_indicator_tv, "translationX", currentX, target)
-
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         this.setStatusBarColor()
         super.onConfigurationChanged(newConfig)
@@ -127,5 +105,20 @@ class MainActivity : Activity() {
     private fun setStatusBarColor() {
         HiroUtils.setStatusBarColor(window, resources)
     }
+
+    private fun fakeData()  {
+        val mRecyclerView = findViewById<View>(R.id.ui_include_main_function).findViewById<RecyclerView>(R.id.ui_shelf_item_list)
+        var mRecyclerAdapter = ShelfAdapter(
+            arrayListOf("螺丝","螺帽","螺母","扳手","123","321","1234","4321","28","sdj","dff","ioa","fi","129","do","0fj"),
+            arrayListOf(10,11,12,13,12,1,3,5,8,5,3,89,0,3,2,6),
+            arrayListOf("150mm-X-1","METAL-X-2","STEEL-X",null,"s-1","u-9","o-0","p-1","i-1","p-9","m-0","h-a","p-1","???","{0-x}","[a]"),
+            arrayListOf("10000001","10000002","10000003","114514","32445","2135","6643","46516","463642","135","1364","1354","3146","1346","136","13477"),
+            arrayListOf("仓库2-货架1-第1层","仓库3-货架1-第1层","仓库2-货架9-第1层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层"),
+            arrayListOf("冲天炉","维修","造型","熔炼","维修","造型","熔炼","维修","造型","熔炼","维修","造型","熔炼","维修","造型","熔炼"),
+            this, window
+        )
+        mRecyclerView.adapter = mRecyclerAdapter
+    }
+
 
 }

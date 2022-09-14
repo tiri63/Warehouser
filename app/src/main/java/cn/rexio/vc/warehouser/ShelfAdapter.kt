@@ -10,16 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 
 class ShelfAdapter(
-    private val nameList: List<String>,
-    private val countList: List<Int>,
-    private val maxList: List<Int>,
+    private var nameList: List<String>,
+    private var countList: List<Int>,
+    private var modelList: List<String?>,
+    private var goodsnoList: List<String?>,
+    private var shelfList : List<String>,
+    private var forList : List<String>,
     private val context: Context,
-    private val window: Window,
-    private val io: Boolean,
-    private val isOnClickEnabled: Boolean
+    private val window: Window
 ) : RecyclerView.Adapter<ShelfAdapter.ShelfViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShelfViewHolder {
@@ -34,56 +37,55 @@ class ShelfAdapter(
         var pos = holder.bindingAdapterPosition
         holder.nameView.text = nameList[pos]
         holder.countView.text = countList[pos].toString()
-        if (isOnClickEnabled)
-            holder.itemView.setOnClickListener{
-                val alertDialog =
-                    AlertDialog.Builder(context).setView(R.layout.dialog_login)
-                alertDialog.show()
-                val builder = AlertDialog.Builder(context)
-                builder.setCancelable(true)
-                val view = window.layoutInflater.inflate(R.layout.dialog_io_layout, null, false)
-                builder.setView(view)
-                val dialog = builder.create()
-                dialog.show()
-                if(io)
-                {
-                    view.findViewById<TextView>(R.id.dialog_left).visibility = View.INVISIBLE
-                }
-                view.findViewById<EditText>(R.id.dialog_count).addTextChangedListener(object :
-                    TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-
-                    }
-
-                    override fun afterTextChanged(s: Editable?) {
-                        val current = s.toString().toIntOrNull()
-                        var fin : String = "0"
-                        fin = if(current == null || current < 0)
-                            "0"
-                        else {
-                            if(current > maxList[pos])
-                                maxList[pos].toString()
-                            else
-                                current.toString()
-                        }
-                        view.findViewById<EditText>(R.id.dialog_count).setText(fin)
-                    }
-                })
+        holder.modelView.text = if(modelList[pos]==null) context.getText(R.string.txt_nomodel) else modelList[pos]
+        holder.goodsno.text = goodsnoList[pos]
+        holder.shelfView.text = shelfList[pos]
+        holder.itemView.setOnClickListener{
+            val builder = AlertDialog.Builder(context)
+            builder.setCancelable(true)
+            val view = window.layoutInflater.inflate(R.layout.dialog_io_layout, null, false)
+            builder.setView(view)
+            val dialog = builder.create()
+            dialog.show()
+            var current = 0
+            view.findViewById<TextView>(R.id.dialog_left).text = String.format(context.getText(R.string.txt_dialog_item_count_left).toString(),countList[pos])
+            view.findViewById<TextView>(R.id.dialog_title).text = nameList[pos]
+            view.findViewById<TextView>(R.id.dialog_goods_model).text = modelList[pos]
+            view.findViewById<TextView>(R.id.dialog_goods_number).text = goodsnoList[pos]
+            view.findViewById<TextView>(R.id.dialog_shelf).text = shelfList[pos]
+            view.findViewById<TextView>(R.id.dialog_for).text = forList[pos]
+            view.findViewById<TextView>(R.id.dialog_import).setOnClickListener {
+                Toast.makeText(context,"尝试入库" + nameList[pos] + " " + view.findViewById<EditText>(R.id.dialog_count).text + " 个",Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
             }
+            view.findViewById<TextView>(R.id.dialog_export).setOnClickListener {
+                Toast.makeText(context,"尝试出库" + nameList[pos] + " " + view.findViewById<EditText>(R.id.dialog_count).text + " 个（无数量验证）",Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            view.findViewById<TextView>(R.id.dialog_cancel).setOnClickListener {
+                dialog.dismiss()
+            }
+            view.findViewById<ImageView>(R.id.dialog_plus).setOnClickListener {
+                if(current < countList[pos])
+                    current++
+                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+            }
+            view.findViewById<ImageView>(R.id.dialog_minus).setOnClickListener {
+                if(current > 0)
+                    current--
+                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+            }
+            view.findViewById<ImageView>(R.id.dialog_min).setOnClickListener {
+                current = 0
+                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+            }
+            view.findViewById<ImageView>(R.id.dialog_max).setOnClickListener {
+                current = countList[pos]
+                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+            }
+
+
+        }
     }
 
     override fun getItemCount(): Int = nameList.size
@@ -91,7 +93,9 @@ class ShelfAdapter(
     inner class ShelfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameView: TextView = itemView.findViewById(R.id.ui_shelf_item_name)
         val countView: TextView = itemView.findViewById(R.id.ui_shelf_item_count)
-
+        val modelView : TextView = itemView.findViewById(R.id.ui_goods_model)
+        val goodsno : TextView = itemView.findViewById(R.id.ui_goods_number)
+        val shelfView : TextView = itemView.findViewById(R.id.ui_shelf_id)
         override fun toString(): String {
             return super.toString() + " '" + nameView.text + "'"
         }

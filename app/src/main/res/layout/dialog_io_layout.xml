@@ -12,7 +12,10 @@
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
     </TextView>
 
@@ -20,11 +23,26 @@
         android:id="@+id/dialog_shelf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
         android:text="@string/txt_dialog_item_shelf"
-        android:textColor="@color/FontColorDim" android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/dialog_title">
+        android:textColor="@color/FontColorDim"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/dialog_title"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_title">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/dialog_for"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/txt_nofor"
+        android:textColor="@color/FontColorDim"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/dialog_shelf"
+        app:layout_constraintTop_toTopOf="@+id/dialog_shelf">
+
     </TextView>
 
     <TextView
@@ -38,6 +56,32 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+    </TextView>
+
+    <TextView
+        android:id="@+id/dialog_goods_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_nomodel"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/FontColorDim"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_title"
+        app:layout_constraintStart_toEndOf="@+id/dialog_title">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/dialog_goods_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100000001"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/FontColorDim"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_title"
+        app:layout_constraintStart_toEndOf="@+id/dialog_goods_model">
+
     </TextView>
 
     <ImageView
@@ -69,8 +113,10 @@
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
-        android:textColor="@color/FontColor"
-        android:textSize="20sp"
+        android:textColor="@color/FontColorDim"
+        android:textSize="16sp"
+        android:text="0"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialog_shelf"
@@ -117,18 +163,45 @@
     </TextView>
 
     <TextView
-        android:id="@+id/dialog_ok"
+        android:id="@+id/dialog_import"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/txt_dialog_confirm"
-        android:textColor="@color/FontColorDim"
-        android:textSize="15sp"
-        android:padding="5dp"
+        android:clickable="true"
         android:background="@drawable/ripple_background"
+        android:paddingStart="15dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="5dp"
+        android:text="@string/txt_import"
+        android:textColor="@color/FontColor"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dialog_export">
+
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/dialog_export"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ripple_background"
+        android:paddingStart="15dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="5dp"
+        android:clickable="true"
+        android:text="@string/txt_export"
+        android:textColor="@color/FontColor"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/dialog_cancel">
+
+
     </TextView>
 
     <TextView
@@ -138,9 +211,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/txt_dialog_cancel"
-        android:textColor="@color/FontColorDim"
+        android:textColor="@color/FontColor"
         android:textSize="15sp"
         android:padding="5dp"
+        android:clickable="true"
         android:background="@drawable/ripple_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

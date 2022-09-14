@@ -14,7 +14,7 @@
     <string name="txt_dialog_item_info">项目详情</string>
     <string name="txt_dialog_item_name">项目名称</string>
     <string name="txt_dialog_item_shelf">货架位置（货架别名）</string>
-    <string name="txt_dialog_item_count_left">剩余%s</string>
+    <string name="txt_dialog_item_count_left">剩余%d</string>
     <string name="txt_dialog_confirm">确认</string>
     <string name="txt_dialog_cancel">取消</string>
     <string name="txt_dialog_import_count">入库数量</string>
@@ -27,4 +27,6 @@
     <string name="txt_login_failed_notmatch">用户名和密码不匹配</string>
     <string name="txt_back">返回</string>
     <string name="txt_submit">提交</string>
+    <string name="txt_nomodel">无型号信息</string>
+    <string name="txt_nofor">无对应用途</string>
 </resources>
