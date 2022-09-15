@@ -7,8 +7,11 @@ import android.app.AlertDialog;
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,6 +20,8 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import eightbitlab.com.blurview.BlurView
+import eightbitlab.com.blurview.RenderScriptBlur
 
 
 class MainActivity : Activity() {
@@ -41,39 +46,63 @@ class MainActivity : Activity() {
         username = SharedPref(this, "username", "null").getValue(this, this::username)
         secret = SharedPref(this, "secret", "null").getValue(this, this::secret)
         if (username.equals("null") || secret.equals("null"))
+        {
+            //Blurry.with(this).capture(findViewById(R.id.ui_main_layout)).into(findViewById(R.id.ui_login_background))
             login()
+        }
         else
             tryLogin(username, secret)
-
-
+        // from View
+        findViewById<BlurView>(R.id.ui_search_back_blur).setupWith(findViewById(R.id.ui_search_back_constraint), RenderScriptBlur(this)) // or RenderEffectBlur
+            .setFrameClearDrawable(window.decorView.background) // Optional
+            .setBlurRadius(100f)
+        //Blurry.with(this).radius(10).sampling(8).color(Color.WHITE).async().onto(findViewById(R.id.ui_login_frame))
     }
 
     fun login() {
-        val builder = AlertDialog.Builder(this)
+        var rootView = findViewById<ViewGroup>(R.id.ui_main_layout)
+        var blurView = findViewById<BlurView>(R.id.ui_login_background)
+        rootView.visibility = View.VISIBLE
+        var radius = 20f
+
+
+        // Optional:
+        // Set drawable to draw in the beginning of each blurred frame.
+        // Can be used in case your layout has a lot of transparent space and your content
+        // gets a too low alpha value after blur is applied.
+        var windowBackground : Drawable = window.decorView.background
+
+        blurView.setupWith(rootView, RenderScriptBlur(this)) // or RenderEffectBlur
+            .setFrameClearDrawable(windowBackground) // Optional
+            .setBlurRadius(radius)
+        blurView.findViewById<TextView>(R.id.dialog_login).setOnClickListener {
+            Toast.makeText(
+                this,
+                blurView.findViewById<EditText>(R.id.login_name).text.toString() + " :: " +
+                        blurView.findViewById<EditText>(R.id.login_password).text.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
+            SharedPref(this, "username", "null").setValue(
+                this,
+                this::username,
+                blurView.findViewById<EditText>(R.id.login_name).text.toString()
+            )
+            SharedPref(this, "secret", "null").setValue(
+                this,
+                this::secret,
+                blurView.findViewById<EditText>(R.id.login_password).text.toString()
+            )
+            blurView.visibility = View.INVISIBLE
+        }
+        /*val builder = AlertDialog.Builder(this)
         builder.setCancelable(true)
         val view = layoutInflater.inflate(R.layout.dialog_login, null, false)
         builder.setView(view)
         val dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
-        view.findViewById<TextView>(R.id.dialog_login).setOnClickListener {
-            Toast.makeText(
-                this,
-                view.findViewById<EditText>(R.id.login_name).text.toString() + " :: " +
-                        view.findViewById<EditText>(R.id.login_password).text.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
-            SharedPref(this, "username", "null").setValue(
-                this,
-                this::username,
-                view.findViewById<EditText>(R.id.login_name).text.toString()
-            )
-            SharedPref(this, "secret", "null").setValue(
-                this,
-                this::secret,
-                view.findViewById<EditText>(R.id.login_password).text.toString()
-            )
-        }
+
+        }*/
     }
 
     private fun tryLogin(username: String?, secret: String?) {

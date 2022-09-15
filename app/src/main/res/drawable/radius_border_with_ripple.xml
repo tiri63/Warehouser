@@ -3,7 +3,7 @@
         android:color="@color/FontColorExtraDim">
     <item>
         <shape>
-            <solid android:color="@color/BackgroundColor"/>
+            <solid android:color="#00000000"/>
             <corners
                 android:topRightRadius="5dp"
                 android:bottomRightRadius="5dp"
