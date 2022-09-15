@@ -20,7 +20,7 @@ class ShelfAdapter(
     private var modelList: List<String?>,
     private var goodsnoList: List<String?>,
     private var shelfList : List<String>,
-    private var forList : List<String>,
+    private var forList : List<String?>,
     private val context: Context,
     private val window: Window
 ) : RecyclerView.Adapter<ShelfAdapter.ShelfViewHolder>() {
@@ -38,7 +38,7 @@ class ShelfAdapter(
         holder.nameView.text = nameList[pos]
         holder.countView.text = countList[pos].toString()
         holder.modelView.text = if(modelList[pos]==null) context.getText(R.string.txt_nomodel) else modelList[pos]
-        holder.goodsno.text = goodsnoList[pos]
+        holder.goodsno.text = if(goodsnoList[pos]==null) context.getText(R.string.txt_no_id) else goodsnoList[pos]
         holder.shelfView.text = shelfList[pos]
         holder.itemView.setOnClickListener{
             val builder = AlertDialog.Builder(context)
@@ -46,6 +46,7 @@ class ShelfAdapter(
             val view = window.layoutInflater.inflate(R.layout.dialog_io_layout, null, false)
             builder.setView(view)
             val dialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
             dialog.show()
             var current = 0
             view.findViewById<TextView>(R.id.dialog_left).text = String.format(context.getText(R.string.txt_dialog_item_count_left).toString(),countList[pos])
@@ -53,7 +54,7 @@ class ShelfAdapter(
             view.findViewById<TextView>(R.id.dialog_goods_model).text = modelList[pos]
             view.findViewById<TextView>(R.id.dialog_goods_number).text = goodsnoList[pos]
             view.findViewById<TextView>(R.id.dialog_shelf).text = shelfList[pos]
-            view.findViewById<TextView>(R.id.dialog_for).text = forList[pos]
+            view.findViewById<TextView>(R.id.dialog_for).text = if(forList[pos]==null) context.getText(R.string.txt_nofor) else forList[pos]
             view.findViewById<TextView>(R.id.dialog_import).setOnClickListener {
                 Toast.makeText(context,"尝试入库" + nameList[pos] + " " + view.findViewById<EditText>(R.id.dialog_count).text + " 个",Toast.LENGTH_SHORT).show()
                 dialog.dismiss()

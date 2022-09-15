@@ -4,7 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_arrow_left.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_arrow_right.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_double_arro_right.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_double_arrow_left.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_info.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_logout.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_plus.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_profile.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_qrcode.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_refresh.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_search.xml" value="0.2265" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_user.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/list_subwin_item.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/radius_border.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/radius_border_50dp.xml" value="0.2265" />
@@ -14,12 +25,14 @@
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/radius_circle_without_boundries_with_ripple.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/radius_oval.xml" value="0.1225" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ridius_border_with_ripple.xml" value="0.1235" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ripple_background.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_menu.xml" value="0.2" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_profile.xml" value="0.1" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_search.xml" value="0.2" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_import_new_item.xml" value="0.29069767441860467" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_in_layout.xml" value="0.18568840579710144" />
-        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_io_layout.xml" value="0.536" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_io_layout.xml" value="0.29069767441860467" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_login.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/fragment_item_list.xml" value="0.18568840579710144" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/fragment_item_sub_win_menu.xml" value="0.18568840579710144" />

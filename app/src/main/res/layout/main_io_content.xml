@@ -6,93 +6,15 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
 
-    <TextView
-        android:id="@+id/ui_import_shelf_no_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/txt_shelf_no"
-        android:textColor="@color/FontColor"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </TextView>
-
-    <EditText
-        android:id="@+id/ui_import_shelf_no_main_edit"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="76dp"
-        android:hint="@string/txt_shelf_no_main"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:textColor="@color/FontColor"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/ui_import_shelf_no_txt"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextContrastCheck">
-
-    </EditText>
-
-    <EditText
-        android:id="@+id/ui_import_shelf_no_sub_edit"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="160dp"
-        android:hint="@string/txt_shelf_no_sub"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:textColor="@color/FontColor"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/ui_import_shelf_no_txt"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextContrastCheck">
-
-    </EditText>
-
-    <ImageView
-        android:id="@+id/ui_import_scan_qrcode"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="250dp"
-        android:src="@drawable/ic_qrcode"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </ImageView>
-
-    <TextView
-        android:id="@+id/ui_import_shelf_current_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="45dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/txt_shelf_current_txt"
-        android:textColor="@color/FontColor"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </TextView>
-
-    <ImageView
-        android:id="@+id/ui_import_shelf_data_refresh"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="49dp"
-        android:src="@drawable/ic_refresh"
-        app:layout_constraintStart_toEndOf="@+id/ui_import_shelf_current_txt"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -100,7 +22,6 @@
             android:id="@+id/ui_shelf_item_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             android:visibility="visible"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"

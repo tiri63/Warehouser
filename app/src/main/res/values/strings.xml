@@ -29,4 +29,13 @@
     <string name="txt_submit">提交</string>
     <string name="txt_nomodel">无型号信息</string>
     <string name="txt_nofor">无对应用途</string>
+    <string name="txt_search_method_shelf">货架号</string>
+    <string name="txt_search_method_name">货物名</string>
+    <string name="txt_search_method_id">唯一编码</string>
+    <string name="txt_search_method_model">型号</string>
+    <string name="txt_search_via_shelf">通过货架号来搜索</string>
+    <string name="txt_search_via_name">通过货物名称来搜索</string>
+    <string name="txt_search_via_id">通过唯一编码来搜索</string>
+    <string name="txt_search_via_model">通过型号来搜索</string>
+    <string name="txt_no_id">无唯一编码</string>
 </resources>

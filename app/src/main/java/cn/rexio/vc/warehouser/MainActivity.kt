@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : Activity() {
@@ -48,14 +49,12 @@ class MainActivity : Activity() {
     }
 
     fun login() {
-        val alertDialog =
-            AlertDialog.Builder(this).setView(R.layout.dialog_login)
-        alertDialog.show()
         val builder = AlertDialog.Builder(this)
         builder.setCancelable(true)
         val view = layoutInflater.inflate(R.layout.dialog_login, null, false)
         builder.setView(view)
         val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
         dialog.show()
         view.findViewById<TextView>(R.id.dialog_login).setOnClickListener {
             Toast.makeText(
@@ -95,6 +94,14 @@ class MainActivity : Activity() {
             intent.setClass(this@MainActivity, MenuActivity::class.java)
             startActivity(intent)
         }
+        findViewById<FloatingActionButton>(R.id.ui_import_fab).setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setCancelable(true)
+            val view = window.layoutInflater.inflate(R.layout.dialog_import_new_item, null, false)
+            builder.setView(view)
+            val dialog = builder.create()
+            dialog.show()
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -112,9 +119,9 @@ class MainActivity : Activity() {
             arrayListOf("螺丝","螺帽","螺母","扳手","123","321","1234","4321","28","sdj","dff","ioa","fi","129","do","0fj"),
             arrayListOf(10,11,12,13,12,1,3,5,8,5,3,89,0,3,2,6),
             arrayListOf("150mm-X-1","METAL-X-2","STEEL-X",null,"s-1","u-9","o-0","p-1","i-1","p-9","m-0","h-a","p-1","???","{0-x}","[a]"),
-            arrayListOf("10000001","10000002","10000003","114514","32445","2135","6643","46516","463642","135","1364","1354","3146","1346","136","13477"),
+            arrayListOf("10000001","10000002","10000003","114514",null,"2135","6643","46516","463642","135","1364","1354","3146","1346","136","13477"),
             arrayListOf("仓库2-货架1-第1层","仓库3-货架1-第1层","仓库2-货架9-第1层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层","仓库2-货架1-第6层"),
-            arrayListOf("冲天炉","维修","造型","熔炼","维修","造型","熔炼","维修","造型","熔炼","维修","造型","熔炼","维修","造型","熔炼"),
+            arrayListOf("冲天炉","维修","造型","熔炼","维修","造型","熔炼","维修","造型",null,"维修","造型","熔炼","维修","造型","熔炼"),
             this, window
         )
         mRecyclerView.adapter = mRecyclerAdapter

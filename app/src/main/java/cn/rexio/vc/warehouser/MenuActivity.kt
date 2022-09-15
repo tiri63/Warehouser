@@ -35,7 +35,7 @@ class MenuActivity : Activity() {
         },View.OnClickListener{
             Toast.makeText(applicationContext,getText(textList[1]),LENGTH_LONG).show()
         })
-        val mRecyclerView = findViewById<RecyclerView>(R.id.ui_sub_win_functions_list)
+        val mRecyclerView = findViewById<RecyclerView>(R.id.ui_search_result)
         var mRecyclerAdapter = MenuAdapter(textList, iconList, onClickListenerList)
         mRecyclerView.adapter = mRecyclerAdapter
     }

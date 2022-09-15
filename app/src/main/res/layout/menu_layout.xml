@@ -86,7 +86,7 @@
         </ImageView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ui_sub_win_functions_list"
+            android:id="@+id/ui_search_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"

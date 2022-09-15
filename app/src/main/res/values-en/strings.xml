@@ -30,4 +30,13 @@
     <string name="txt_submit">Submit</string>
     <string name="txt_nomodel">No model</string>
     <string name="txt_nofor">No Use</string>
+    <string name="txt_search_method_shelf">By Shelf</string>
+    <string name="txt_search_method_name">By Name</string>
+    <string name="txt_search_method_id">ID</string>
+    <string name="txt_search_method_model">Model</string>
+    <string name="txt_search_via_shelf">Search via Shelf</string>
+    <string name="txt_search_via_name">Search via Name</string>
+    <string name="txt_search_via_id">Search via Unique ID</string>
+    <string name="txt_search_via_model">Search via Model</string>
+    <string name="txt_no_id">No ID</string>
 </resources>
