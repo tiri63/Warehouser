@@ -53,9 +53,8 @@ class MainActivity : Activity() {
         else
             tryLogin(username, secret)
         // from View
-        findViewById<BlurView>(R.id.ui_search_back_blur).setupWith(findViewById(R.id.ui_search_back_constraint), RenderScriptBlur(this)) // or RenderEffectBlur
-            .setFrameClearDrawable(window.decorView.background) // Optional
-            .setBlurRadius(100f)
+        findViewById<BlurView>(R.id.ui_search_back_blur).setupWith(findViewById<ViewGroup>(R.id.ui_search_back_constraint), RenderScriptBlur(this)) // or RenderEffectBlur
+            .setBlurRadius(20f)
         //Blurry.with(this).radius(10).sampling(8).color(Color.WHITE).async().onto(findViewById(R.id.ui_login_frame))
     }
 
