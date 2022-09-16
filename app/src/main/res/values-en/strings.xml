@@ -39,4 +39,10 @@
     <string name="txt_search_via_id">Search via Unique ID</string>
     <string name="txt_search_via_model">Search via Model</string>
     <string name="txt_no_id">No ID</string>
+    <string name="txt_direct_import_tips">"Adding new items to shelves? Just "</string>
+    <string name="txt_direct_import">Directly Import</string>
+    <string name="txt_dialog_search_tips">Searching for items to be imported</string>
+    <string name="txt_dialog_click_to_set_shelf">Click or scan to set shelf</string>
+    <string name="txt_dialog_click_to_set_for">Click to set usage</string>
+    <string name="txt_qrcode_back">◀ Back</string>
 </resources>

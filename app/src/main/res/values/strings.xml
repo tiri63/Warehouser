@@ -38,4 +38,10 @@
     <string name="txt_search_via_id">通过唯一编码来搜索</string>
     <string name="txt_search_via_model">通过型号来搜索</string>
     <string name="txt_no_id">无唯一编码</string>
+    <string name="txt_direct_import_tips">向货架上添加新物品？</string>
+    <string name="txt_direct_import">直接入库</string>
+    <string name="txt_dialog_search_tips">搜索要入库的内容</string>
+    <string name="txt_dialog_click_to_set_shelf">点击或扫码设置货架位置</string>
+    <string name="txt_dialog_click_to_set_for">点击设置用途</string>
+    <string name="txt_qrcode_back">◀ 返回</string>
 </resources>

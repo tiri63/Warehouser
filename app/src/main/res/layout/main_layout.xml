@@ -11,97 +11,161 @@
     android:id="@+id/ui_main_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ui_search_back_constraint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ui_search_back_img"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ui_search_back_constraint"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_day_background"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ui_include_search_bar" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent">
 
-    <eightbitlab.com.blurview.BlurView
-        android:id="@+id/ui_search_back_blur"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:gravity="center">
-
-    </eightbitlab.com.blurview.BlurView>
-    <include
-        android:id="@+id/ui_include_search_bar"
-        layout="@layout/main_searchbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:fitsSystemWindows="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </include>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/ui_import_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:src="@drawable/ic_plus"
-        app:backgroundTint="@color/AccentColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/FontColorExtraDim" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ui_scroll_main"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_include_search_bar">
+            <ImageView
+                android:id="@+id/ui_search_back_img"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_day_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/ui_include_main_function"
-            layout="@layout/main_io_content"
+            android:id="@+id/ui_include_search_bar"
+            layout="@layout/main_searchbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
             android:fitsSystemWindows="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
         </include>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/ui_include_search_function"
+            layout="@layout/search_searchbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:fitsSystemWindows="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <eightbitlab.com.blurview.BlurView
-        android:id="@+id/ui_login_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:gravity="center"
-        android:visibility="invisible">
+        </include>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ui_scroll_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="8dp"
+            android:fitsSystemWindows="true"
+            app:layout_constraintBottom_toTopOf="@+id/ui_direct_tips"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <include
-                android:id="@+id/ui_include_login"
-                layout="@layout/dialog_login"
+                android:id="@+id/ui_include_main_function"
+                layout="@layout/main_io_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </include>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/ui_login_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/ui_include_login"
+                    layout="@layout/dialog_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </include>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </eightbitlab.com.blurview.BlurView>
+
+        <TextView
+            android:id="@+id/ui_direct_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/txt_direct_import_tips"
+            app:layout_constraintBottom_toTopOf="@+id/ui_import_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/ui_import_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_direct_import"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ui_dialog_import_fake"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/ui_dialog_background_for_fake"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66000000">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ui_dialog_background_for_pop"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#ffffffff"
+                app:layout_constraintBottom_toBottomOf="@+id/ui_include_dialog_import"
+                app:layout_constraintEnd_toEndOf="@+id/ui_include_dialog_import"
+                app:layout_constraintStart_toStartOf="@+id/ui_include_dialog_import"
+                app:layout_constraintTop_toTopOf="@+id/ui_include_dialog_import"></TextView>
+
+            <include
+                android:id="@+id/ui_include_dialog_import"
+                layout="@layout/dialog_import_new_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
@@ -111,9 +175,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
             </include>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </eightbitlab.com.blurview.BlurView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

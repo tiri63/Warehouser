@@ -3,23 +3,25 @@ package cn.rexio.vc.warehouser
 import HiroUtils
 import SharedPref
 import android.app.Activity
-import android.app.AlertDialog;
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.opengl.Visibility
 import android.os.Bundle
+import android.os.Parcelable
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.huawei.hms.hmsscankit.ScanUtil
+import com.huawei.hms.ml.scan.HmsScan
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
 
@@ -28,7 +30,8 @@ class MainActivity : Activity() {
     private var username: String? = null
     private var secret: String? = null
     private lateinit var ui_scroll_main: ConstraintLayout
-    private var ui_current = 0
+    private var searchMethod = 0
+    private var shelf_scan_result : TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         actionBar.let { it?.hide() }
@@ -47,15 +50,10 @@ class MainActivity : Activity() {
         secret = SharedPref(this, "secret", "null").getValue(this, this::secret)
         if (username.equals("null") || secret.equals("null"))
         {
-            //Blurry.with(this).capture(findViewById(R.id.ui_main_layout)).into(findViewById(R.id.ui_login_background))
             login()
         }
         else
             tryLogin(username, secret)
-        // from View
-        findViewById<BlurView>(R.id.ui_search_back_blur).setupWith(findViewById<ViewGroup>(R.id.ui_search_back_constraint), RenderScriptBlur(this)) // or RenderEffectBlur
-            .setBlurRadius(20f)
-        //Blurry.with(this).radius(10).sampling(8).color(Color.WHITE).async().onto(findViewById(R.id.ui_login_frame))
     }
 
     fun login() {
@@ -65,10 +63,6 @@ class MainActivity : Activity() {
         var radius = 20f
 
 
-        // Optional:
-        // Set drawable to draw in the beginning of each blurred frame.
-        // Can be used in case your layout has a lot of transparent space and your content
-        // gets a too low alpha value after blur is applied.
         var windowBackground : Drawable = window.decorView.background
 
         blurView.setupWith(rootView, RenderScriptBlur(this)) // or RenderEffectBlur
@@ -91,17 +85,8 @@ class MainActivity : Activity() {
                 this::secret,
                 blurView.findViewById<EditText>(R.id.login_password).text.toString()
             )
-            blurView.visibility = View.INVISIBLE
+            blurView.visibility = View.GONE
         }
-        /*val builder = AlertDialog.Builder(this)
-        builder.setCancelable(true)
-        val view = layoutInflater.inflate(R.layout.dialog_login, null, false)
-        builder.setView(view)
-        val dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
-
-        }*/
     }
 
     private fun tryLogin(username: String?, secret: String?) {
@@ -111,10 +96,13 @@ class MainActivity : Activity() {
     fun initalize_Components() {
         ui_scroll_main = findViewById(R.id.ui_scroll_main)
         var ui_search_bar : View = findViewById(R.id.ui_include_search_bar)
+        var ui_search = findViewById<View>(R.id.ui_include_search_function)
+        var ui_search_txt = ui_search.findViewById<EditText>(R.id.ui_search_bar)
         ui_search_bar.setOnClickListener {
-            val intent = Intent()
-            intent.setClass(this@MainActivity, SearchActivity::class.java)
-            startActivity(intent)
+            ui_search_bar.visibility = View.GONE
+            ui_search.visibility = View.VISIBLE
+            ui_search_txt.requestFocus()
+            showInputMethod(this@MainActivity,ui_search_txt)
         }
         var ui_profile_button: ImageView = findViewById(R.id.ui_search_user)
         ui_profile_button.setOnClickListener{
@@ -122,13 +110,89 @@ class MainActivity : Activity() {
             intent.setClass(this@MainActivity, MenuActivity::class.java)
             startActivity(intent)
         }
-        findViewById<FloatingActionButton>(R.id.ui_import_fab).setOnClickListener {
+        findViewById<Button>(R.id.ui_import_btn).setOnClickListener {
+            var ui_fake_dialog = findViewById<View>(R.id.ui_dialog_import_fake)
+            ui_fake_dialog.visibility = View.VISIBLE
+            var ui_dialog_include_main = ui_fake_dialog.findViewById<View>(R.id.ui_include_dialog_item)
+            shelf_scan_result = ui_dialog_include_main.findViewById(R.id.dialog_shelf)
+            ui_dialog_include_main.findViewById<ImageView>(R.id.ui_dialog_shelf_scan).setOnClickListener {
+                startCapture()
+            }
+            ui_fake_dialog.findViewById<TextView>(R.id.dialog_cancel).setOnClickListener {
+                ui_fake_dialog.visibility = View.GONE
+                shelf_scan_result = null
+            }
+        }
+        ui_search_txt.setOnClickListener{
+
+        }
+        var ui_search_method = ui_search.findViewById<TextView>(R.id.ui_search_method)
+        ui_search_method.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setCancelable(true)
-            val view = window.layoutInflater.inflate(R.layout.dialog_import_new_item, null, false)
-            builder.setView(view)
+            builder.setSingleChoiceItems(arrayOf(getText(R.string.txt_search_method_shelf).toString(),
+                getText(R.string.txt_search_method_name).toString(),
+                getText(R.string.txt_search_method_id).toString(),
+                getText(R.string.txt_search_method_model).toString()),
+                searchMethod
+            ) { dialog, which ->
+                dialog.dismiss()
+                if(searchMethod != which)
+                    ui_search_txt.setText("")
+                searchMethod = which
+                ui_search_txt.hint = when (which) {
+                    0 -> getText(R.string.txt_search_via_shelf)
+                    1 -> getText(R.string.txt_search_via_name)
+                    2 -> getText(R.string.txt_search_via_id)
+                    else -> getText(R.string.txt_search_via_model)
+                }
+                ui_search_method.text = when (which) {
+                    0 -> getText(R.string.txt_search_method_shelf)
+                    1 -> getText(R.string.txt_search_method_name)
+                    2 -> getText(R.string.txt_search_method_id)
+                    else -> getText(R.string.txt_search_method_model)
+                }
+            }
+            hideInputMethod(this@MainActivity)
             val dialog = builder.create()
+            dialog.setOnDismissListener {
+                ui_search_txt.requestFocus()
+                showInputMethod(this@MainActivity,ui_search_txt)
+            }
             dialog.show()
+        }
+        findViewById<ImageView>(R.id.ui_search_back).setOnClickListener {
+            hideInputMethod(this@MainActivity)
+            ui_search_bar.visibility = View.VISIBLE
+            ui_search.visibility = View.GONE
+        }
+    }
+    fun startCapture()
+    {
+        // 申请权限之后，调用DefaultView扫码界面。
+        ScanUtil.startScan(this@MainActivity, 0x01,  HmsScanAnalyzerOptions.Creator().setHmsScanTypes(
+            HmsScan.ALL_SCAN_TYPE).create())
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK || data == null) {
+            return
+        }
+        // 从onActivityResult返回data中，用ScanUtil.RESULT作为key值取到HmsScan返回值。
+        else if (requestCode == 0x01) {
+            when (val obj: Parcelable? = data.getParcelableExtra(ScanUtil.RESULT)) {
+                is HmsScan -> {
+                    if (!TextUtils.isEmpty(obj.getOriginalValue())) {
+                        var ui_fake_dialog = findViewById<View>(R.id.ui_dialog_import_fake)
+                        Toast.makeText(this, obj.getOriginalValue(), Toast.LENGTH_SHORT).show()
+                        shelf_scan_result?.text = obj.getOriginalValue()
+                        ui_fake_dialog.visibility = View.GONE
+                        shelf_scan_result = null
+                    }
+                    return
+                }
+            }
         }
     }
 
@@ -155,5 +219,23 @@ class MainActivity : Activity() {
         mRecyclerView.adapter = mRecyclerAdapter
     }
 
+    fun showInputMethod(activity: Activity, editText: EditText?) {
+        val inputMethodManager: InputMethodManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun hideInputMethod(activity: Activity) {
+        val inputMethodManager =
+            activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        if (inputMethodManager.isActive && activity.currentFocus != null) {
+            if (activity.currentFocus!!.windowToken != null) {
+                inputMethodManager.hideSoftInputFromWindow(
+                    activity.currentFocus!!.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
+            }
+        }
+    }
 
 }

@@ -30,8 +30,12 @@
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_menu.xml" value="0.2" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_profile.xml" value="0.1" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_qrcode.xml" value="0.32673267326732675" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/activity_search.xml" value="0.2" />
-        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_import_new_item.xml" value="0.29069767441860467" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_import_item_main.xml" value="0.4" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_import_item_search.xml" value="0.19610507246376813" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_import_item_shlef.xml" value="0.19610507246376813" />
+        <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_import_new_item.xml" value="0.4" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_in_layout.xml" value="0.18568840579710144" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_io_layout.xml" value="0.29069767441860467" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/layout/dialog_login.xml" value="0.4" />
