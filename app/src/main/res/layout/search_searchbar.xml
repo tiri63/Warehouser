@@ -15,12 +15,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/txt_search_via_shelf"
         android:imeOptions="actionSearch"
         android:singleLine="true"
         android:textColor="@color/FontColor"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ui_search_scan"
         app:layout_constraintStart_toEndOf="@+id/ui_search_method"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -33,6 +34,7 @@
         android:layout_margin="5dp"
         android:contentDescription="@string/txt_back"
         android:src="@drawable/ic_arrow_left"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/ui_search_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ui_search_bar" />
@@ -50,6 +52,20 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/ui_search_bar"
         app:layout_constraintStart_toEndOf="@+id/ui_search_back"
+
         app:layout_constraintTop_toTopOf="@+id/ui_search_bar" />
+
+    <ImageView
+        android:id="@+id/ui_search_scan"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/txt_search_display"
+        android:padding="4dp"
+        android:src="@drawable/ic_qrcode"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_shelf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_direct_import_main"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/ui_dialog_shelf_scan"
+        android:id="@+id/ui_search_scan"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="10dp"

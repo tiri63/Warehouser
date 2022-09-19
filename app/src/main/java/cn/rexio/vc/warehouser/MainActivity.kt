@@ -31,7 +31,7 @@ class MainActivity : Activity() {
     private var secret: String? = null
     private lateinit var ui_scroll_main: ConstraintLayout
     private var searchMethod = 0
-    private var shelf_scan_result : TextView? = null
+    private var searchMethodD = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         actionBar.let { it?.hide() }
@@ -101,6 +101,10 @@ class MainActivity : Activity() {
         ui_search_bar.setOnClickListener {
             ui_search_bar.visibility = View.GONE
             ui_search.visibility = View.VISIBLE
+            ui_search.findViewById<ImageView>(R.id.ui_search_scan).visibility = if(searchMethod == 0) View.VISIBLE else View.GONE
+            ui_search.findViewById<ImageView>(R.id.ui_search_scan).setOnClickListener {
+                startCapture(0x02)
+            }
             ui_search_txt.requestFocus()
             showInputMethod(this@MainActivity,ui_search_txt)
         }
@@ -111,17 +115,63 @@ class MainActivity : Activity() {
             startActivity(intent)
         }
         findViewById<Button>(R.id.ui_import_btn).setOnClickListener {
+            hideInputMethod(this@MainActivity)
             var ui_fake_dialog = findViewById<View>(R.id.ui_dialog_import_fake)
             ui_fake_dialog.visibility = View.VISIBLE
             var ui_dialog_include_main = ui_fake_dialog.findViewById<View>(R.id.ui_include_dialog_item)
-            shelf_scan_result = ui_dialog_include_main.findViewById(R.id.dialog_shelf)
-            ui_dialog_include_main.findViewById<ImageView>(R.id.ui_dialog_shelf_scan).setOnClickListener {
+            var ui_dialog_include_search = ui_fake_dialog.findViewById<View>(R.id.ui_include_dialog_search)
+            ui_dialog_include_main.findViewById<ImageView>(R.id.ui_search_scan).setOnClickListener {
                 startCapture()
             }
-            ui_fake_dialog.findViewById<TextView>(R.id.dialog_cancel).setOnClickListener {
+            ui_dialog_include_main.findViewById<TextView>(R.id.dialog_cancel).setOnClickListener {
                 ui_fake_dialog.visibility = View.GONE
-                shelf_scan_result = null
             }
+            ui_dialog_include_main.findViewById<ImageView>(R.id.ui_search_img).setOnClickListener {
+                ui_dialog_include_main.visibility = View.GONE
+                ui_dialog_include_search.visibility = View.VISIBLE
+            }
+
+            ui_dialog_include_search.findViewById<ImageView>(R.id.ui_search_back).setOnClickListener {
+                ui_dialog_include_main.visibility = View.VISIBLE
+                ui_dialog_include_search.visibility = View.GONE
+
+            }
+            var ui_fake_dialog_btn = ui_fake_dialog.findViewById<TextView>(R.id.ui_search_method)
+            var ui_fake_dialog_edit = ui_fake_dialog.findViewById<EditText>(R.id.ui_search_bar)
+            ui_dialog_include_search.findViewById<ImageView>(R.id.ui_search_scan).visibility = View.GONE
+            ui_fake_dialog_btn.setOnClickListener {
+                val builder = AlertDialog.Builder(this)
+                builder.setCancelable(true)
+                builder.setSingleChoiceItems(arrayOf(
+                    getText(R.string.txt_search_method_name).toString(),
+                    getText(R.string.txt_search_method_id).toString(),
+                    getText(R.string.txt_search_method_model).toString()),
+                    searchMethod
+                ) { dialog, which ->
+                    dialog.dismiss()
+                    if(searchMethodD != which)
+                        ui_fake_dialog_edit.setText("")
+                    searchMethodD = which
+                    ui_fake_dialog_edit.hint = when (which) {
+                        0 -> getText(R.string.txt_search_via_name)
+                        1 -> getText(R.string.txt_search_via_id)
+                        else -> getText(R.string.txt_search_via_model)
+                    }
+                    ui_fake_dialog_btn.setText(when (which) {
+                        0 -> getText(R.string.txt_search_method_name)
+                        1 -> getText(R.string.txt_search_method_id)
+                        else -> getText(R.string.txt_search_method_model)
+                    })
+                }
+                hideInputMethod(this@MainActivity)
+                val dialog = builder.create()
+                dialog.setOnDismissListener {
+                    ui_fake_dialog_edit.requestFocus()
+                    showInputMethod(this@MainActivity,ui_fake_dialog_edit)
+                }
+                dialog.show()
+            }
+
         }
         ui_search_txt.setOnClickListener{
 
@@ -140,6 +190,7 @@ class MainActivity : Activity() {
                 if(searchMethod != which)
                     ui_search_txt.setText("")
                 searchMethod = which
+                ui_search.findViewById<ImageView>(R.id.ui_search_scan).visibility = if(searchMethod == 0) View.VISIBLE else View.GONE
                 ui_search_txt.hint = when (which) {
                     0 -> getText(R.string.txt_search_via_shelf)
                     1 -> getText(R.string.txt_search_via_name)
@@ -167,10 +218,29 @@ class MainActivity : Activity() {
             ui_search.visibility = View.GONE
         }
     }
-    fun startCapture()
+
+    override fun onBackPressed() {
+        var ui_search = findViewById<View>(R.id.ui_include_search_function)
+        var ui_search_bar : View = findViewById(R.id.ui_include_search_bar)
+        var ui_fake_dialog = findViewById<View>(R.id.ui_dialog_import_fake)
+        if(ui_search.visibility == View.VISIBLE) {
+            hideInputMethod(this@MainActivity)
+            ui_search_bar.visibility = View.VISIBLE
+            ui_search.visibility = View.GONE
+        }
+        else if(ui_fake_dialog.visibility == View.VISIBLE)
+        {
+            hideInputMethod(this@MainActivity)
+            ui_fake_dialog.visibility = View.GONE
+        }
+        else
+            super.onBackPressed()
+    }
+
+    fun startCapture(retCode: Int = 0x01)
     {
         // 申请权限之后，调用DefaultView扫码界面。
-        ScanUtil.startScan(this@MainActivity, 0x01,  HmsScanAnalyzerOptions.Creator().setHmsScanTypes(
+        ScanUtil.startScan(this@MainActivity, retCode,  HmsScanAnalyzerOptions.Creator().setHmsScanTypes(
             HmsScan.ALL_SCAN_TYPE).create())
     }
 
@@ -186,9 +256,22 @@ class MainActivity : Activity() {
                     if (!TextUtils.isEmpty(obj.getOriginalValue())) {
                         var ui_fake_dialog = findViewById<View>(R.id.ui_dialog_import_fake)
                         Toast.makeText(this, obj.getOriginalValue(), Toast.LENGTH_SHORT).show()
-                        shelf_scan_result?.text = obj.getOriginalValue()
+                        ui_fake_dialog.findViewById<View>(R.id.ui_include_dialog_item).findViewById<TextView>(R.id.dialog_shelf)
+                            .text = obj.getOriginalValue()
                         ui_fake_dialog.visibility = View.GONE
-                        shelf_scan_result = null
+                    }
+                    return
+                }
+            }
+        }
+        else if(requestCode == 0x02)
+        {
+            when (val obj: Parcelable? = data.getParcelableExtra(ScanUtil.RESULT)) {
+                is HmsScan -> {
+                    if (!TextUtils.isEmpty(obj.getOriginalValue())) {
+                        var ui_search_txt = findViewById<View>(R.id.ui_include_search_function).findViewById<EditText>(R.id.ui_search_bar)
+                        Toast.makeText(this, obj.getOriginalValue(), Toast.LENGTH_SHORT).show()
+                        ui_search_txt.setText(obj.getOriginalValue())
                     }
                     return
                 }
