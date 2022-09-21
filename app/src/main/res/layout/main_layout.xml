@@ -15,7 +15,6 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ui_search_back_constraint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
@@ -24,7 +23,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/ui_search_back_img"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_day_background"
@@ -92,20 +90,28 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <eightbitlab.com.blurview.BlurView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ui_login_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#66000000"
             android:clickable="true"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="visible">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/BackgroundColor"
+                app:layout_constraintBottom_toBottomOf="@+id/ui_include_login_dialog"
+                app:layout_constraintEnd_toEndOf="@+id/ui_include_login_dialog"
+                app:layout_constraintStart_toStartOf="@+id/ui_include_login_dialog"
+                app:layout_constraintTop_toTopOf="@+id/ui_include_login_dialog">
+
+            </TextView>
 
                 <include
-                    android:id="@+id/ui_include_login"
+                    android:id="@+id/ui_include_login_dialog"
                     layout="@layout/dialog_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -117,9 +123,7 @@
 
                 </include>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </eightbitlab.com.blurview.BlurView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/ui_direct_tips"
@@ -148,7 +152,6 @@
             android:clickable="true">
 
             <TextView
-                android:id="@+id/ui_dialog_background_for_fake"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#66000000">
@@ -156,14 +159,15 @@
             </TextView>
 
             <TextView
-                android:id="@+id/ui_dialog_background_for_pop"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="#ffffffff"
+                android:background="@color/BackgroundColor"
                 app:layout_constraintBottom_toBottomOf="@+id/ui_include_dialog_import"
                 app:layout_constraintEnd_toEndOf="@+id/ui_include_dialog_import"
                 app:layout_constraintStart_toStartOf="@+id/ui_include_dialog_import"
-                app:layout_constraintTop_toTopOf="@+id/ui_include_dialog_import"></TextView>
+                app:layout_constraintTop_toTopOf="@+id/ui_include_dialog_import">
+
+            </TextView>
 
             <include
                 android:id="@+id/ui_include_dialog_import"

@@ -7,7 +7,6 @@
     android:background="@drawable/radius_border">
 
     <TextView
-        android:id="@+id/login_background"
         android:layout_width="350dp"
         android:layout_height="240dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,6 +51,8 @@
         android:textSize="13sp"
         android:hint="@string/txt_login_name"
         android:padding="8dp"
+        android:textColor="@color/FontColor"
+        android:textColorHint="@color/FontColorDim"
         android:inputType="textPhonetic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +70,8 @@
         android:textSize="13sp"
         android:hint="@string/txt_login_pwd"
         android:padding="8dp"
+        android:textColor="@color/FontColor"
+        android:textColorHint="@color/FontColorDim"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

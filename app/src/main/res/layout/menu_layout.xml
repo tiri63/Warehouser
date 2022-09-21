@@ -9,7 +9,6 @@
     >
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#55000000"
@@ -18,7 +17,6 @@
     </TextView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ui_user_sub_win_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -43,7 +41,6 @@
         </ImageView>
 
         <ImageView
-            android:id="@+id/ui_user_sub_avatar"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
@@ -57,7 +54,6 @@
         </ImageView>
 
         <TextView
-            android:id="@+id/ui_user_sub_username"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginStart="60dp"
@@ -72,7 +68,6 @@
         </TextView>
 
         <ImageView
-            android:id="@+id/ui_user_sub_logout"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="50dp"
