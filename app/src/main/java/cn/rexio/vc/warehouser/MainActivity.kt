@@ -190,7 +190,7 @@ class MainActivity : Activity() {
                 if(searchMethod != which)
                     ui_search_txt.setText("")
                 searchMethod = which
-                ui_search.findViewById<ImageView>(R.id.ui_search_scan).visibility = if(searchMethod == 0) View.VISIBLE else View.GONE
+                ui_search.findViewById<ImageView>(R.id.ui_search_scan).visibility = if(which == 0) View.VISIBLE else View.GONE
                 ui_search_txt.hint = when (which) {
                     0 -> getText(R.string.txt_search_via_shelf)
                     1 -> getText(R.string.txt_search_via_name)
@@ -291,7 +291,7 @@ class MainActivity : Activity() {
     private fun fakeData()  {
         val mRecyclerView = findViewById<View>(R.id.ui_include_main_function).findViewById<RecyclerView>(R.id.ui_shelf_item_list)
         var mRecyclerAdapter = ShelfAdapter(
-            arrayListOf("螺丝","螺帽","螺母","扳手","123","321","1234","4321","28","sdj","dff","ioa","fi","129","do","0fj"),
+            arrayListOf("螺丝","螺帽","螺母","扳手","示例数据1","示例数据2","示例数据3","示例数据4","示例数据5","示例数据6","示例数据X","ioa","fi","129","do","0fj"),
             arrayListOf(10,11,12,13,12,1,3,5,8,5,3,89,0,3,2,6),
             arrayListOf("150mm-X-1","METAL-X-2","STEEL-X",null,"s-1","u-9","o-0","p-1","i-1","p-9","m-0","h-a","p-1","???","{0-x}","[a]"),
             arrayListOf("10000001","10000002","10000003","114514",null,"2135","6643","46516","463642","135","1364","1354","3146","1346","136","13477"),
