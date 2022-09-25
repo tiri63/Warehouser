@@ -37,4 +37,8 @@
     <string name="txt_unable_to_connect">Unable to connect to server</string>
     <string name="txt_login_forget">Reset Password</string>
     <string name="txt_ok">OK</string>
+    <string name="txt_cast_to_export">Export</string>
+    <string name="txt_cast_to_import">Import</string>
+    <string name="txt_log_see">See log</string>
+    <string name="txt_search">Search</string>
 </resources>

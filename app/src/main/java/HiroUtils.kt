@@ -16,9 +16,11 @@ import java.io.IOException
 
 
 class HiroUtils {
+    class Shelf(var main: String, var sub: String, var alias: String, var info: String) {}
+    class Usage(var code: Int, var alias: String, var info: String) {}
     companion object Factory {
-        var userName : String? = null
-        var userNickName : String? = null
+        var userName: String? = null
+        var userNickName: String? = null
         fun setStatusBarColor(window: Window, resources: Resources) {
             val isLight =
                 (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO
@@ -27,7 +29,7 @@ class HiroUtils {
                 isLight
         }
 
-        fun setPopWinStatusBarColor(window: Window,resources: Resources){
+        fun setPopWinStatusBarColor(window: Window, resources: Resources) {
             val isLight =
                 (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO
             window.statusBarColor = 33000000
@@ -36,18 +38,25 @@ class HiroUtils {
 
         }
 
-        fun viewAnimation(view: View, techniques: Techniques, duration:Long, onAnimationEnd:(view:View)->Unit)
-        {
-            YoYo.with(techniques).repeatMode(0).withListener(object : Animator.AnimatorListener{
+        fun viewAnimation(
+            view: View,
+            techniques: Techniques,
+            duration: Long,
+            beforeAnimationStart: (view: View) -> Unit,
+            onAnimationEnd: (view: View) -> Unit
+        ) {
+            beforeAnimationStart(view)
+            YoYo.with(techniques).repeatMode(0).withListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator) {}
                 override fun onAnimationEnd(animation: Animator) {
                     onAnimationEnd.invoke(view)
                     animation.removeAllListeners()
                 }
+
                 override fun onAnimationCancel(animation: Animator) {}
                 override fun onAnimationRepeat(animation: Animator) {}
             }).duration(duration).interpolate(DecelerateInterpolator())
-                .playOn(view).run{}
+                .playOn(view).run {}
         }
 
         fun sendRequest(
@@ -56,7 +65,7 @@ class HiroUtils {
             paraValue: List<String>,
             onResponse: (ret: String) -> Unit,
             onFailure: () -> Unit,
-            success : String
+            success: String
         ) {
 
             onResponse.invoke(success)

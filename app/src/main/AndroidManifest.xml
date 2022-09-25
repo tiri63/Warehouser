@@ -20,6 +20,10 @@
         android:theme="@style/MaterialComponents_Theme"
         tools:targetApi="31">
         <activity
+            android:name=".IOActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Transparent"/>
+        <activity
             android:name=".LogActivity"
             android:exported="false"
             android:theme="@style/Theme.Transparent"/>
@@ -39,13 +43,14 @@
             android:name=".MenuActivity"
             android:exported="false"
             android:label="@string/txt_appname"
-            android:theme="@style/Theme.Transparent"/>/>
+            android:theme="@style/Theme.Transparent"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/txt_appname">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

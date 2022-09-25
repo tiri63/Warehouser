@@ -36,4 +36,8 @@
     <string name="txt_unable_to_connect">服务器通信失败</string>
     <string name="txt_login_forget">忘记密码</string>
     <string name="txt_ok">好</string>
+    <string name="txt_cast_to_export">转换为出库</string>
+    <string name="txt_cast_to_import">转换为入库</string>
+    <string name="txt_log_see">查看日志</string>
+    <string name="txt_search">搜索</string>
 </resources>

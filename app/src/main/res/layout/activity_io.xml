@@ -5,90 +5,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DirectImportActivity"
-    android:id="@+id/ui3_direct_import_base"
+    tools:context=".IOActivity"
+    android:id="@+id/ui3_io_base"
     android:clickable="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ui3_direct_import_root"
+        android:id="@+id/ui3_io_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/radius_broder_win"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:paddingTop="8dp"
+        android:visibility="visible" app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/ui3_direct_import_back"
+            android:id="@+id/ui3_io_back"
             style="@style/Theme.UI3Theme.FloatingButtonImmersive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:elevation="0dp"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/txt_back"
-            app:srcCompat="@drawable/ic_arrow_left">
+            app:elevation="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/ui3_io_main"
+            app:layout_constraintStart_toStartOf="parent" app:srcCompat="@drawable/ic_arrow_left">
 
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ui3_io_log"
+            style="@style/Theme.UI3Theme.FloatingButtonImmersive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/txt_log_see"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/ui3_io_main"
+            app:layout_constraintEnd_toEndOf="parent" app:srcCompat="@drawable/ic_log">
+
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ui3_direct_import_main"
+            android:id="@+id/ui3_io_main"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:background="@color/Transparent"
-            android:paddingTop="16dp"
+            android:paddingTop="8dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/ui3_direct_import_search"
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/ui3_io_reverse"
                 style="@style/Theme.UI3Theme.FloatingButtonImmersive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="@string/txt_search"
-                app:elevation="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_search">
+                android:layout_marginStart="16dp"
+                android:elevation="0dp"
+                android:text="@string/txt_cast_to_export"
+                app:elevation="0dp" app:layout_constraintBottom_toBottomOf="@+id/ui3_io_btn"
+                app:layout_constraintStart_toStartOf="parent" app:icon="@drawable/ic_change">
 
-            </com.google.android.material.floatingactionbutton.FloatingActionButton>
+            </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
             <TextView
-                android:id="@+id/ui3_direct_import_shelf"
+                android:id="@+id/ui3_io_shelf"
                 style="@style/Theme.UI3Theme.Textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:padding="5dp"
-                android:text="@string/txt_dialog_click_to_set_shelf"
+                android:text="@string/txt_search_method_shelf"
                 android:textColor="@color/FontColorDim"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_for"
-                app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_title">
+                app:layout_constraintBottom_toTopOf="@+id/ui3_io_for"
+                app:layout_constraintStart_toStartOf="@+id/ui3_io_model">
 
             </TextView>
 
             <TextView
-                android:id="@+id/ui3_direct_import_for"
+                android:id="@+id/ui3_io_for"
                 style="@style/Theme.UI3Theme.Textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:padding="5dp"
-                android:text="@string/txt_dialog_click_to_set_for"
+                android:paddingLeft="5dp"
+                android:paddingTop="14dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="14dp"
+                android:text="@string/txt_nofor"
                 android:textColor="@color/FontColorDim"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_count"
-                app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_shelf">
+                app:layout_constraintBottom_toTopOf="@+id/ui3_io_count"
+                app:layout_constraintStart_toStartOf="@+id/ui3_io_model">
 
             </TextView>
+            <Spinner
+                android:id="@+id/ui3_io_for_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_for"
+                app:layout_constraintStart_toStartOf="@+id/ui3_io_for"
+                app:layout_constraintTop_toTopOf="@+id/ui3_io_for">
+
+            </Spinner>
 
             <TextView
-                android:id="@+id/ui3_direct_import_title"
+                android:id="@+id/ui3_io_title"
                 style="@style/Theme.UI3Theme.Textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,13 +121,27 @@
                 android:text="@string/txt_dialog_item_name"
                 android:textColor="@color/FontColor"
                 android:textSize="40sp"
-                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_model"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintBottom_toTopOf="@+id/ui3_io_model" app:layout_constraintStart_toStartOf="parent">
 
             </TextView>
 
             <TextView
-                android:id="@+id/ui3_direct_import_model"
+                android:id="@+id/ui3_io_left"
+                style="@style/Theme.UI3Theme.Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="5dp"
+                android:text="@string/txt_nomodel"
+                android:textColor="@color/FontColorDim"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_title"
+                app:layout_constraintStart_toEndOf="@+id/ui3_io_title">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ui3_io_model"
                 style="@style/Theme.UI3Theme.Textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -112,13 +150,13 @@
                 android:text="@string/txt_nomodel"
                 android:textColor="@color/FontColorDim"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_shelf"
-                app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_title">
+                app:layout_constraintBottom_toTopOf="@+id/ui3_io_shelf"
+                app:layout_constraintStart_toStartOf="@+id/ui3_io_title">
 
             </TextView>
 
             <TextView
-                android:id="@+id/ui3_direct_import_uid"
+                android:id="@+id/ui3_io_uid"
                 style="@style/Theme.UI3Theme.Textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,39 +165,39 @@
                 android:text="@string/txt_no_id"
                 android:textColor="@color/FontColorDim"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_model"
-                app:layout_constraintTop_toTopOf="@+id/ui3_direct_import_model">
+                app:layout_constraintStart_toEndOf="@+id/ui3_io_model"
+                app:layout_constraintTop_toTopOf="@+id/ui3_io_model">
 
             </TextView>
 
             <ImageView
-                android:id="@+id/ui3_direct_import_min"
+                android:id="@+id/ui3_io_min"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/ripple_background"
                 android:clickable="true"
                 android:src="@drawable/ic_double_arrow_left"
-                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
-                app:layout_constraintEnd_toStartOf="@+id/ui3_direct_import_minus">
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_count"
+                app:layout_constraintEnd_toStartOf="@+id/ui3_io_minus">
 
             </ImageView>
 
             <ImageView
-                android:id="@+id/ui3_direct_import_minus"
+                android:id="@+id/ui3_io_minus"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/ripple_background"
                 android:clickable="true"
                 android:src="@drawable/ic_arrow_left"
-                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
-                app:layout_constraintEnd_toStartOf="@+id/ui3_direct_import_count">
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_count"
+                app:layout_constraintEnd_toStartOf="@+id/ui3_io_count">
 
             </ImageView>
 
             <EditText
-                android:id="@+id/ui3_direct_import_count"
+                android:id="@+id/ui3_io_count"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="24dp"
@@ -168,39 +206,39 @@
                 android:text="0"
                 android:textColor="@color/FontColorDim"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_btn"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_io_btn"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
 
             </EditText>
 
             <ImageView
-                android:id="@+id/ui3_direct_import_max"
+                android:id="@+id/ui3_io_max"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/ripple_background"
                 android:clickable="true"
                 android:src="@drawable/ic_double_arro_right"
-                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
-                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_plus">
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_count"
+                app:layout_constraintStart_toEndOf="@+id/ui3_io_plus">
 
             </ImageView>
 
             <ImageView
-                android:id="@+id/ui3_direct_import_plus"
+                android:id="@+id/ui3_io_plus"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/ripple_background"
                 android:clickable="true"
                 android:src="@drawable/ic_arrow_right"
-                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
-                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_count">
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_count"
+                app:layout_constraintStart_toEndOf="@+id/ui3_io_count">
 
             </ImageView>
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/ui3_direct_import_btn"
+                android:id="@+id/ui3_io_btn"
                 style="@style/Theme.UI3Theme.FloatingButtonExtended"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -213,64 +251,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ui3_direct_import_search_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/Transparent"
-            android:paddingBottom="8dp" android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ui3_direct_import_main">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ui3_direct_import_search_bar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/Transparent"
-                android:textColor="@color/FontColor"
-                android:textColorHint="@color/FontColor"
-                app:boxBackgroundColor="@color/Transparent"
-                app:hintTextColor="@color/AccentColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_search_method"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ui3_direct_import_search_bar_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/BackgroundColor"
-                    android:imeOptions="actionSearch"
-                    android:textColor="@color/FontColor"
-                    android:textColorHint="@color/FontColor"
-                    android:textSize="15sp"
-                    app:hintTextColor="@color/AccentColor"
-                />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <TextView
-                android:id="@+id/ui3_direct_import_search_method"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:background="@drawable/ripple_background"
-                android:clickable="true"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textColor="@color/FontColor"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_search_bar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/ui3_direct_import_search_bar"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

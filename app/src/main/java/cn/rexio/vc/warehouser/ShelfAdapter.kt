@@ -2,6 +2,7 @@ package cn.rexio.vc.warehouser
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 
 class ShelfAdapter(
     private var itemList: MutableList<ShelfItem>,
@@ -55,26 +57,20 @@ class ShelfAdapter(
             if (item.uid == null) context.getText(R.string.txt_no_id) else item.uid
         holder.shelfView.text = item.shelf
         holder.itemView.setOnClickListener {
-            val builder = AlertDialog.Builder(context)
-            builder.setCancelable(true)
-            val view = window.layoutInflater.inflate(R.layout.dialog_io_layout, null, false)
-            builder.setView(view)
-            val dialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.show()
-            var current = 0
-            view.findViewById<TextView>(R.id.dialog_left).text = String.format(
-                context.getText(R.string.txt_dialog_item_count_left).toString(),
-                item.count
-            )
-            view.findViewById<TextView>(R.id.ui3_direct_import_title).text = item.name
-            view.findViewById<TextView>(R.id.ui3_direct_import_model).text =
-                if (item.model == null) context.getText(R.string.txt_nomodel) else item.model
-            view.findViewById<TextView>(R.id.ui3_direct_import_uid).text =
-                if (item.uid == null) context.getText(R.string.txt_no_id) else item.uid
-            view.findViewById<TextView>(R.id.ui3_direct_import_shelf).text = item.shelf
-            view.findViewById<TextView>(R.id.ui3_direct_import_for).text =
-                if (item.usage == null) context.getText(R.string.txt_nofor) else item.usage
+            val intent = Intent(context,IOActivity::class.java)
+            intent.putExtra("maxNum",item.count)
+            intent.putExtra("name",item.name)
+            intent.putExtra("model",if (item.model == null) context.getText(R.string.txt_nomodel) else item.model)
+            intent.putExtra("uid",if (item.uid == null) context.getText(R.string.txt_no_id) else item.uid)
+            intent.putExtra("shelf.main","主货架")
+            intent.putExtra("shelf.sub","次货架")
+            intent.putExtra("shelf.alias",item.shelf)
+            intent.putExtra("shelf.info","货架信息")
+            intent.putExtra("usage.code",0)
+            intent.putExtra("usage.alias",if (item.usage == null) context.getText(R.string.txt_nofor) else item.usage)
+            intent.putExtra("usage.info","用途信息")
+            startActivity(context,intent,null)
+            /*
             view.findViewById<TextView>(R.id.dialog_import).setOnClickListener {
                 val uid = item.uid ?: "000000"
                 if (item.uid != null)
@@ -129,7 +125,7 @@ class ShelfAdapter(
             view.findViewById<ImageView>(R.id.ui3_direct_import_max).setOnClickListener {
                 current = item.count
                 view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
-            }
+            }*/
 
 
         }

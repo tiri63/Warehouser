@@ -138,26 +138,30 @@ class DirectImportActivity : Activity() {
     private fun changeView(direction: Boolean) {
         if (direction) {
             HiroUtils.hideInputMethod(this@DirectImportActivity)
-            bi.ui3DirectImportMain.visibility = View.VISIBLE
-            bi.ui3DirectImportSearchLayout.visibility = View.VISIBLE
-            HiroUtils.viewAnimation(bi.ui3DirectImportMain, Techniques.FadeOutLeft, 200) {
-                it.visibility = View.INVISIBLE
-            }
-            HiroUtils.viewAnimation(bi.ui3DirectImportSearchLayout, Techniques.FadeInRight, 200) {
+            HiroUtils.viewAnimation(bi.ui3DirectImportMain, Techniques.FadeOutLeft, 200, {
                 it.visibility = View.VISIBLE
-                //bi.ui3DirectImportSearchBarText.requestFocus()
-                //HiroUtils.showInputMethod(this@DirectImportActivity,bi.ui3DirectImportSearchBarText)
-            }
+            }, {
+                it.visibility = View.INVISIBLE
+            })
+            HiroUtils.viewAnimation(bi.ui3DirectImportSearchLayout, Techniques.FadeInRight, 200, {
+                it.visibility = View.VISIBLE
+            }, {
+                it.visibility = View.VISIBLE
+                bi.ui3DirectImportSearchBarText.requestFocus()
+                HiroUtils.showInputMethod(this@DirectImportActivity, bi.ui3DirectImportSearchBarText)
+            })
         } else {
             HiroUtils.hideInputMethod(this@DirectImportActivity)
-            bi.ui3DirectImportMain.visibility = View.VISIBLE
-            bi.ui3DirectImportSearchLayout.visibility = View.VISIBLE
-            HiroUtils.viewAnimation(bi.ui3DirectImportMain, Techniques.FadeInLeft, 200) {
+            HiroUtils.viewAnimation(bi.ui3DirectImportMain, Techniques.FadeInLeft, 200, {
                 it.visibility = View.VISIBLE
-            }
-            HiroUtils.viewAnimation(bi.ui3DirectImportSearchLayout, Techniques.FadeOutRight, 200) {
+            }, {
+                it.visibility = View.VISIBLE
+            })
+            HiroUtils.viewAnimation(bi.ui3DirectImportSearchLayout, Techniques.FadeOutRight, 200, {
+                it.visibility = View.VISIBLE
+            }, {
                 it.visibility = View.INVISIBLE
-            }
+            })
         }
     }
 
