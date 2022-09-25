@@ -20,6 +20,10 @@
         android:theme="@style/MaterialComponents_Theme"
         tools:targetApi="31">
         <activity
+            android:name=".AboutActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Transparent"/>
+        <activity
             android:name=".IOActivity"
             android:exported="false"
             android:theme="@style/Theme.Transparent"/>

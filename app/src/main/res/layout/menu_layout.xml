@@ -21,16 +21,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:background="@drawable/radius_border"
+        android:background="@drawable/radius_circle_win"
         android:padding="30dp"
+        android:textColor="@color/FontColorDim"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/FontColorDim">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ui_user_sub_logo"
+            android:id="@+id/ui3_menu_logo"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:src="@drawable/ic_weichai_logo"
@@ -41,12 +41,14 @@
         </ImageView>
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:id="@+id/ui3_menu_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="45dp"
             android:background="@drawable/radius_circle_with_ripple_90dp"
             android:clickable="true"
+            android:padding="10dp"
             android:src="@drawable/ic_user"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -54,29 +56,32 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/ui3_menu_username"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="45dp"
             android:padding="5dp"
             android:text="@string/txt_username"
+            android:textColor="@color/FontColorDim"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/FontColorDim">
+            app:layout_constraintBottom_toBottomOf="@+id/ui3_menu_profile" app:layout_constraintStart_toEndOf="@+id/ui3_menu_profile"
+            app:layout_constraintTop_toTopOf="parent">
 
         </TextView>
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="50dp"
+            android:id="@+id/ui3_menu_logout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/radius_circle_without_boundries_with_ripple"
             android:clickable="true"
+            android:padding="10dp"
             android:src="@drawable/ic_logout"
+            app:layout_constraintBottom_toBottomOf="@+id/ui3_menu_profile"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/ui3_menu_profile">
 
         </ImageView>
 
@@ -84,12 +89,11 @@
             android:id="@+id/ui_search_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:layoutManager="LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ui_user_sub_logo"
-            tools:context=".ItemFragment"
-            tools:listitem="@layout/list_menu_item" />
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ui3_menu_profile" tools:context=".ItemFragment" tools:listitem="@layout/list_menu_item"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -18,6 +18,9 @@ class LogActivity : Activity() {
         setContentView(bi.root)
         HiroUtils.setPopWinStatusBarColor(window, resources)
         bi.ui3LogText.setText(intent.extras?.getString("log"))
+        intent.extras?.getString("title")?.let {
+            bi.ui3LogTitle.text = it
+        }
         bi.ui3LogBtn.setOnClickListener{
             this.finish()
         }

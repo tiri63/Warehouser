@@ -49,8 +49,7 @@
         <item name="colorPrimary">@color/AccentColor</item>
     </style>
     <style name="Theme.Transparent" parent="Theme.UI3Theme">
-        <item name="android:background">#33000000</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">#33000000</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>
