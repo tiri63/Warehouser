@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="AccentColor">#FF00C853</color>
+    <color name="AccentColorDim">#FF5EFC82</color>
     <color name="FontColor">#FFFFFFFF</color>
     <color name="FontColorDim">#FFAAAAAA</color>
     <color name="FontColorExtraDim">#FF555555</color>
     <color name="BackgroundColor">#FF000000</color>
     <color name="BackgroundColorDim">#FFAAAAAA</color>
+    <color name="Transparent">#00FFFFFF</color>
 </resources>

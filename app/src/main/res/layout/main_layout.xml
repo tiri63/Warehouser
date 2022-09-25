@@ -90,41 +90,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ui_login_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#66000000"
-            android:clickable="true"
-            android:gravity="center"
-            android:visibility="visible">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/BackgroundColor"
-                app:layout_constraintBottom_toBottomOf="@+id/ui_include_login_dialog"
-                app:layout_constraintEnd_toEndOf="@+id/ui_include_login_dialog"
-                app:layout_constraintStart_toStartOf="@+id/ui_include_login_dialog"
-                app:layout_constraintTop_toTopOf="@+id/ui_include_login_dialog">
-
-            </TextView>
-
-                <include
-                    android:id="@+id/ui_include_login_dialog"
-                    layout="@layout/dialog_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </include>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <TextView
             android:id="@+id/ui_direct_tips"
             android:layout_width="wrap_content"
@@ -135,55 +100,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/ui_import_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_direct_import"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ui_dialog_import_fake"
+            style="@style/Theme.UI3Theme.FloatingButtonExtended"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:clickable="true">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/txt_direct_import"
+            android:text="@string/txt_direct_import"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#66000000">
 
-            </TextView>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/BackgroundColor"
-                app:layout_constraintBottom_toBottomOf="@+id/ui_include_dialog_import"
-                app:layout_constraintEnd_toEndOf="@+id/ui_include_dialog_import"
-                app:layout_constraintStart_toStartOf="@+id/ui_include_dialog_import"
-                app:layout_constraintTop_toTopOf="@+id/ui_include_dialog_import">
-
-            </TextView>
-
-            <include
-                android:id="@+id/ui_include_dialog_import"
-                layout="@layout/dialog_import_new_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:fitsSystemWindows="true"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </include>
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

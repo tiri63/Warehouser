@@ -1,11 +1,16 @@
+import android.animation.Animator
 import android.app.Activity
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
+import android.view.View
 import android.view.Window
+import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.view.WindowCompat
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import okhttp3.*
 import java.io.IOException
 
@@ -20,6 +25,29 @@ class HiroUtils {
             window.statusBarColor = if (isLight) Color.WHITE else Color.BLACK
             WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
                 isLight
+        }
+
+        fun setPopWinStatusBarColor(window: Window,resources: Resources){
+            val isLight =
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO
+            window.statusBarColor = 33000000
+            WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
+                isLight
+
+        }
+
+        fun viewAnimation(view: View, techniques: Techniques, duration:Long, onAnimationEnd:(view:View)->Unit)
+        {
+            YoYo.with(techniques).repeatMode(0).withListener(object : Animator.AnimatorListener{
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
+                    onAnimationEnd.invoke(view)
+                    animation.removeAllListeners()
+                }
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+            }).duration(duration).interpolate(DecelerateInterpolator())
+                .playOn(view).run{}
         }
 
         fun sendRequest(

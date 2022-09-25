@@ -10,7 +10,6 @@ import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 
 class ShelfAdapter(
     private var itemList: MutableList<ShelfItem>,
@@ -68,20 +67,20 @@ class ShelfAdapter(
                 context.getText(R.string.txt_dialog_item_count_left).toString(),
                 item.count
             )
-            view.findViewById<TextView>(R.id.dialog_title).text = item.name
-            view.findViewById<TextView>(R.id.dialog_goods_model).text =
+            view.findViewById<TextView>(R.id.ui3_direct_import_title).text = item.name
+            view.findViewById<TextView>(R.id.ui3_direct_import_model).text =
                 if (item.model == null) context.getText(R.string.txt_nomodel) else item.model
-            view.findViewById<TextView>(R.id.dialog_goods_number).text =
+            view.findViewById<TextView>(R.id.ui3_direct_import_uid).text =
                 if (item.uid == null) context.getText(R.string.txt_no_id) else item.uid
-            view.findViewById<TextView>(R.id.dialog_shelf).text = item.shelf
-            view.findViewById<TextView>(R.id.dialog_for).text =
+            view.findViewById<TextView>(R.id.ui3_direct_import_shelf).text = item.shelf
+            view.findViewById<TextView>(R.id.ui3_direct_import_for).text =
                 if (item.usage == null) context.getText(R.string.txt_nofor) else item.usage
             view.findViewById<TextView>(R.id.dialog_import).setOnClickListener {
                 val uid = item.uid ?: "000000"
                 if (item.uid != null)
                     HiroUtils.sendRequest("baseURL/import",
                         arrayListOf("method", "shelf", "uid", "count"),
-                        arrayListOf("0", item.shelf, uid, view.findViewById<EditText>(R.id.dialog_count).text.toString()), {
+                        arrayListOf("0", item.shelf, uid, view.findViewById<EditText>(R.id.ui3_direct_import_count).text.toString()), {
                             if (it == "success") {
                                 //入库成功
                             } else {
@@ -98,7 +97,7 @@ class ShelfAdapter(
                 if (item.uid != null)
                     HiroUtils.sendRequest("baseURL/export",
                         arrayListOf("shelf", "uid", "count"),
-                        arrayListOf(item.shelf, uid, view.findViewById<EditText>(R.id.dialog_count).text.toString()), {
+                        arrayListOf(item.shelf, uid, view.findViewById<EditText>(R.id.ui3_direct_import_count).text.toString()), {
                             if (it == "success") {
                                 //出库成功
                             } else {
@@ -113,23 +112,23 @@ class ShelfAdapter(
             view.findViewById<TextView>(R.id.dialog_cancel).setOnClickListener {
                 dialog.dismiss()
             }
-            view.findViewById<ImageView>(R.id.dialog_plus).setOnClickListener {
+            view.findViewById<ImageView>(R.id.ui3_direct_import_plus).setOnClickListener {
                 if (current < item.count)
                     current++
-                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
             }
-            view.findViewById<ImageView>(R.id.dialog_minus).setOnClickListener {
+            view.findViewById<ImageView>(R.id.ui3_direct_import_minus).setOnClickListener {
                 if (current > 0)
                     current--
-                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
             }
-            view.findViewById<ImageView>(R.id.dialog_min).setOnClickListener {
+            view.findViewById<ImageView>(R.id.ui3_direct_import_min).setOnClickListener {
                 current = 0
-                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
             }
-            view.findViewById<ImageView>(R.id.dialog_max).setOnClickListener {
+            view.findViewById<ImageView>(R.id.ui3_direct_import_max).setOnClickListener {
                 current = item.count
-                view.findViewById<EditText>(R.id.dialog_count).setText(current.toString())
+                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
             }
 
 

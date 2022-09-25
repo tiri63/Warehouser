@@ -32,7 +32,9 @@
     <string name="txt_no_id">No ID</string>
     <string name="txt_direct_import_tips">"Adding new items to shelves? Just "</string>
     <string name="txt_direct_import">Directly Import</string>
-    <string name="txt_dialog_click_to_set_shelf">Click or scan to set shelf</string>
+    <string name="txt_dialog_click_to_set_shelf">Click to scan and set shelf</string>
     <string name="txt_dialog_click_to_set_for">Click to set usage</string>
     <string name="txt_unable_to_connect">Unable to connect to server</string>
+    <string name="txt_login_forget">Reset Password</string>
+    <string name="txt_ok">OK</string>
 </resources>

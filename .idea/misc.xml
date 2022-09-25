@@ -3,6 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/ic_arrow_right.xml" value="0.1" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/ic_check.xml" value="0.1" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/radius_border.xml" value="0.11" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/radius_border_with_ripple.xml" value="0.11" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/radius_broder_win.xml" value="0.11" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/radius_circle_with_ripple_90dp.xml" value="0.11" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/drawable/ui_boxstroke_accent.xml" value="0.11" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/activity_direct_import.xml" value="0.1" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/activity_log.xml" value="0.3333333333333333" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/activity_login.xml" value="0.184375" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/activity_profile.xml" value="0.1" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/dialog_import_item_main.xml" value="0.1308876811594203" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/dialog_import_new_item.xml" value="0.184375" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/dialog_io_layout.xml" value="0.1" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/main_layout.xml" value="0.1308876811594203" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/menu_layout.xml" value="0.1" />
+        <entry key="..\:/Rex/Documents/IDEAProjects/Wh/app/src/main/res/layout/search_searchbar.xml" value="0.1308876811594203" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_arrow_left.xml" value="0.2265" />
         <entry key="..\:/WeChatDev/Code/WH/app/src/main/res/drawable/ic_arrow_right.xml" value="0.2265" />
@@ -62,6 +79,9 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

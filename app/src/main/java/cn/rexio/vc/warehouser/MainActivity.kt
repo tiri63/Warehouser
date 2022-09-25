@@ -2,6 +2,7 @@ package cn.rexio.vc.warehouser
 
 import HiroUtils
 import SharedPref
+import android.animation.Animator
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -13,25 +14,27 @@ import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import cn.rexio.vc.warehouser.databinding.MainLayoutBinding
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
+import com.google.android.material.snackbar.Snackbar
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import org.json.JSONArray
 import org.json.JSONObject
 
-import cn.rexio.vc.warehouser.databinding.MainLayoutBinding
-
 
 class MainActivity : Activity() {
 
     private lateinit var bi: MainLayoutBinding
 
-    private var username: String? = null
+    var username: String? = null
     private var secret: String? = null
     private var searchMethod = 0
-    private var searchMethodD = 0
     private lateinit var mRecyclerAdapter: ShelfAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,46 +59,10 @@ class MainActivity : Activity() {
             tryLogin(username, secret)
     }
 
-    fun login() {
-        val loginBinding = bi.uiIncludeLoginDialog
-        bi.uiMainLayout.visibility = View.VISIBLE
-        bi.uiLoginBackground.visibility = View.VISIBLE
-        loginBinding.dialogLogin.setOnClickListener {
-            loginBinding.dialogLogin.isEnabled = false
-            HiroUtils.sendRequest("baseURL/login", arrayListOf("username", "password"),
-                arrayListOf(
-                    loginBinding.loginName.text.toString(),
-                    loginBinding.loginPassword.text.toString()
-                ),
-                {
-                    if (it == "success") {
-                        bi.uiLoginBackground.visibility = View.GONE
-                        SharedPref(this, "username", "null").setValue(
-                            this,
-                            this::username,
-                            loginBinding.loginName.text.toString()
-                        )
-                        SharedPref(this, "secret", "null").setValue(
-                            this,
-                            this::secret,
-                            loginBinding.loginPassword.text.toString()
-                        )
-                    } else {
-                        Toast.makeText(this, getText(R.string.txt_login_failed), Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    loginBinding.dialogLogin.isEnabled = true
-                }, {
-                    Toast.makeText(
-                        this,
-                        getText(R.string.txt_unable_to_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    loginBinding.dialogLogin.isEnabled = true
-                },
-                "success"
-            )
-        }
+    private fun login() {
+
+        var intent : Intent = Intent(this@MainActivity,LoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun tryLogin(username: String?, secret: String?) {
@@ -106,15 +73,10 @@ class MainActivity : Activity() {
                     if (it == "success") {
                         return@sendRequest
                     } else {
-                        Toast.makeText(this, getText(R.string.txt_login_failed), Toast.LENGTH_SHORT)
-                            .show()
+                        Snackbar.make(bi.root,R.string.txt_login_failed, Snackbar.LENGTH_SHORT).show()
                     }
                 }, {
-                    Toast.makeText(
-                        this,
-                        getText(R.string.txt_unable_to_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(bi.root,R.string.txt_unable_to_connect, Snackbar.LENGTH_SHORT).show()
                 },
                 "success"
             )
@@ -128,8 +90,14 @@ class MainActivity : Activity() {
         val mSearchFunction = bi.uiIncludeSearchFunction
         var mSearchEdit = mSearchFunction.uiSearchBar
         mSearchBar.root.setOnClickListener {
-            mSearchBar.root.visibility = View.GONE
+            mSearchBar.root.visibility = View.VISIBLE
             mSearchFunction.root.visibility = View.VISIBLE
+            HiroUtils.viewAnimation(mSearchBar.root,Techniques.FadeOutLeft,200){
+                it.visibility = View.GONE
+            }
+            HiroUtils.viewAnimation(mSearchFunction.root,Techniques.FadeInRight,200){
+                it.visibility = View.VISIBLE
+            }
             mSearchFunction.uiSearchScan.visibility =
                 if (searchMethod == 0) View.VISIBLE else View.GONE
             mSearchEdit.hint = when (searchMethod) {
@@ -257,159 +225,33 @@ class MainActivity : Activity() {
                             "}"
                 )
             }
-            true
+            keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER
         }
         mSearchFunction.uiSearchBack.setOnClickListener {
-            HiroUtils.hideInputMethod(this@MainActivity)
-            bi.uiIncludeSearchBar.root.visibility = View.VISIBLE
-            bi.uiIncludeSearchFunction.root.visibility = View.GONE
+            backToMainSearch()
         }
         //底部入库
         bi.uiImportBtn.setOnClickListener {
             HiroUtils.hideInputMethod(this@MainActivity)
-            val uiDialog = bi.uiDialogImportFake
-            val uiMain = bi.uiIncludeDialogImport.uiIncludeDialogItem
-            val uiSearch = bi.uiIncludeDialogImport.uiIncludeDialogSearch
-            val uiBtn = uiSearch.uiSearchMethod
-            val uiEdit = uiSearch.uiSearchBar
-            uiDialog.visibility = View.VISIBLE
-            uiSearch.uiSearchScan.setOnClickListener {
-                startCapture()
-            }
-            uiMain.dialogCancel.setOnClickListener {
-                uiDialog.visibility = View.GONE
-            }
-            uiMain.uiSearchImg.setOnClickListener {
-                uiMain.root.visibility = View.GONE
-                uiSearch.root.visibility = View.VISIBLE
-            }
-
-            uiSearch.uiSearchBack
-                .setOnClickListener {
-                    uiEdit.hint = when (searchMethodD) {
-                        0 -> getText(R.string.txt_search_via_name)
-                        1 -> getText(R.string.txt_search_via_id)
-                        else -> getText(R.string.txt_search_via_model)
-                    }
-                    uiBtn.text = when (searchMethodD) {
-                        0 -> getText(R.string.txt_search_method_name)
-                        1 -> getText(R.string.txt_search_method_id)
-                        else -> getText(R.string.txt_search_method_model)
-                    }
-                    uiMain.root.visibility = View.VISIBLE
-                    uiSearch.root.visibility = View.GONE
-
-                }
-
-            uiSearch.uiSearchScan.visibility = View.GONE
-            uiBtn.setOnClickListener {
-                val builder = AlertDialog.Builder(this)
-                builder.setCancelable(true)
-                builder.setSingleChoiceItems(
-                    arrayOf(
-                        getText(R.string.txt_search_method_name).toString(),
-                        getText(R.string.txt_search_method_id).toString(),
-                        getText(R.string.txt_search_method_model).toString()
-                    ),
-                    searchMethodD
-                ) { dialog, which ->
-                    dialog.dismiss()
-                    if (searchMethodD != which)
-                        uiEdit.setText("")
-                    searchMethodD = which
-                    uiEdit.hint = when (which) {
-                        0 -> getText(R.string.txt_search_via_name)
-                        1 -> getText(R.string.txt_search_via_id)
-                        else -> getText(R.string.txt_search_via_model)
-                    }
-                    uiBtn.text = when (which) {
-                        0 -> getText(R.string.txt_search_method_name)
-                        1 -> getText(R.string.txt_search_method_id)
-                        else -> getText(R.string.txt_search_method_model)
-                    }
-                }
-                HiroUtils.hideInputMethod(this@MainActivity)
-                val dialog = builder.create()
-                dialog.setOnDismissListener {
-                    uiEdit.requestFocus()
-                    HiroUtils.showInputMethod(this@MainActivity, uiEdit)
-                }
-                dialog.show()
-            }
-            uiEdit.setOnKeyListener { v, keyCode, event ->
-                if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
-                    val url: String = "baseURL/search"
-                    val paraName: List<String> = arrayListOf("category","method", "word")
-                    val paraValue: List<String> =
-                        arrayListOf("1",searchMethodD.toString(), uiEdit.text.toString())
-                    HiroUtils.sendRequest(url, paraName, paraValue, {
-                        val json = JSONObject(it)
-                        if (json["status"] == "1") {
-                            //解析数据
-                            val ja = JSONArray(json["data"])
-                            val itemList : MutableList<ShelfAdapter.ShelfItem> = ArrayList()
-                            for (i in 0..ja.length())
-                            {
-                                val jai = ja[i] as JSONObject
-                                val item = ShelfAdapter.ShelfItem(jai["name"] as String,
-                                    count,
-                                    jai["model"] as String,
-                                    jai["uid"] as String,
-                                jai["shelf"] as String,
-                                jai["usage"] as String)
-                                itemList.add(item)
-                            }
-                            mRecyclerAdapter.setAdapter(itemList)
-                        } else if (json["status"] == "2") {
-                            //认证过期
-                        } else {
-                            Toast.makeText(
-                                this,
-                                getText(R.string.txt_unable_to_connect),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }, {
-                        Toast.makeText(
-                            this,
-                            getText(R.string.txt_unable_to_connect),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    },
-                        "{\n" +
-                                "    \"status\": \"1\",\n" +
-                                "    \"data\": [\n" +
-                                "        {\n" +
-                                "            \"name\": \"Name\",\n" +
-                                "            \"model\": \"X1\",\n" +
-                                "            \"count\": \"12\",\n" +
-                                "            \"shelf\": \"3-2\",\n" +
-                                "            \"use\": \"1-1\"\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "            \"name\": \"Name2\",\n" +
-                                "            \"model\": \"S-2\",\n" +
-                                "            \"count\": \"10\",\n" +
-                                "            \"shelf\": \"3-3\",\n" +
-                                "            \"use\": \"2-1\"\n" +
-                                "        }\n" +
-                                "    ]\n" +
-                                "}"
-                    )
-                }
-                true
-            }
+            startActivity(Intent(this@MainActivity,DirectImportActivity::class.java))
         }
     }
 
+    private fun backToMainSearch()
+    {
+        HiroUtils.hideInputMethod(this@MainActivity)
+        bi.uiIncludeSearchFunction.root.visibility = View.VISIBLE
+        bi.uiIncludeSearchBar.root.visibility = View.VISIBLE
+        HiroUtils.viewAnimation(bi.uiIncludeSearchBar.root,Techniques.FadeInLeft,200) {
+            it.visibility = View.VISIBLE
+        }
+        HiroUtils.viewAnimation(bi.uiIncludeSearchFunction.root,Techniques.FadeOutRight,200){
+            it.visibility = View.GONE
+        }
+    }
     override fun onBackPressed() {
         if (bi.uiIncludeSearchFunction.root.visibility == View.VISIBLE) {
-            HiroUtils.hideInputMethod(this@MainActivity)
-            bi.uiIncludeSearchBar.root.visibility = View.VISIBLE
-            bi.uiIncludeSearchFunction.root.visibility = View.GONE
-        } else if (bi.uiDialogImportFake.visibility == View.VISIBLE) {
-            HiroUtils.hideInputMethod(this@MainActivity)
-            bi.uiDialogImportFake.visibility = View.GONE
+            backToMainSearch()
         } else
             super.onBackPressed()
     }
@@ -429,21 +271,7 @@ class MainActivity : Activity() {
             return
         }
         // 从onActivityResult返回data中，用ScanUtil.RESULT作为key值取到HmsScan返回值。
-        else if (requestCode == 0x01) {
-            when (val obj: Parcelable? = data.getParcelableExtra(ScanUtil.RESULT)) {
-                is HmsScan -> {
-                    if (!TextUtils.isEmpty(obj.getOriginalValue())) {
-                        var ui_fake_dialog = findViewById<View>(R.id.ui_dialog_import_fake)
-                        Toast.makeText(this, obj.getOriginalValue(), Toast.LENGTH_SHORT).show()
-                        ui_fake_dialog.findViewById<View>(R.id.ui_include_dialog_item)
-                            .findViewById<TextView>(R.id.dialog_shelf)
-                            .text = obj.getOriginalValue()
-                        ui_fake_dialog.visibility = View.GONE
-                    }
-                    return
-                }
-            }
-        } else if (requestCode == 0x02) {
+        else if (requestCode == 0x02) {
             when (val obj: Parcelable? = data.getParcelableExtra(ScanUtil.RESULT)) {
                 is HmsScan -> {
                     if (!TextUtils.isEmpty(obj.getOriginalValue())) {

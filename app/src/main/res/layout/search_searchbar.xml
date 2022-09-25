@@ -62,7 +62,7 @@
         android:padding="4dp"
         android:src="@drawable/ic_qrcode"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/dialog_shelf"
+        app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_shelf"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

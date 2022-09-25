@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:paddingBottom="20dp" app:circularflow_defaultRadius="5dp" app:circularflow_radiusInDP="5dp"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/ui3_login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:text="@string/txt_log_in" android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui3_login_title">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ui3_login_username"
+            style="@style/Theme.UI3Theme.OutlinedTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:hint="@string/txt_login_name" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ui3_login_username_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ui3_login_pwd"
+            style="@style/Theme.UI3Theme.OutlinedTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:hint="@string/txt_login_pwd"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ui3_login_username">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ui3_login_pwd_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/ui3_login_btn"
+            style="@style/Theme.UI3Theme.FloatingButtonExtended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/txt_log_in"
+            android:text="@string/txt_log_in"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/ui3_login_pwd"/>
+
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/ui_login_logging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/AccentColor"
+            app:layout_constraintBottom_toBottomOf="@+id/ui3_login_btn"
+            app:layout_constraintEnd_toEndOf="@+id/ui3_login_btn"
+            app:layout_constraintStart_toStartOf="@+id/ui3_login_btn"
+            app:layout_constraintTop_toTopOf="@+id/ui3_login_btn"/>
+
+        <Button
+            android:id="@+id/ui3_login_forgetpwd"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp" android:text="@string/txt_login_forget"
+            android:textColor="@color/AccentColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ui3_login_pwd"
+            app:rippleColor="@color/FontColorDim"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

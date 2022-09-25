@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DirectImportActivity"
+    android:id="@+id/ui3_direct_import_base"
+    android:clickable="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ui3_direct_import_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_broder_win"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ui3_direct_import_back"
+            style="@style/Theme.UI3Theme.FloatingButtonImmersive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:elevation="0dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_left">
+
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ui3_direct_import_main"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/Transparent"
+            android:paddingTop="8dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/ui3_direct_import_search"
+                style="@style/Theme.UI3Theme.FloatingButtonImmersive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:elevation="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_search">
+
+            </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+            <TextView
+                android:id="@+id/ui3_direct_import_shelf"
+                style="@style/Theme.UI3Theme.Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="5dp"
+                android:text="@string/txt_dialog_click_to_set_shelf"
+                android:textColor="@color/FontColorDim"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_for"
+                app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_title">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ui3_direct_import_for"
+                style="@style/Theme.UI3Theme.Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="5dp"
+                android:text="@string/txt_dialog_click_to_set_for"
+                android:textColor="@color/FontColorDim"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_count"
+                app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_shelf">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ui3_direct_import_title"
+                style="@style/Theme.UI3Theme.Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/txt_dialog_item_name"
+                android:textColor="@color/FontColor"
+                android:textSize="40sp"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_model"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ui3_direct_import_model"
+                style="@style/Theme.UI3Theme.Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="5dp"
+                android:text="@string/txt_nomodel"
+                android:textColor="@color/FontColorDim"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_shelf"
+                app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_title">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ui3_direct_import_uid"
+                style="@style/Theme.UI3Theme.Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="5dp"
+                android:text="@string/txt_no_id"
+                android:textColor="@color/FontColorDim"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_model"
+                app:layout_constraintTop_toTopOf="@+id/ui3_direct_import_model">
+
+            </TextView>
+
+            <ImageView
+                android:id="@+id/ui3_direct_import_min"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ripple_background"
+                android:clickable="true"
+                android:src="@drawable/ic_double_arrow_left"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
+                app:layout_constraintEnd_toStartOf="@+id/ui3_direct_import_minus">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/ui3_direct_import_minus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ripple_background"
+                android:clickable="true"
+                android:src="@drawable/ic_arrow_left"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
+                app:layout_constraintEnd_toStartOf="@+id/ui3_direct_import_count">
+
+            </ImageView>
+
+            <EditText
+                android:id="@+id/ui3_direct_import_count"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:inputType="number"
+                android:text="0"
+                android:textColor="@color/FontColorDim"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_btn"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+
+            </EditText>
+
+            <ImageView
+                android:id="@+id/ui3_direct_import_max"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ripple_background"
+                android:clickable="true"
+                android:src="@drawable/ic_double_arro_right"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
+                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_plus">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/ui3_direct_import_plus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ripple_background"
+                android:clickable="true"
+                android:src="@drawable/ic_arrow_right"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_count"
+                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_count">
+
+            </ImageView>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/ui3_direct_import_btn"
+                style="@style/Theme.UI3Theme.FloatingButtonExtended"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/txt_import"
+                android:text="@string/txt_import"
+                app:icon="@drawable/ic_check"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ui3_direct_import_search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Transparent"
+            android:paddingBottom="8dp" android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@+id/ui3_direct_import_main">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:background="@color/Transparent"
+                app:boxBackgroundColor="@color/Transparent"
+                android:id="@+id/ui3_direct_import_search_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/FontColor"
+                app:hintTextColor="@color/AccentColor"
+                android:textColorHint="@color/FontColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ui3_direct_import_search_method"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ui3_direct_import_search_bar_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:textColor="@color/FontColor"
+                    app:hintTextColor="@color/AccentColor"
+                    android:textColorHint="@color/FontColor"
+                    android:textSize="15sp"
+                    android:background="@color/BackgroundColor"
+                />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/ui3_direct_import_search_method"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:background="@drawable/ripple_background"
+                android:clickable="true"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/FontColor"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_direct_import_search_bar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ui3_direct_import_search_bar"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
