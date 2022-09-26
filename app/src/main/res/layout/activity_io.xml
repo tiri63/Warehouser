@@ -111,6 +111,17 @@
 
             </Spinner>
 
+            <Spinner
+                android:id="@+id/ui3_io_for_spinner_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_for"
+                app:layout_constraintStart_toEndOf="@+id/ui3_io_for_spinner" app:layout_constraintTop_toTopOf="@+id/ui3_io_for">
+
+            </Spinner>
+
             <TextView
                 android:id="@+id/ui3_io_title"
                 style="@style/Theme.UI3Theme.Textview"

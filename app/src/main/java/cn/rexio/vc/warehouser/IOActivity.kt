@@ -21,7 +21,9 @@ class IOActivity : Activity() {
     private var usage: HiroUtils.Usage = HiroUtils.Usage(0,"","")
     private var mode : Int = 0
     lateinit var usageAdapter:SpinnerAdapter<HiroUtils.Usage>
+    lateinit var usagesubAdapter:SpinnerAdapter<HiroUtils.Usage>
     val usageList = arrayListOf<HiroUtils.Usage>()
+    val usagesubList = arrayListOf<HiroUtils.Usage>()
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
@@ -61,6 +63,11 @@ class IOActivity : Activity() {
             },{
                 it.visibility = View.VISIBLE
             })
+            HiroUtils.viewAnimation(bi.ui3IoForSpinnerSub,Techniques.FadeInRight,200,{
+                it.visibility = View.VISIBLE
+            },{
+                it.visibility = View.VISIBLE
+            })
         }
         else
         {
@@ -77,18 +84,30 @@ class IOActivity : Activity() {
             },{
                 it.visibility = View.INVISIBLE
             })
+            HiroUtils.viewAnimation(bi.ui3IoForSpinnerSub,Techniques.FadeOutRight,200,{
+                it.visibility = View.VISIBLE
+            },{
+                it.visibility = View.INVISIBLE
+            })
         }
     }
 
     private fun setSpinner()
     {
         usageAdapter = SpinnerAdapter(this,usageList,"alias",HiroUtils.Usage::class.java)
+        usagesubAdapter = SpinnerAdapter(this,usagesubList,"alias",HiroUtils.Usage::class.java)
         bi.ui3IoForSpinner.adapter = usageAdapter
+        bi.ui3IoForSpinnerSub.adapter = usagesubAdapter
         usageList.add(HiroUtils.Usage(0,"维修","维修用"))
         usageList.add(HiroUtils.Usage(1,"运输","运输器件"))
         usageList.add(HiroUtils.Usage(2,"暂存","临时存放"))
         usageList.add(HiroUtils.Usage(3,"废弃","已弃用"))
         usageAdapter.notifyDataSetChanged()
+        usagesubList.add(HiroUtils.Usage(0,"维修","维修用"))
+        usagesubList.add(HiroUtils.Usage(1,"运输","运输器件"))
+        usagesubList.add(HiroUtils.Usage(2,"暂存","临时存放"))
+        usagesubList.add(HiroUtils.Usage(3,"废弃","已弃用"))
+        usagesubAdapter.notifyDataSetChanged()
     }
 
     private fun getExtraParameters()
