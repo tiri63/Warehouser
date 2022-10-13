@@ -8,7 +8,6 @@ import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.ImageView
-import com.daimajia.androidanimations.library.Techniques
 
 
 class AboutActivity : Activity() {
@@ -32,15 +31,7 @@ class AboutActivity : Activity() {
 
         }.start()
         img_gif.setOnClickListener {
-            if(!isBouncing)
-            {
-                isBouncing = true
-                HiroUtils.viewAnimation(img_gif,Techniques.Shake,200,{
 
-                },{
-                    isBouncing = false
-                })
-            }
         }
     }
 

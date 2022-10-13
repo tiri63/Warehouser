@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".LogActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ui3_direct_import_root"
+        android:id="@+id/ui3_log_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/radius_broder_win"
@@ -17,7 +17,7 @@
             android:id="@+id/ui3_log_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" android:text="@string/txt_log_see"
+            android:text="@string/txt_log_see"
             android:textColor="@color/FontColor"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/ui3_log"
@@ -31,9 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
             android:background="@color/BackgroundColor"
-            app:layout_constraintBottom_toTopOf="@+id/ui3_log_btn"
+            android:paddingStart="8dp"
+            android:paddingLeft="8dp" android:paddingTop="8dp"
+            android:paddingEnd="8dp" android:paddingRight="8dp"
+            android:paddingBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/ui3_log_btn"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -41,6 +43,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/BackgroundColor"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="none"
+                android:maxHeight="300dp"
                 android:text=""
                 android:textColor="@color/FontColor"
             />

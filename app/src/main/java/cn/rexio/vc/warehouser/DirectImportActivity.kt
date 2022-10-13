@@ -2,6 +2,7 @@ package cn.rexio.vc.warehouser
 
 import HiroUtils
 import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.res.Configuration
@@ -11,11 +12,10 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.databinding.ActivityDirectImportBinding
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.concurrent.thread
 
 class DirectImportActivity : Activity() {
     private lateinit var bi: ActivityDirectImportBinding
@@ -24,14 +24,11 @@ class DirectImportActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
-
         bi = ActivityDirectImportBinding.inflate(layoutInflater)
         setContentView(bi.root)
         HiroUtils.setPopWinStatusBarColor(window, resources)
         syncSearchMethod()
-        YoYo.with(Techniques.FadeIn).duration(200).interpolate(DecelerateInterpolator())
-            .playOn(bi.ui3DirectImportRoot).run { }
-
+        HiroUtils.animateView(bi.ui3DirectImportRoot, 150, arrayOf(0f, 1f), arrayOf(0f, 0f, 600f, 0f), {}, {})
         bi.ui3DirectImportSearch.setOnClickListener {
             changeView(true)
         }
@@ -135,33 +132,54 @@ class DirectImportActivity : Activity() {
             this.finish()
     }
 
+    override fun finish() {
+        HiroUtils.animateView(bi.ui3DirectImportRoot, 200, arrayOf(1f, 0f), arrayOf(0f, 0f, 0f, 600f), {}, {})
+        thread {
+            Thread.sleep(200)
+            super.finish()
+        }
+    }
+
     private fun changeView(direction: Boolean) {
         if (direction) {
             HiroUtils.hideInputMethod(this@DirectImportActivity)
-            HiroUtils.viewAnimation(bi.ui3DirectImportMain, Techniques.FadeOutLeft, 200, {
-                it.visibility = View.VISIBLE
-            }, {
-                it.visibility = View.INVISIBLE
-            })
-            HiroUtils.viewAnimation(bi.ui3DirectImportSearchLayout, Techniques.FadeInRight, 200, {
-                it.visibility = View.VISIBLE
-            }, {
-                it.visibility = View.VISIBLE
-                bi.ui3DirectImportSearchBarText.requestFocus()
-                HiroUtils.showInputMethod(this@DirectImportActivity, bi.ui3DirectImportSearchBarText)
-            })
+            HiroUtils.animateView(
+                bi.ui3DirectImportMain,
+                200,
+                arrayOf(1f, 0f),
+                arrayOf(0f, -200f, 0f, 0f),
+                { it.visibility = View.VISIBLE },
+                { it.visibility = View.INVISIBLE })
+            HiroUtils.animateView(
+                bi.ui3DirectImportSearchLayout,
+                200,
+                arrayOf(0f, 1f),
+                arrayOf(200f, 0f, 0f, 0f),
+                { it.visibility = View.VISIBLE },
+                {
+                    it.visibility = View.VISIBLE
+                    bi.ui3DirectImportSearchBarText.requestFocus()
+                    HiroUtils.showInputMethod(this@DirectImportActivity, bi.ui3DirectImportSearchBarText)
+                })
+
         } else {
             HiroUtils.hideInputMethod(this@DirectImportActivity)
-            HiroUtils.viewAnimation(bi.ui3DirectImportMain, Techniques.FadeInLeft, 200, {
-                it.visibility = View.VISIBLE
-            }, {
-                it.visibility = View.VISIBLE
-            })
-            HiroUtils.viewAnimation(bi.ui3DirectImportSearchLayout, Techniques.FadeOutRight, 200, {
-                it.visibility = View.VISIBLE
-            }, {
-                it.visibility = View.INVISIBLE
-            })
+            HiroUtils.animateView(
+                bi.ui3DirectImportMain,
+                200,
+                arrayOf(0f, 1f),
+                arrayOf(-200f, 0f, 0f, 0f),
+                { it.visibility = View.VISIBLE },
+                { it.visibility = View.VISIBLE })
+            HiroUtils.animateView(
+                bi.ui3DirectImportSearchLayout,
+                200,
+                arrayOf(1f, 0f),
+                arrayOf(0f, 200f, 0f, 0f),
+                { it.visibility = View.VISIBLE },
+                {
+                    it.visibility = View.INVISIBLE
+                })
         }
     }
 

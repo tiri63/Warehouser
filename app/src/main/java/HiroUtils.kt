@@ -1,24 +1,33 @@
 import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.view.View
 import android.view.Window
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.core.animation.addListener
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
-import okhttp3.*
-import java.io.IOException
 
 
 class HiroUtils {
     class Shelf(var main: String, var sub: String, var alias: String, var info: String) {}
     class Usage(var code: Int, var alias: String, var info: String) {}
     companion object Factory {
+        @SuppressLint("StaticFieldLeak")
+        var mainWindowContext: Context? = null
         var userName: String? = null
         var userNickName: String? = null
         fun setStatusBarColor(window: Window, resources: Resources) {
@@ -38,25 +47,38 @@ class HiroUtils {
 
         }
 
-        fun viewAnimation(
+        fun animateView(
             view: View,
-            techniques: Techniques,
             duration: Long,
+            alpha : Array<Float>,
+            translation : Array<Float>,
             beforeAnimationStart: (view: View) -> Unit,
-            onAnimationEnd: (view: View) -> Unit
-        ) {
+            afterAnimation: (view: View) -> Unit
+        )
+        {
             beforeAnimationStart(view)
-            YoYo.with(techniques).repeatMode(0).withListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {}
-                override fun onAnimationEnd(animation: Animator) {
-                    onAnimationEnd.invoke(view)
-                    animation.removeAllListeners()
+            val pva = PropertyValuesHolder.ofFloat("alpha",alpha[0],alpha[1])
+            val pvb = PropertyValuesHolder.ofFloat("translationX",translation[0],translation[1])
+            val pvc = PropertyValuesHolder.ofFloat("translationY",translation[2],translation[3])
+            val oa = ObjectAnimator.ofPropertyValuesHolder(view,pva,pvb,pvc)
+            oa.duration = duration
+            oa.interpolator = DecelerateInterpolator()
+            oa.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
                 }
 
-                override fun onAnimationCancel(animation: Animator) {}
-                override fun onAnimationRepeat(animation: Animator) {}
-            }).duration(duration).interpolate(DecelerateInterpolator())
-                .playOn(view).run {}
+                override fun onAnimationEnd(animation: Animator) {
+                    afterAnimation(view)
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {
+                }
+
+            })
+            oa.start()
         }
 
         fun sendRequest(
