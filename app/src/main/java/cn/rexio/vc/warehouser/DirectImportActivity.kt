@@ -1,9 +1,9 @@
 package cn.rexio.vc.warehouser
 
 import HiroUtils
-import android.animation.Animator
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
@@ -16,10 +16,12 @@ import com.daimajia.androidanimations.library.YoYo
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.Exception
 
 class DirectImportActivity : Activity() {
     private lateinit var bi: ActivityDirectImportBinding
-    private var searchMethod = 0
+    private var searchMethod = 0//0..2
+    private lateinit var mRecyclerAdapter : ShelfAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -31,7 +33,17 @@ class DirectImportActivity : Activity() {
         syncSearchMethod()
         YoYo.with(Techniques.FadeIn).duration(200).interpolate(DecelerateInterpolator())
             .playOn(bi.ui3DirectImportRoot).run { }
+        initialize()
 
+    }
+
+    private fun initialize(){
+        mRecyclerAdapter = ShelfAdapter(ArrayList(),this,window,1)
+        bi.ui3DirectImportList.adapter = mRecyclerAdapter
+        initializeOnClickListener()
+    }
+
+    private fun initializeOnClickListener(){
         bi.ui3DirectImportSearch.setOnClickListener {
             changeView(true)
         }
@@ -70,38 +82,51 @@ class DirectImportActivity : Activity() {
             dialog.show()
         }
 
-        bi.ui3DirectImportSearchBar.setOnKeyListener { v, keyCode, event ->
+        bi.ui3DirectImportSearchBar.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
-                val url: String = "baseURL/search"
-                val paraName: List<String> = arrayListOf("category", "method", "word")
+                val url = "${HiroUtils.baseUrl}/search"
+                val paraName: List<String> = arrayListOf("username", "token", "device","keyword","method")
                 val paraValue: List<String> =
-                    arrayListOf("1", searchMethod.toString(), bi.ui3DirectImportSearchBarText.text.toString())
+                    arrayListOf(HiroUtils.userName,HiroUtils.userToken,"mobile",
+                        bi.ui3DirectImportSearchBarText.text.toString(),searchMethod.toString())
                 HiroUtils.sendRequest(url, paraName, paraValue, {
-                    val json = JSONObject(it)
-                    if (json["status"] == "1") {
-                        //解析数据
-                        val ja = JSONArray(json["data"])
-                        val itemList: MutableList<ShelfAdapter.ShelfItem> = ArrayList()
-                        for (i in 0..ja.length()) {
-                            val jai = ja[i] as JSONObject
-                            val item = ShelfAdapter.ShelfItem(
-                                jai["name"] as String,
-                                0,
-                                jai["model"] as String,
-                                jai["uid"] as String,
-                                jai["shelf"] as String,
-                                jai["usage"] as String
-                            )
-                            itemList.add(item)
+                    try{
+                        val json = JSONObject(it)
+                        if (json["ret"] == "1") {
+                            //解析数据
+                            val ja = JSONArray(json["msg"])
+                            val itemList: MutableList<ShelfAdapter.ShelfItem> = ArrayList()
+                            for (i in 0..ja.length()) {
+                                val jai = ja[i] as JSONObject
+                                val item = ShelfAdapter.ShelfItem(
+                                    jai["name"] as String,
+                                    0,
+                                    jai["model"] as String,
+                                    jai["uid"] as String,
+                                    "shelf",
+                                    "usage",
+                                    jai["unit"] as String
+                                )
+                                itemList.add(item)
+                            }
+                            mRecyclerAdapter.setAdapter(itemList)
+                        } else if (json["ret"] == "2") {
+                            //认证过期
+                            HiroUtils.logInfo(bi.root,R.string.txt_token_invalid)
+                            val intent = Intent()
+                            intent.setClass(this,LoginActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            HiroUtils.logInfo(bi.root,"${json["ret"]}:${json["msg"]}")
                         }
-                        //mRecyclerAdapter.setAdapter(itemList)
-                    } else if (json["status"] == "2") {
-                        //认证过期
-                    } else {
-                        Snackbar.make(bi.root, R.string.txt_unable_to_connect, Snackbar.LENGTH_SHORT).show()
                     }
+                    catch (ex:Exception)
+                    {
+                        HiroUtils.logInfo(bi.root,ex)
+                    }
+
                 }, {
-                    Snackbar.make(bi.root, R.string.txt_unable_to_connect, Snackbar.LENGTH_SHORT).show()
+                    HiroUtils.logInfo(bi.root,R.string.txt_unable_to_connect)
                 },
                     "{\n" +
                             "    \"status\": \"1\",\n" +

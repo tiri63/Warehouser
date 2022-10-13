@@ -8,19 +8,23 @@ import android.view.Window
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.annotation.StringRes
 import androidx.core.view.WindowCompat
+import cn.rexio.vc.warehouser.R
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import okhttp3.*
-import java.io.IOException
+import com.google.android.material.snackbar.Snackbar
+import java.lang.Exception
 
 
 class HiroUtils {
     class Shelf(var main: String, var sub: String, var alias: String, var info: String) {}
     class Usage(var code: Int, var alias: String, var info: String) {}
     companion object Factory {
-        var userName: String? = null
-        var userNickName: String? = null
+        var userName = ""
+        var userToken = ""
+        var userNickName = ""
+        const val baseUrl = "https://url.cn"
         fun setStatusBarColor(window: Window, resources: Resources) {
             val isLight =
                 (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO
@@ -71,14 +75,11 @@ class HiroUtils {
             onResponse.invoke(success)
 
             /*val num = paraName.count().coerceAtMost(paraValue.count())
-            val requestBodyBuilder = FormBody.Builder()
+            val requestBuilder = Request.Builder().url(url)
             for (lo in 0..num) {
-                requestBodyBuilder.add(paraName[lo], paraValue[lo])
+                requestBuilder.addHeader(paraName[lo], paraValue[lo])
             }
-            val requestBody = requestBodyBuilder.build()
-            val request = Request.Builder()
-                .url(url)
-                .post(requestBody)
+            val request = requestBuilder.post(FormBody.Builder().build())
                 .build()
             OkHttpClient().newCall(request)
                 .enqueue(object : Callback {
@@ -90,6 +91,22 @@ class HiroUtils {
                         onResponse.invoke(response.message)
                     }
                 })*/
+        }
+
+        fun logInfo(view: View, ex: Exception) {
+            Snackbar.make(view, "${R.string.txt_error_occur}: ${ex.stackTrace}", Snackbar.LENGTH_SHORT).show()
+        }
+
+        fun logInfo(view: View, text: String) {
+            Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show()
+        }
+
+        fun logInfo(view: View, text: CharSequence) {
+            Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show()
+        }
+
+        fun logInfo(view: View, @StringRes text: Int) {
+            Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show()
         }
 
         fun showInputMethod(activity: Activity, editText: EditText?) {

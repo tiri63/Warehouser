@@ -41,4 +41,6 @@
     <string name="txt_cast_to_import">Import</string>
     <string name="txt_log_see">See log</string>
     <string name="txt_search">Search</string>
+	<string name="txt_token_invalid">Token expired</string>
+	<string name="txt_error_occur">Error occurred</string>
 </resources>

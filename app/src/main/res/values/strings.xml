@@ -40,4 +40,6 @@
     <string name="txt_cast_to_import">转换为入库</string>
     <string name="txt_log_see">查看日志</string>
     <string name="txt_search">搜索</string>
+    <string name="txt_token_invalid">认证过期，请重新登录</string>
+    <string name="txt_error_occur">发生错误</string>
 </resources>

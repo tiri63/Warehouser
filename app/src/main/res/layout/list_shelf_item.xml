@@ -38,6 +38,20 @@
     </TextView>
 
     <TextView
+        android:id="@+id/ui_shelf_item_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp"
+        android:paddingEnd="2dp"
+        android:paddingRight="2dp"
+        android:text="个"
+        android:textColor="@color/FontColorDim"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ui_shelf_item_count" app:layout_constraintTop_toTopOf="@+id/ui_shelf_item_count">
+
+    </TextView>
+
+    <TextView
         android:id="@+id/ui_shelf_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -165,7 +165,7 @@ class MainActivity : Activity() {
             }
             dialog.show()
         }
-        mSearchEdit.setOnKeyListener { v, keyCode, event ->
+        mSearchEdit.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
                 val url: String = "baseURL/search"
                 val paraName: List<String> = arrayListOf("category", "method", "word")
@@ -186,7 +186,8 @@ class MainActivity : Activity() {
                                 jai["model"] as String,
                                 jai["uid"] as String,
                                 jai["shelf"] as String,
-                                jai["usage"] as String
+                                jai["usage"] as String,
+                                jai["unit"] as String
                             )
                             itemList.add(item)
                         }
@@ -307,26 +308,26 @@ class MainActivity : Activity() {
             findViewById<View>(R.id.ui_include_main_function).findViewById<RecyclerView>(R.id.ui_shelf_item_list)
         mRecyclerAdapter = ShelfAdapter(
             arrayListOf(
-                ShelfAdapter.ShelfItem("螺丝1", 10, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝2", 20, "150mm-Y", "7644758", "仓库1-货架1-第1层", "存储"),
-                ShelfAdapter.ShelfItem("螺丝3", 13, "120mm-X", "0678742", "仓库2-货架3-第1层", "暂存"),
-                ShelfAdapter.ShelfItem("螺丝4", 10, "170mm-X", "7352244", "仓库2-货架1-第1层", "无用"),
-                ShelfAdapter.ShelfItem("螺丝5", 50, "150mm-Z", "4893452", "仓库4-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝6", 70, "110mm-X", "xca2345", "仓库2-货架1-第1层", "熔炼"),
-                ShelfAdapter.ShelfItem("螺丝7", 19, "150mm-B", null, "仓库5-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝8", 64, "100mm-X", "1000001", "仓库2-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝9", 75, "150mm-X", "65y2s1s", "仓库2-货架1-第1层", "外部"),
-                ShelfAdapter.ShelfItem("螺丝X", 10, "150mm-X", "1000001", "仓库6-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝A", 31, null, "1000001", "仓库2-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝B", 63, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝C", 67, "150mm-X", "1000001", "仓库1-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝D", 10, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝E", 35, "150mm-X", "1000001", "仓库2-货架1-第1层", null),
-                ShelfAdapter.ShelfItem("螺丝F", 99, "150mm-X", "1000001", "仓库A-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝G", 54, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修"),
-                ShelfAdapter.ShelfItem("螺丝H", 72, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修")
+                ShelfAdapter.ShelfItem("螺丝1", 10, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝2", 20, "150mm-Y", "7644758", "仓库1-货架1-第1层", "存储","个"),
+                ShelfAdapter.ShelfItem("螺丝3", 13, "120mm-X", "0678742", "仓库2-货架3-第1层", "暂存","个"),
+                ShelfAdapter.ShelfItem("螺丝4", 10, "170mm-X", "7352244", "仓库2-货架1-第1层", "无用","个"),
+                ShelfAdapter.ShelfItem("螺丝5", 50, "150mm-Z", "4893452", "仓库4-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝6", 70, "110mm-X", "xca2345", "仓库2-货架1-第1层", "熔炼","个"),
+                ShelfAdapter.ShelfItem("螺丝7", 19, "150mm-B", null, "仓库5-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝8", 64, "100mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝9", 75, "150mm-X", "65y2s1s", "仓库2-货架1-第1层", "外部","个"),
+                ShelfAdapter.ShelfItem("螺丝X", 10, "150mm-X", "1000001", "仓库6-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝A", 31, null, "1000001", "仓库2-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝B", 63, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝C", 67, "150mm-X", "1000001", "仓库1-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝D", 10, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝E", 35, "150mm-X", "1000001", "仓库2-货架1-第1层", null,"个"),
+                ShelfAdapter.ShelfItem("螺丝F", 99, "150mm-X", "1000001", "仓库A-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝G", 54, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
+                ShelfAdapter.ShelfItem("螺丝H", 72, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个")
             ),
-            this, window
+            this, window,0
         )
         mRecyclerView.adapter = mRecyclerAdapter
     }

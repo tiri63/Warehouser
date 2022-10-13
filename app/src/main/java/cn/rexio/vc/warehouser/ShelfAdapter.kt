@@ -13,10 +13,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 
+/**@param
+ * type:0 - Normal,1 - UID Search View
+ */
 class ShelfAdapter(
     private var itemList: MutableList<ShelfItem>,
     private val context: Context,
-    private val window: Window
+    private val window: Window,
+    private val type : Int
 ) : RecyclerView.Adapter<ShelfAdapter.ShelfViewHolder>() {
 
     fun clear() {
@@ -56,6 +60,7 @@ class ShelfAdapter(
         holder.goodsno.text =
             if (item.uid == null) context.getText(R.string.txt_no_id) else item.uid
         holder.shelfView.text = item.shelf
+        holder.unitView.text = item.unit
         holder.itemView.setOnClickListener {
             val intent = Intent(context,IOActivity::class.java)
             intent.putExtra("maxNum",item.count)
@@ -70,64 +75,6 @@ class ShelfAdapter(
             intent.putExtra("usage.alias",if (item.usage == null) context.getText(R.string.txt_nofor) else item.usage)
             intent.putExtra("usage.info","用途信息")
             startActivity(context,intent,null)
-            /*
-            view.findViewById<TextView>(R.id.dialog_import).setOnClickListener {
-                val uid = item.uid ?: "000000"
-                if (item.uid != null)
-                    HiroUtils.sendRequest("baseURL/import",
-                        arrayListOf("method", "shelf", "uid", "count"),
-                        arrayListOf("0", item.shelf, uid, view.findViewById<EditText>(R.id.ui3_direct_import_count).text.toString()), {
-                            if (it == "success") {
-                                //入库成功
-                            } else {
-                                //入库失败
-                            }
-                        }, {
-                            //网络问题
-                        }, "success"
-                    )
-                dialog.dismiss()
-            }
-            view.findViewById<TextView>(R.id.dialog_export).setOnClickListener {
-                val uid = item.uid ?: "000000"
-                if (item.uid != null)
-                    HiroUtils.sendRequest("baseURL/export",
-                        arrayListOf("shelf", "uid", "count"),
-                        arrayListOf(item.shelf, uid, view.findViewById<EditText>(R.id.ui3_direct_import_count).text.toString()), {
-                            if (it == "success") {
-                                //出库成功
-                            } else {
-                                //出库失败
-                            }
-                        }, {
-                            //网络问题
-                        }, "success"
-                    )
-                dialog.dismiss()
-            }
-            view.findViewById<TextView>(R.id.dialog_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            view.findViewById<ImageView>(R.id.ui3_direct_import_plus).setOnClickListener {
-                if (current < item.count)
-                    current++
-                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
-            }
-            view.findViewById<ImageView>(R.id.ui3_direct_import_minus).setOnClickListener {
-                if (current > 0)
-                    current--
-                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
-            }
-            view.findViewById<ImageView>(R.id.ui3_direct_import_min).setOnClickListener {
-                current = 0
-                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
-            }
-            view.findViewById<ImageView>(R.id.ui3_direct_import_max).setOnClickListener {
-                current = item.count
-                view.findViewById<EditText>(R.id.ui3_direct_import_count).setText(current.toString())
-            }*/
-
-
         }
     }
 
@@ -139,6 +86,7 @@ class ShelfAdapter(
         val modelView: TextView = itemView.findViewById(R.id.ui_goods_model)
         val goodsno: TextView = itemView.findViewById(R.id.ui_goods_number)
         val shelfView: TextView = itemView.findViewById(R.id.ui_shelf_id)
+        val unitView: TextView = itemView.findViewById(R.id.ui_shelf_item_unit)
         override fun toString(): String {
             return super.toString() + " '" + nameView.text + "'"
         }
@@ -150,7 +98,8 @@ class ShelfAdapter(
         var model: String?,
         var uid: String?,
         var shelf: String,
-        var usage: String?
+        var usage: String?,
+        var unit: String?
     ) {
     }
 
