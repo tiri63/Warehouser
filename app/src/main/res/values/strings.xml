@@ -40,6 +40,10 @@
     <string name="txt_cast_to_import">转换为入库</string>
     <string name="txt_log_see">查看日志</string>
     <string name="txt_search">搜索</string>
-    <string name="txt_token_invalid">认证过期，请重新登录</string>
-    <string name="txt_error_occur">发生错误</string>
+    <string name="txt_profile_update">更新个人信息</string>
+    <string name="txt_profile_hi">您好！%s</string>
+    <string name="txt_profile_update_pwd">更新密码</string>
+    <string name="txt_profile_old_pwd">输入当前密码</string>
+    <string name="txt_profile_new_pwd">输入新密码</string>
+    <string name="txt_profile_confirm_pwd">确认新密码</string>
 </resources>

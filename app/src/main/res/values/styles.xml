@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.UI3Theme.OutlinedTextField" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="Theme.UI3Theme.ButtonPrimary" parent="@style/Widget.Material3.Button.ElevatedButton">
+        <item name="android:textColor">@color/BackgroundColor</item>
+        <item name="backgroundTint">@color/AccentColor</item>
+        <item name="android:backgroundTint">@color/AccentColor</item>
+        <item name="rippleColor">@color/AccentColorDim</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+        <item name="strokeColor">@null</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+    <style name="Theme.UI3Theme.Button" parent="@style/Widget.Material3.Button.ElevatedButton">
+        <item name="android:textColor">@color/AccentColor</item>
+        <item name="backgroundTint">@color/BackgroundColor</item>
+        <item name="android:backgroundTint">@color/BackgroundColor</item>
+        <item name="rippleColor">@color/BackgroundColorDim</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+        <item name="strokeColor">@null</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="elevation">1dp</item>
+    </style>
+
+    <style name="Theme.UI3Theme.OutlinedTextField" parent="@style/Widget.Material3.TextInputEditText.OutlinedBox">
         <item name="colorControlActivated">@color/AccentColor</item>
         <item name="android:textColorPrimary">@color/AccentColor</item>
         <item name="hintTextColor">@color/AccentColor</item>
@@ -11,7 +33,7 @@
         <item name="startIconTint">@color/color_stroke_accent</item>
         <item name="colorPrimary">@color/AccentColor</item>
     </style>
-    <style name="Theme.UI3Theme.FloatingButton" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+    <style name="Theme.UI3Theme.FloatingButton" parent="@style/Widget.Material3.FloatingActionButton.Primary">
         <item name="backgroundTint">@color/AccentColor</item>
         <item name="background">@color/AccentColor</item>
         <item name="rippleColor">@color/BackgroundColorDim</item>
@@ -19,7 +41,7 @@
         <item name="tint">@color/BackgroundColor</item>
         <item name="android:textColor">@color/BackgroundColor</item>
     </style>
-    <style name="Theme.UI3Theme.FloatingButtonImmersive" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+    <style name="Theme.UI3Theme.FloatingButtonImmersive" parent="@style/Widget.Material3.FloatingActionButton.Primary">
         <item name="backgroundTint">@color/BackgroundColor</item>
         <item name="background">@color/BackgroundColor</item>
         <item name="rippleColor">@color/AccentColorDim</item>
@@ -27,26 +49,31 @@
         <item name="tint">@color/AccentColor</item>
         <item name="android:textColor">@color/AccentColor</item>
     </style>
-    <style name="Theme.UI3Theme.FloatingButtonExtended" parent="@style/Widget.MaterialComponents.ExtendedFloatingActionButton">
+    <style name="Theme.UI3Theme.FloatingButtonExtended" parent="@style/Widget.Material3.ExtendedFloatingActionButton.Primary">
         <item name="backgroundTint">@color/AccentColor</item>
         <item name="rippleColor">@color/BackgroundColorDim</item>
         <item name="iconTint">@color/BackgroundColor</item>
         <item name="tint">@color/BackgroundColor</item>
         <item name="android:textColor">@color/BackgroundColor</item>
     </style>
-    <style name="Theme.UI3Theme.FloatingButtonExtendedImmersive" parent="@style/Widget.MaterialComponents.ExtendedFloatingActionButton">
+    <style name="Theme.UI3Theme.FloatingButtonExtendedImmersive" parent="@style/Widget.Material3.ExtendedFloatingActionButton.Primary">
         <item name="backgroundTint">@color/BackgroundColor</item>
         <item name="rippleColor">@color/AccentColorDim</item>
         <item name="iconTint">@color/AccentColor</item>
         <item name="tint">@color/AccentColor</item>
         <item name="android:textColor">@color/AccentColor</item>
     </style>
-    <style name="Theme.UI3Theme.Textview" parent="@style/Widget.MaterialComponents.TextView">
+    <style name="Theme.UI3Theme.Textview" parent="@style/Widget.Material3.CheckedTextView">
         <item name="android:textColor">@color/FontColor</item>
         <item name="android:background">@color/Transparent</item>
     </style>
-    <style name="Theme.UI3Theme" parent="Theme.MaterialComponents.Light">
+    <style name="Theme.UI3Theme" parent="Theme.Material3.DayNight">
         <item name="colorPrimary">@color/AccentColor</item>
+        <item name="colorSecondary">@color/AccentColorDim</item>
+        <item name="colorAccent">@color/AccentColor</item>
+        <item name="colorOnPrimary">@color/AccentColor</item>
+        <item name="colorOnSecondary">@color/AccentColorDim</item>
+        <item name="android:textSize">16sp</item>
     </style>
     <style name="Theme.Transparent" parent="Theme.UI3Theme">
         <item name="android:windowBackground">#33000000</item>

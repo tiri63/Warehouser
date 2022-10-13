@@ -41,6 +41,10 @@
     <string name="txt_cast_to_import">Import</string>
     <string name="txt_log_see">See log</string>
     <string name="txt_search">Search</string>
-	<string name="txt_token_invalid">Token expired</string>
-	<string name="txt_error_occur">Error occurred</string>
+    <string name="txt_profile_update">Update Profile</string>
+    <string name="txt_profile_hi">Hello, %s!</string>
+    <string name="txt_profile_update_pwd">Update Password</string>
+    <string name="txt_profile_old_pwd">Current Password</string>
+    <string name="txt_profile_new_pwd">New Password</string>
+    <string name="txt_profile_confirm_pwd">Confirm New Password</string>
 </resources>

@@ -3,6 +3,7 @@ package cn.rexio.vc.warehouser
 import SharedPref
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -23,7 +24,7 @@ class LoginActivity : Activity() {
         setContentView(bi.root)
 
         actionBar.let { it?.hide() }
-
+        HiroUtils.setStatusBarColor(window, resources)
 
         bi.ui3LoginBtn.setOnClickListener {
             bi.uiLoginLogging.visibility = View.VISIBLE
@@ -61,6 +62,11 @@ class LoginActivity : Activity() {
                 "success"
             )
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        HiroUtils.setStatusBarColor(window, resources)
+        super.onConfigurationChanged(newConfig)
     }
 
     override fun onBackPressed() {

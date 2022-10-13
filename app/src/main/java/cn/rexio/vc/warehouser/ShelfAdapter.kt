@@ -1,5 +1,6 @@
 package cn.rexio.vc.warehouser
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -37,6 +38,7 @@ class ShelfAdapter(
         this.notifyItemRemoved(position)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setAdapter(newItemList: MutableList<ShelfItem>) {
         itemList = newItemList
         this.notifyDataSetChanged()
@@ -62,7 +64,7 @@ class ShelfAdapter(
         holder.shelfView.text = item.shelf
         holder.unitView.text = item.unit
         holder.itemView.setOnClickListener {
-            val intent = Intent(context,IOActivity::class.java)
+            val intent = Intent(context, IOActivity::class.java)
             intent.putExtra("maxNum",item.count)
             intent.putExtra("name",item.name)
             intent.putExtra("model",if (item.model == null) context.getText(R.string.txt_nomodel) else item.model)

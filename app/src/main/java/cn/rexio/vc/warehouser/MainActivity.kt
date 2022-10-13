@@ -16,10 +16,9 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import cn.rexio.vc.warehouser.databinding.MainLayoutBinding
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.google.android.material.snackbar.Snackbar
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
@@ -43,9 +42,10 @@ class MainActivity : Activity() {
         window.statusBarColor = Color.TRANSPARENT
         super.onCreate(savedInstanceState)
         bi = MainLayoutBinding.inflate(layoutInflater)
+        HiroUtils.mainWindowContext = this
         setContentView(bi.root)
         initalize_Components()
-        setStatusBarColor()
+        HiroUtils.setStatusBarColor(window, resources)
         loadSettings()
         fakeData()
     }
@@ -60,9 +60,10 @@ class MainActivity : Activity() {
     }
 
     private fun login() {
-
-        var intent: Intent = Intent(this@MainActivity, LoginActivity::class.java)
-        startActivity(intent)
+        HiroUtils.mainWindowContext?.let {
+            val intent = Intent(HiroUtils.mainWindowContext, LoginActivity::class.java)
+            ContextCompat.startActivity(it, intent, null)
+        }
     }
 
     private fun tryLogin(username: String?, secret: String?) {
@@ -90,16 +91,22 @@ class MainActivity : Activity() {
         val mSearchFunction = bi.uiIncludeSearchFunction
         var mSearchEdit = mSearchFunction.uiSearchBar
         mSearchBar.root.setOnClickListener {
-            HiroUtils.viewAnimation(mSearchBar.root, Techniques.FadeOutLeft, 200, {
-                it.visibility = View.VISIBLE
-            }, {
-                it.visibility = View.GONE
-            })
-            HiroUtils.viewAnimation(mSearchFunction.root, Techniques.FadeInRight, 200, {
-                it.visibility = View.VISIBLE
-            }, {
-                it.visibility = View.VISIBLE
-            })
+            HiroUtils.animateView(
+                mSearchBar.root,
+                200,
+                arrayOf(1f, 0f),
+                arrayOf(0f, -200f, 0f, 0f),
+                { it.visibility = View.VISIBLE },
+                { it.visibility = View.GONE })
+            HiroUtils.animateView(
+                mSearchFunction.root,
+                200,
+                arrayOf(0f, 1f),
+                arrayOf(200f, 0f, 0f, 0f),
+                { it.visibility = View.VISIBLE },
+                {
+                    it.visibility = View.VISIBLE
+                })
             mSearchFunction.uiSearchScan.visibility =
                 if (searchMethod == 0) View.VISIBLE else View.GONE
             mSearchEdit.hint = when (searchMethod) {
@@ -243,16 +250,22 @@ class MainActivity : Activity() {
 
     private fun backToMainSearch() {
         HiroUtils.hideInputMethod(this@MainActivity)
-        HiroUtils.viewAnimation(bi.uiIncludeSearchBar.root, Techniques.FadeInLeft, 200, {
-            it.visibility = View.VISIBLE
-        }, {
-            it.visibility = View.VISIBLE
-        })
-        HiroUtils.viewAnimation(bi.uiIncludeSearchFunction.root, Techniques.FadeOutRight, 200, {
-            it.visibility = View.VISIBLE
-        }, {
-            it.visibility = View.GONE
-        })
+        HiroUtils.animateView(
+            bi.uiIncludeSearchBar.root,
+            200,
+            arrayOf(0f, 1f),
+            arrayOf(-200f, 0f, 0f, 0f),
+            { it.visibility = View.VISIBLE },
+            { it.visibility = View.VISIBLE })
+        HiroUtils.animateView(
+            bi.uiIncludeSearchFunction.root,
+            200,
+            arrayOf(1f, 0f),
+            arrayOf(0f, 200f, 0f, 0f),
+            { it.visibility = View.VISIBLE },
+            {
+                it.visibility = View.GONE
+            })
     }
 
     override fun onBackPressed() {
@@ -295,13 +308,10 @@ class MainActivity : Activity() {
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        this.setStatusBarColor()
+        HiroUtils.setStatusBarColor(window, resources)
         super.onConfigurationChanged(newConfig)
     }
 
-    private fun setStatusBarColor() {
-        HiroUtils.setStatusBarColor(window, resources)
-    }
 
     private fun fakeData() {
         val mRecyclerView =
