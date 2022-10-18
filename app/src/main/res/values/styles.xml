@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.UI3Theme.CircularProgressBar.Reverse" parent="@style/Widget.Material3.CircularProgressIndicator">
+        <item name="indicatorColor">@color/BackgroundColor</item>
+    </style>
+
+    <style name="Theme.UI3Theme.CircularProgressBar" parent="@style/Widget.Material3.CircularProgressIndicator">
+        <item name="indicatorColor">@color/AccentColor</item>
+    </style>
+
     <style name="Theme.UI3Theme.ButtonPrimary" parent="@style/Widget.Material3.Button.ElevatedButton">
         <item name="android:textColor">@color/BackgroundColor</item>
         <item name="backgroundTint">@color/AccentColor</item>

@@ -47,4 +47,13 @@
     <string name="txt_profile_old_pwd">Current Password</string>
     <string name="txt_profile_new_pwd">New Password</string>
     <string name="txt_profile_confirm_pwd">Confirm New Password</string>
+	<string name="txt_exception">Exception</string>
+	<string name="txt_privilege_insufficient_title">Insufficient Privilege</string>
+	<string name="txt_token_expired_title">Token expired</string>
+    <string name="txt_info_title">Info</string>
+    <string name="txt_no_details">No details for this</string>
+	<string name="txt_successed">Success</string>
+	<string name="txt_profile_pwd_nomatch">New password and confirmed one don\'t match</string>
+	<string name="txt_permissions_refused">Required permissions not provided</string>
+	<string name="txt_forget_pwd_tip">Contact the administrator to reset your password</string>
 </resources>

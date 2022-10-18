@@ -46,4 +46,13 @@
     <string name="txt_profile_old_pwd">输入当前密码</string>
     <string name="txt_profile_new_pwd">输入新密码</string>
     <string name="txt_profile_confirm_pwd">确认新密码</string>
+    <string name="txt_exception">发生异常</string>
+    <string name="txt_privilege_insufficient_title">权限不足</string>
+    <string name="txt_token_expired_title">凭据过期</string>
+    <string name="txt_info_title">信息</string>
+    <string name="txt_no_details">没有关于此的详细信息</string>
+    <string name="txt_successed">成功</string>
+    <string name="txt_profile_pwd_nomatch">两次输入的密码不匹配</string>
+    <string name="txt_permissions_refused">必要权限未提供</string>
+    <string name="txt_forget_pwd_tip">请联系管理员更新密码</string>
 </resources>

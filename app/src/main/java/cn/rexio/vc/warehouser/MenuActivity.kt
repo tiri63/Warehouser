@@ -24,6 +24,7 @@ class MenuActivity : Activity() {
         HiroUtils.setPopWinStatusBarColor(window, resources)
         setFunctionsList()
         HiroUtils.animateView(bi.ui3MenuRoot, 300, arrayOf(0f, 1f), arrayOf(0f, 0f, 400f, 0f), {}, {})
+        bi.ui3MenuUsername.text = getString(R.string.txt_profile_hi, HiroUtils.userNickName)
     }
 
     override fun finish() {
@@ -48,6 +49,9 @@ class MenuActivity : Activity() {
         })
         val mRecyclerAdapter = MenuAdapter(textList, iconList, onClickListenerList)
         bi.ui3MenuFun.adapter = mRecyclerAdapter
+        bi.ui3MenuLogout.setOnClickListener {
+            HiroUtils.logOut()
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

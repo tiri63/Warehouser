@@ -1,25 +1,25 @@
 package cn.rexio.vc.warehouser
 
 import HiroUtils
-import android.animation.Animator
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.databinding.ActivityDirectImportBinding
-import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.Exception
 import kotlin.concurrent.thread
+
+//Net request OK
 
 class DirectImportActivity : Activity() {
     private lateinit var bi: ActivityDirectImportBinding
     private var searchMethod = 0
+    private lateinit var listAdapter: ShelfAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -29,6 +29,22 @@ class DirectImportActivity : Activity() {
         HiroUtils.setPopWinStatusBarColor(window, resources)
         syncSearchMethod()
         HiroUtils.animateView(bi.ui3DirectImportRoot, 150, arrayOf(0f, 1f), arrayOf(0f, 0f, 600f, 0f), {}, {})
+
+        initializeData()
+        initializeListener()
+    }
+
+    private fun initializeData() {
+        listAdapter = ShelfAdapter(ArrayList(), this, window, 1) {
+            bi.ui3DirectImportTitle.text = it.name
+            bi.ui3DirectImportModel.text = it.model
+            bi.ui3DirectImportUid.text = it.uid
+            changeView(false)
+        }
+        bi.ui3DirectImportList.adapter = listAdapter
+    }
+
+    private fun initializeListener() {
         bi.ui3DirectImportSearch.setOnClickListener {
             changeView(true)
         }
@@ -67,58 +83,54 @@ class DirectImportActivity : Activity() {
             dialog.show()
         }
 
-        bi.ui3DirectImportSearchBar.setOnKeyListener { v, keyCode, event ->
+        bi.ui3DirectImportSearchBarText.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
-                val url: String = "baseURL/search"
-                val paraName: List<String> = arrayListOf("category", "method", "word")
+                bi.ui3DirectImportSearchLoading.visibility = View.VISIBLE
+                val paraName: List<String> = arrayListOf("username", "token", "device", "method", "keyword")
                 val paraValue: List<String> =
-                    arrayListOf("1", searchMethod.toString(), bi.ui3DirectImportSearchBarText.text.toString())
-                HiroUtils.sendRequest(url, paraName, paraValue, {
-                    val json = JSONObject(it)
-                    if (json["status"] == "1") {
-                        //解析数据
-                        val ja = JSONArray(json["data"])
-                        val itemList: MutableList<ShelfAdapter.ShelfItem> = ArrayList()
-                        for (i in 0..ja.length()) {
-                            val jai = ja[i] as JSONObject
-                            val item = ShelfAdapter.ShelfItem(
-                                jai["name"] as String,
-                                0,
-                                jai["model"] as String,
-                                jai["uid"] as String,
-                                jai["shelf"] as String,
-                                jai["usage"] as String
-                            )
-                            itemList.add(item)
+                    arrayListOf(
+                        HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null", "mobile",
+                        searchMethod.toString(), bi.ui3DirectImportSearchBarText.text.toString()
+                    )
+                HiroUtils.sendRequest(
+                    "/search", paraName, paraValue,
+                    {
+                        bi.ui3DirectImportSearchLoading.visibility = View.INVISIBLE
+                        try {
+                            val json = JSONObject(it)
+                            when (json["ret"]) {
+                                "0" -> {
+                                    val ja = JSONArray(json["msg"].toString())
+                                    val itemList = ArrayList<ShelfAdapter.ShelfItem>()
+                                    for (i in 0 until ja.length()) {
+                                        val jai = ja[i] as JSONObject
+                                        val item = ShelfAdapter.ShelfItem(
+                                            jai["name"] as String,
+                                            0,
+                                            jai["model"] as String,
+                                            jai["uid"] as String,
+                                            HiroUtils.parseShelf(json),
+                                            null,
+                                            null
+                                        )
+                                        itemList.add(item)
+                                    }
+                                    listAdapter.setAdapter(itemList)
+                                }
+
+                                else -> {
+                                    HiroUtils.parseJsonRet(bi.root, this, it, json["msg"] as String?)
+                                }
+                            }
+                        } catch (ex: Exception) {
+                            HiroUtils.logError(this, ex)
                         }
-                        //mRecyclerAdapter.setAdapter(itemList)
-                    } else if (json["status"] == "2") {
-                        //认证过期
-                    } else {
-                        Snackbar.make(bi.root, R.string.txt_unable_to_connect, Snackbar.LENGTH_SHORT).show()
-                    }
-                }, {
-                    Snackbar.make(bi.root, R.string.txt_unable_to_connect, Snackbar.LENGTH_SHORT).show()
-                },
-                    "{\n" +
-                            "    \"status\": \"1\",\n" +
-                            "    \"data\": [\n" +
-                            "        {\n" +
-                            "            \"name\": \"Name\",\n" +
-                            "            \"model\": \"X1\",\n" +
-                            "            \"count\": \"12\",\n" +
-                            "            \"shelf\": \"3-2\",\n" +
-                            "            \"use\": \"1-1\"\n" +
-                            "        },\n" +
-                            "        {\n" +
-                            "            \"name\": \"Name2\",\n" +
-                            "            \"model\": \"S-2\",\n" +
-                            "            \"count\": \"10\",\n" +
-                            "            \"shelf\": \"3-3\",\n" +
-                            "            \"use\": \"2-1\"\n" +
-                            "        }\n" +
-                            "    ]\n" +
-                            "}"
+                    },
+                    {
+                        bi.ui3DirectImportSearchLoading.visibility = View.INVISIBLE
+                        HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
+                    },
+                    "{\"ret\":\"0\",\"msg\":[{\"uid\":\"test01\",\"unit\":\"s\",\"name\":\"For Test Use Only\",\"model\":\"t-1\"},{\"uid\":\"test02\",\"unit\":\"s\",\"name\":\"For Test Use Only\",\"model\":\"t-2\"}]}\n"
                 )
             }
             keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER
@@ -126,9 +138,10 @@ class DirectImportActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        if (bi.ui3DirectImportMain.visibility != View.VISIBLE)
-            changeView(false)
-        else
+        if (bi.ui3DirectImportMain.visibility != View.VISIBLE) {
+            if (bi.ui3DirectImportSearchLoading.visibility != View.VISIBLE)
+                changeView(false)
+        } else
             this.finish()
     }
 

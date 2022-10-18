@@ -262,6 +262,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <ProgressBar
+                android:id="@+id/ui3_io_loading"
+                style="@style/Theme.UI3Theme.CircularProgressBar.Reverse"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/ui3_io_btn"
+                app:layout_constraintEnd_toEndOf="@+id/ui3_io_btn"
+                app:layout_constraintStart_toStartOf="@+id/ui3_io_btn" app:layout_constraintTop_toTopOf="@+id/ui3_io_btn"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

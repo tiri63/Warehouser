@@ -19,12 +19,7 @@ class SpinnerAdapter<T>(val context: Context, val data: ArrayList<T>, val visibl
 
     //下拉中每个item的显示的样子
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View
-        if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_spinner, parent, false)
-        } else {
-            view = convertView
-        }
+        val view: View = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_spinner, parent, false)
         val textView = view.findViewById<TextView>(R.id.textView)
         //获取到当前位置的item数据
         val dic: T = getItem(position)

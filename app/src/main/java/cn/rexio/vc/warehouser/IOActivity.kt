@@ -11,6 +11,8 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.databinding.ActivityIoBinding
+import org.json.JSONArray
+import org.json.JSONObject
 
 class IOActivity : Activity() {
     private lateinit var bi: ActivityIoBinding
@@ -26,7 +28,6 @@ class IOActivity : Activity() {
     val usageList = arrayListOf<HiroUtils.Usage>()
     val usagesubList = arrayListOf<HiroUtils.Usage>()
     override fun onCreate(savedInstanceState: Bundle?) {
-        //overridePendingTransition(R.anim.ani_slide_up, R.anim.ani_slide_down)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         bi = ActivityIoBinding.inflate(layoutInflater)
@@ -36,6 +37,14 @@ class IOActivity : Activity() {
         setExtraParameters()
         setSpinner()
         HiroUtils.animateView(bi.ui3IoRoot, 300, arrayOf(0f, 1f), arrayOf(0f, 0f, 600f, 0f), {}, {})
+        initializeListeners()
+    }
+
+    override fun finish() {
+        HiroUtils.animateView(bi.ui3IoRoot, 300, arrayOf(1f, 0f), arrayOf(0f, 0f, 0f, 600f), {}, { super.finish() })
+    }
+
+    private fun initializeListeners() {
         bi.ui3IoBack.setOnClickListener {
             this.finish()
         }
@@ -55,10 +64,53 @@ class IOActivity : Activity() {
             )
             startActivity(intent)
         }
+        bi.ui3IoBtn.setOnClickListener {
+            bi.ui3IoLoading.visibility = View.VISIBLE
+            bi.ui3IoRoot.isEnabled = false
+            val para = arrayListOf("username", "token", "device", "action", "shelf", "uid", "count", "usage")
+            //0 for import and 1 for export, shelf is json
+            val value =
+                arrayListOf(
+                    HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null", "mobile", mode.toString(),
+                    object : JSONObject() {
+                        init {
+                            put("main", shelf.main)
+                            put("sub", shelf.sub)
+                        }
+                    }.toString(),
+                    uid, bi.ui3IoCount.text.toString(), usage.code.toString()
+                )
+            HiroUtils.sendRequest(
+                "/io", para, value,
+                {
+                    bi.ui3IoLoading.visibility = View.INVISIBLE
+                    try {
+                        val json = JSONObject(it)
+                        when (json["ret"]) {
+                            "0" -> {
+                                HiroUtils.logSnackBar(bi.root, getString(R.string.txt_successed))
+                            }
+
+                            else -> {
+                                HiroUtils.parseJsonRet(bi.root, this, it, json["msg"] as String?)
+                            }
+                        }
+                    } catch (ex: Exception) {
+                        HiroUtils.logError(this, ex)
+                    }
+                },
+                {
+                    bi.ui3IoLoading.visibility = View.INVISIBLE
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
+                },
+                "{\"ret\":\"0\"}"
+            )
+        }
     }
 
-    override fun finish() {
-        HiroUtils.animateView(bi.ui3IoRoot, 300, arrayOf(1f, 0f), arrayOf(0f, 0f, 0f, 600f), {}, { super.finish() })
+    override fun onBackPressed() {
+        if (bi.root.isEnabled)
+            super.onBackPressed()
     }
 
     private fun changeMode() {

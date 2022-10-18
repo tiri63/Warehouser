@@ -21,7 +21,8 @@ class ShelfAdapter(
     private var itemList: MutableList<ShelfItem>,
     private val context: Context,
     private val window: Window,
-    private val type : Int
+    private val type: Int,
+    private var onPress: (ShelfItem) -> Unit,
 ) : RecyclerView.Adapter<ShelfAdapter.ShelfViewHolder>() {
 
     fun clear() {
@@ -56,27 +57,25 @@ class ShelfAdapter(
         val pos = holder.bindingAdapterPosition
         val item = itemList[pos]
         holder.nameView.text = item.name
-        holder.countView.text = item.count.toString()
+
         holder.modelView.text =
             if (item.model == null) context.getText(R.string.txt_nomodel) else item.model
         holder.goodsno.text =
             if (item.uid == null) context.getText(R.string.txt_no_id) else item.uid
-        holder.shelfView.text = item.shelf
-        holder.unitView.text = item.unit
+        holder.shelfView.text = "${item.shelf.main}-${item.shelf.sub}(${item.shelf.alias})"
+
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, IOActivity::class.java)
-            intent.putExtra("maxNum",item.count)
-            intent.putExtra("name",item.name)
-            intent.putExtra("model",if (item.model == null) context.getText(R.string.txt_nomodel) else item.model)
-            intent.putExtra("uid",if (item.uid == null) context.getText(R.string.txt_no_id) else item.uid)
-            intent.putExtra("shelf.main","主货架")
-            intent.putExtra("shelf.sub","次货架")
-            intent.putExtra("shelf.alias",item.shelf)
-            intent.putExtra("shelf.info","货架信息")
-            intent.putExtra("usage.code",0)
-            intent.putExtra("usage.alias",if (item.usage == null) context.getText(R.string.txt_nofor) else item.usage)
-            intent.putExtra("usage.info","用途信息")
-            startActivity(context,intent,null)
+            onPress.invoke(item)
+        }
+        if (type == 1) {
+            holder.shelfView.visibility = View.INVISIBLE
+            holder.countView.visibility = View.INVISIBLE
+        }
+        else {
+            holder.shelfView.visibility = View.VISIBLE
+            holder.countView.visibility = View.VISIBLE
+            holder.countView.text = item.count.toString()
+            holder.unitView.text = item.unit ?: ""
         }
     }
 
@@ -99,7 +98,7 @@ class ShelfAdapter(
         var count: Int,
         var model: String?,
         var uid: String?,
-        var shelf: String,
+        var shelf: HiroUtils.Shelf,
         var usage: String?,
         var unit: String?
     ) {

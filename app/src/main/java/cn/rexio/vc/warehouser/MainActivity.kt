@@ -2,10 +2,11 @@ package cn.rexio.vc.warehouser
 
 import HiroUtils
 import SharedPref
-import android.animation.Animator
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -14,12 +15,11 @@ import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.DecelerateInterpolator
 import android.widget.*
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import cn.rexio.vc.warehouser.databinding.MainLayoutBinding
-import com.google.android.material.snackbar.Snackbar
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
@@ -51,12 +51,13 @@ class MainActivity : Activity() {
     }
 
     fun loadSettings() {
-        username = SharedPref(this, "username", "null").getValue(this, this::username)
-        secret = SharedPref(this, "secret", "null").getValue(this, this::secret)
-        if (username.equals("null") || secret.equals("null")) {
+        HiroUtils.userName = SharedPref(this, "username", "null").getValue(this, HiroUtils::userName)
+        HiroUtils.userToken = SharedPref(this, "secret", "null").getValue(this, HiroUtils::userToken)
+        HiroUtils.userNickName = SharedPref(this, "nickname", "null").getValue(this, HiroUtils::userNickName)
+        if (HiroUtils.userName.equals("null") || HiroUtils.userToken.equals("null")) {
             login()
         } else
-            tryLogin(username, secret)
+            tryLogin(HiroUtils.userName, HiroUtils.userToken)
     }
 
     private fun login() {
@@ -68,21 +69,30 @@ class MainActivity : Activity() {
 
     private fun tryLogin(username: String?, secret: String?) {
         if (username != null && secret != null) {
-            HiroUtils.sendRequest("baseURL/login", arrayListOf("username", "secret"),
-                arrayListOf(username, secret),
+            HiroUtils.sendRequest("/user", arrayListOf("action", "username", "token", "device"),
+                arrayListOf("0", username, secret, "mobile"),
                 {
-                    if (it == "success") {
-                        return@sendRequest
-                    } else {
-                        Snackbar.make(bi.root, R.string.txt_login_failed, Snackbar.LENGTH_SHORT).show()
+                    try {
+                        val json = JSONObject(it)
+                        when (json["ret"]) {
+                            "0" -> {
+                                HiroUtils.logSnackBar(bi.root, getString(R.string.txt_successed))
+                            }
+
+                            else -> {
+                                HiroUtils.parseJsonRet(bi.root, this, it, json["msg"] as String?)
+                            }
+                        }
+                    } catch (ex: Exception) {
+                        HiroUtils.logError(this, ex)
                     }
                 }, {
-                    Snackbar.make(bi.root, R.string.txt_unable_to_connect, Snackbar.LENGTH_SHORT).show()
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                "success"
+                "{\"ret\":\"0\"}"
             )
-        }
-        login()
+        } else
+            login()
     }
 
     fun initalize_Components() {
@@ -174,66 +184,49 @@ class MainActivity : Activity() {
         }
         mSearchEdit.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
-                val url: String = "baseURL/search"
-                val paraName: List<String> = arrayListOf("category", "method", "word")
+                val url = "/search"
+                val paraName: List<String> = arrayListOf("username", "token", "device", "method", "keyword")
                 val paraValue: List<String> =
-                    arrayListOf("0", searchMethod.toString(), mSearchEdit.text.toString())
+                    arrayListOf(
+                        HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null", "mobile",
+                        (10 + searchMethod).toString(), mSearchEdit.text.toString()
+                    )
                 HiroUtils.sendRequest(url, paraName, paraValue, {
-                    val json = JSONObject(it)
-                    if (json["status"] == "1") {
-                        //解析数据
-                        val ja = JSONArray(json["data"])
-                        val itemList: MutableList<ShelfAdapter.ShelfItem> = ArrayList()
-                        for (i in 0..ja.length()) {
-                            val jai = ja[i] as JSONObject
-                            val count = (jai["count"] as String).toInt()
-                            val item = ShelfAdapter.ShelfItem(
-                                jai["name"] as String,
-                                count,
-                                jai["model"] as String,
-                                jai["uid"] as String,
-                                jai["shelf"] as String,
-                                jai["usage"] as String,
-                                jai["unit"] as String
-                            )
-                            itemList.add(item)
+                    try {
+                        val json = JSONObject(it)
+                        when (json["ret"]) {
+                            "0" -> {
+                                val ja = JSONArray(json["msg"].toString())
+                                val itemList: MutableList<ShelfAdapter.ShelfItem> = ArrayList()
+                                for (i in 0 until ja.length()) {
+                                    val jai = ja[i] as JSONObject
+                                    val count = (jai["count"] as String).toInt()
+                                    val item = ShelfAdapter.ShelfItem(
+                                        jai["name"] as String,
+                                        count,
+                                        jai["model"] as String,
+                                        jai["uid"] as String,
+                                        HiroUtils.parseShelf(jai),
+                                        jai["usage"] as String,
+                                        jai["unit"] as String
+                                    )
+                                    itemList.add(item)
+                                }
+                                mRecyclerAdapter.setAdapter(itemList)
+                            }
+
+                            else -> {
+                                HiroUtils.parseJsonRet(bi.root, this, it, json["msg"] as String?)
+                            }
                         }
-                        mRecyclerAdapter.setAdapter(itemList)
-                    } else if (json["status"] == "2") {
-                        //认证过期
-                    } else {
-                        Toast.makeText(
-                            this,
-                            getText(R.string.txt_unable_to_connect),
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                    } catch (ex: Exception) {
+                        HiroUtils.logError(this, ex)
                     }
                 }, {
-                    Toast.makeText(
-                        this,
-                        getText(R.string.txt_unable_to_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                    "{\n" +
-                            "    \"status\": \"1\",\n" +
-                            "    \"data\": [\n" +
-                            "        {\n" +
-                            "            \"name\": \"Name\",\n" +
-                            "            \"model\": \"X1\",\n" +
-                            "            \"count\": \"12\",\n" +
-                            "            \"shelf\": \"3-2\",\n" +
-                            "            \"use\": \"1-1\"\n" +
-                            "        },\n" +
-                            "        {\n" +
-                            "            \"name\": \"Name2\",\n" +
-                            "            \"model\": \"S-2\",\n" +
-                            "            \"count\": \"10\",\n" +
-                            "            \"shelf\": \"3-3\",\n" +
-                            "            \"use\": \"2-1\"\n" +
-                            "        }\n" +
-                            "    ]\n" +
-                            "}"
+                    "{\"ret\":\"0\",\"msg\":[{\"desp\":\"No description\",\"uid\":\"test01\",\"unit\":\"s\",\"sshelf\":\"1\",\"usage\":\"1\",\"mshelf\":\"1\",\"count\":\"40\",\"name\":\"For Test Use Only\",\"alias\":\"First Shelf\",\"model\":\"t-1\"}]}"
                 )
             }
             keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER
@@ -275,14 +268,41 @@ class MainActivity : Activity() {
             super.onBackPressed()
     }
 
-    private fun startCapture(retCode: Int = 0x01) {
-        // 申请权限之后，调用DefaultView扫码界面。
-        ScanUtil.startScan(
-            this@MainActivity, retCode, HmsScanAnalyzerOptions.Creator().setHmsScanTypes(
-                HmsScan.ALL_SCAN_TYPE
-            ).create()
-        )
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == 128) {
+            if (permissions[0] == Manifest.permission.CAMERA) {
+                var flag = true
+                grantResults.forEach {
+                    if (it != PackageManager.PERMISSION_GRANTED)
+                        flag = false
+                }
+                if (flag) {
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_permissions_refused))
+                } else {
+                    startCapture()
+                }
+            }
+        }
+
     }
+
+    private fun startCapture(retCode: Int = 0x01) {
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE),
+                128
+            )
+        } else {
+            // 申请权限之后，调用DefaultView扫码界面。
+            ScanUtil.startScan(
+                this@MainActivity, retCode, HmsScanAnalyzerOptions.Creator().setHmsScanTypes(
+                    HmsScan.ALL_SCAN_TYPE
+                ).create()
+            )
+        }
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -317,28 +337,23 @@ class MainActivity : Activity() {
         val mRecyclerView =
             findViewById<View>(R.id.ui_include_main_function).findViewById<RecyclerView>(R.id.ui_shelf_item_list)
         mRecyclerAdapter = ShelfAdapter(
-            arrayListOf(
-                ShelfAdapter.ShelfItem("螺丝1", 10, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝2", 20, "150mm-Y", "7644758", "仓库1-货架1-第1层", "存储","个"),
-                ShelfAdapter.ShelfItem("螺丝3", 13, "120mm-X", "0678742", "仓库2-货架3-第1层", "暂存","个"),
-                ShelfAdapter.ShelfItem("螺丝4", 10, "170mm-X", "7352244", "仓库2-货架1-第1层", "无用","个"),
-                ShelfAdapter.ShelfItem("螺丝5", 50, "150mm-Z", "4893452", "仓库4-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝6", 70, "110mm-X", "xca2345", "仓库2-货架1-第1层", "熔炼","个"),
-                ShelfAdapter.ShelfItem("螺丝7", 19, "150mm-B", null, "仓库5-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝8", 64, "100mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝9", 75, "150mm-X", "65y2s1s", "仓库2-货架1-第1层", "外部","个"),
-                ShelfAdapter.ShelfItem("螺丝X", 10, "150mm-X", "1000001", "仓库6-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝A", 31, null, "1000001", "仓库2-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝B", 63, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝C", 67, "150mm-X", "1000001", "仓库1-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝D", 10, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝E", 35, "150mm-X", "1000001", "仓库2-货架1-第1层", null,"个"),
-                ShelfAdapter.ShelfItem("螺丝F", 99, "150mm-X", "1000001", "仓库A-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝G", 54, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个"),
-                ShelfAdapter.ShelfItem("螺丝H", 72, "150mm-X", "1000001", "仓库2-货架1-第1层", "维修","个")
-            ),
-            this, window,0
-        )
+            ArrayList(),
+            this, window, 0
+        ) {
+            val intent = Intent(this, IOActivity::class.java)
+            intent.putExtra("maxNum", it.count)
+            intent.putExtra("name", it.name)
+            intent.putExtra("model", if (it.model == null) getText(R.string.txt_nomodel) else it.model)
+            intent.putExtra("uid", if (it.uid == null) getText(R.string.txt_no_id) else it.uid)
+            intent.putExtra("shelf.main", it.shelf.main)
+            intent.putExtra("shelf.sub", it.shelf.sub)
+            intent.putExtra("shelf.alias", it.shelf.alias)
+            intent.putExtra("shelf.info", it.shelf.info)
+            intent.putExtra("usage.code", 0)
+            intent.putExtra("usage.alias", if (it.usage == null) getText(R.string.txt_nofor) else it.usage)
+            intent.putExtra("usage.info", "用途信息")
+            startActivity(intent)
+        }
         mRecyclerView.adapter = mRecyclerAdapter
     }
 
