@@ -57,6 +57,41 @@ class MainActivity : Activity() {
             login()
         } else
             tryLogin(HiroUtils.userName, HiroUtils.userToken)
+        HiroUtils.sendRequest(
+            "/usage", arrayListOf(), arrayListOf(),
+            {
+                try {
+                    val json = JSONObject(it)
+                    when (json["ret"]) {
+                        "0" -> {
+                            //parse Usage
+                            val ja = JSONArray(json["msg"].toString())
+                            HiroUtils.usageArray.clear()
+                            for (i in 0 until ja.length()) {
+                                val jai = ja[i] as JSONObject
+                                HiroUtils.usageArray.add(HiroUtils.Usage(jai["id"].toString().toInt(),jai["name"].toString(),jai["info"].toString()))
+                            }
+                        }
+
+                        else -> {
+                            HiroUtils.logWin(this, getString(R.string.txt_unable_to_connect), getString(R.string.txt_info_title)) {
+                                this.finishAffinity()
+                            }
+                        }
+                    }
+                } catch (ex: Exception) {
+                    HiroUtils.logError(this, ex) {
+                        this.finishAffinity()
+                    }
+                }
+            },
+            {
+                HiroUtils.logWin(this, getString(R.string.txt_unable_to_connect), getString(R.string.txt_info_title)) {
+                    this.finishAffinity()
+                }
+            },
+            "{\"ret\":\"0\",\"msg\":[{\"id\":1,\"name\":\"usage-1\",\"info\":\"test usage\"},{\"id\":2,\"name\":\"usage-2\",\"info\":\"test usage2\"}]}"
+        )
     }
 
     private fun login() {
@@ -346,9 +381,7 @@ class MainActivity : Activity() {
             intent.putExtra("shelf.sub", it.shelf.sub)
             intent.putExtra("shelf.alias", it.shelf.alias)
             intent.putExtra("shelf.info", it.shelf.info)
-            intent.putExtra("usage.code", 0)
-            intent.putExtra("usage.alias", if (it.usage == null) getText(R.string.txt_nofor) else it.usage)
-            intent.putExtra("usage.info", "用途信息")
+            intent.putExtra("usage.code", it.usage)
             startActivity(intent)
         }
         mRecyclerView.adapter = mRecyclerAdapter

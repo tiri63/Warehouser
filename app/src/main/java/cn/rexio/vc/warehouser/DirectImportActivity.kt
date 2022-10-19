@@ -10,20 +10,21 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.TextUtils
+import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.databinding.ActivityDirectImportBinding
+import com.google.android.material.chip.Chip
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.Exception
 import kotlin.concurrent.thread
+
 
 //Net request OK
 
@@ -44,6 +45,7 @@ class DirectImportActivity : Activity() {
 
         initializeData()
         initializeListener()
+        syncUsage()
     }
 
     private fun initializeData() {
@@ -311,6 +313,30 @@ class DirectImportActivity : Activity() {
             0 -> getText(R.string.txt_search_via_name)
             1 -> getText(R.string.txt_search_via_id)
             else -> getText(R.string.txt_search_via_model)
+        }
+    }
+
+    private fun syncUsage()
+    {
+        HiroUtils.usageArray.forEach {
+            val chip = Chip(this,)
+            chip.text = it.alias
+            chip.setChipBackgroundColorResource(R.color.BackgroundColor)
+            chip.setRippleColorResource(R.color.AccentColorDim)
+            chip.setTextColor(getColor(R.color.FontColor))
+            chip.setChipStrokeColorResource(R.color.FontColor)
+            chip.setOnClickListener {
+                chip.isCheckable = !chip.isCheckable
+                if(chip.isCheckable) {
+                    chip.setChipBackgroundColorResource(R.color.AccentColor)
+                    chip.setTextColor(getColor(R.color.BackgroundColor))
+                }
+                else {
+                    chip.setChipBackgroundColorResource(R.color.BackgroundColor)
+                    chip.setTextColor(getColor(R.color.FontColor))
+                }
+            }
+            bi.ui3DirectImportFor.addView(chip)
         }
     }
 }

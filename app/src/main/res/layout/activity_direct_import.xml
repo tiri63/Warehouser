@@ -72,20 +72,22 @@
 
             </TextView>
 
-            <TextView
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/ui3_direct_import_for"
-                style="@style/Theme.UI3Theme.Textview"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:padding="5dp"
-                android:text="@string/txt_dialog_click_to_set_for"
                 android:textColor="@color/FontColorDim"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/ui3_direct_import_count"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_shelf">
 
-            </TextView>
+                <!-- Chips can be declared here, or added dynamically. -->
+
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:id="@+id/ui3_direct_import_title"

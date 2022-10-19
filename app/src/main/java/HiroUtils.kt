@@ -55,7 +55,7 @@ class HiroUtils {
                 val m = str["mshelf"] as String
                 val s = str["sshelf"] as String
                 val a = if (str.has("alias")) str["alias"] as String? else null
-                val d = if (str.has("desp"))  str["desp"] as String? else null
+                val d = if (str.has("desp")) str["desp"] as String? else null
                 return Shelf(m, s, a, d)
             } catch (ex: Exception) {
                 return Shelf("-1", "-1", null, null)
@@ -154,14 +154,26 @@ class HiroUtils {
             )
         }
 
+        fun logError(context: Context, ex: Exception, onBtnClicked: () -> Unit) {
+            logWin(
+                context,
+                context.getString(R.string.txt_exception),
+                ex::class.java.toString() + "\r\n" + ex.localizedMessage, onBtnClicked
+            )
+        }
+
         fun logWin(context: Context, title: String, content: String) {
             MaterialAlertDialogBuilder(context).setTitle(title)
                 .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
-                    mainWindowContext?.let {
-                        val mc = it.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        mc.setPrimaryClip(ClipData.newPlainText("error", content))
-                    }
 
+                    dialogInterface.dismiss()
+                }.create().show()
+        }
+
+        fun logWin(context: Context, title: String, content: String, OnBtnClicked: () -> Unit) {
+            MaterialAlertDialogBuilder(context).setTitle(title)
+                .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
+                    OnBtnClicked()
                     dialogInterface.dismiss()
                 }.create().show()
         }

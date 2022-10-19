@@ -13,6 +13,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class IOActivity : Activity() {
@@ -22,7 +23,7 @@ class IOActivity : Activity() {
     private var model: String = "x2"
     private var uid: String = "100000001"
     private var shelf: HiroUtils.Shelf = HiroUtils.Shelf("", "", "", "")
-    private var usage: HiroUtils.Usage = HiroUtils.Usage(0, "", "")
+    private var usage = ArrayList<Int>()
     private var mode: Int = 0
     lateinit var usageAdapter: SpinnerAdapter<HiroUtils.Usage>
     lateinit var usagesubAdapter: SpinnerAdapter<HiroUtils.Usage>
@@ -104,22 +105,30 @@ class IOActivity : Activity() {
             try {
                 var current = bi.ui3IoCount.text.toString().toInt()
                 if (current > maxNum) {
-                    HiroUtils.logSnackBar(bi.root,getString(R.string.txt_io_format_error))
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_io_format_error))
                     return@setOnClickListener
                 }
                 if (current < 0) {
-                    HiroUtils.logSnackBar(bi.root,getString(R.string.txt_io_format_error))
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_io_format_error))
                     return@setOnClickListener
                 }
                 bi.ui3IoCount.setText(current.toString())
             } catch (_: Exception) {
-                HiroUtils.logSnackBar(bi.root,getString(R.string.txt_io_format_error))
+                HiroUtils.logSnackBar(bi.root, getString(R.string.txt_io_format_error))
                 return@setOnClickListener
             }
             bi.ui3IoLoading.visibility = View.VISIBLE
             bi.ui3IoRoot.isEnabled = false
             val para = arrayListOf("username", "token", "device", "action", "shelf", "uid", "count", "usage")
             //0 for import and 1 for export, shelf is json
+            var usagetext = ""
+            usage.forEach {
+                if (usagetext == "")
+                    usagetext = it.toString()
+                else
+                    usagetext = "$usagetext,$it"
+            }
+            usagetext = "{$usagetext}"
             val value =
                 arrayListOf(
                     HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null", "mobile", mode.toString(),
@@ -129,7 +138,7 @@ class IOActivity : Activity() {
                             put("sub", shelf.sub)
                         }
                     }.toString(),
-                    uid, bi.ui3IoCount.text.toString(), usage.code.toString()
+                    uid, bi.ui3IoCount.text.toString(), usagetext
                 )
             HiroUtils.sendRequest(
                 "/io", para, value,
@@ -283,7 +292,15 @@ class IOActivity : Activity() {
 
     private fun getExtraParameters() {
         maxNum = intent.getIntExtra("maxNum", 0)
-        usage.code = intent.getIntExtra("usage.code", 0)
+        val code = intent.getStringExtra("usage.code")
+        code?.let {
+            val sp = it.split(",")
+            sp.forEach {
+                val itt = it.replace(" ", "").replace("{", "").replace("}", "")
+                if (itt != "")
+                    usage.add(itt.toInt())
+            }
+        }
         intent.getStringExtra("name")?.let { name = it }
         intent.getStringExtra("model")?.let { model = it }
         intent.getStringExtra("uid")?.let { uid = it }
@@ -291,8 +308,6 @@ class IOActivity : Activity() {
         intent.getStringExtra("shelf.sub")?.let { shelf.sub = it }
         intent.getStringExtra("shelf.alias")?.let { shelf.alias = it }
         intent.getStringExtra("shelf.info")?.let { shelf.info = it }
-        intent.getStringExtra("usage.alias")?.let { usage.alias = it }
-        intent.getStringExtra("usage.info")?.let { usage.info = it }
     }
 
     private fun setExtraParameters() {
@@ -300,7 +315,18 @@ class IOActivity : Activity() {
         bi.ui3IoModel.text = model
         bi.ui3IoUid.text = uid
         bi.ui3IoShelf.text = "${shelf.main} - ${shelf.sub} (${shelf.alias})"
-        bi.ui3IoFor.text = usage.alias
+        var usagetxt = ""
+        usage.forEach { it2 ->
+            HiroUtils.usageArray.forEach {
+                if (it.code == it2) {
+                    if (usagetxt == "")
+                        usagetxt = it.alias
+                    else
+                        usagetxt = usagetxt + "," + it.alias
+                }
+            }
+        }
+        bi.ui3IoFor.text = usagetxt
         bi.ui3IoLeft.text = String.format(getText(R.string.txt_dialog_item_count_left).toString(), maxNum)
     }
 
