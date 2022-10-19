@@ -56,4 +56,5 @@
 	<string name="txt_profile_pwd_nomatch">New password and confirmed one don\'t match</string>
 	<string name="txt_permissions_refused">Required permissions not provided</string>
 	<string name="txt_forget_pwd_tip">Contact the administrator to reset your password</string>
+	<string name="txt_io_format_error">Input format incorrect</string>
 </resources>

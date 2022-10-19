@@ -1,14 +1,25 @@
 package cn.rexio.vc.warehouser
 
 import HiroUtils
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Parcelable
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.databinding.ActivityDirectImportBinding
+import com.huawei.hms.hmsscankit.ScanUtil
+import com.huawei.hms.ml.scan.HmsScan
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
@@ -20,6 +31,7 @@ class DirectImportActivity : Activity() {
     private lateinit var bi: ActivityDirectImportBinding
     private var searchMethod = 0
     private lateinit var listAdapter: ShelfAdapter
+    val maxNum = 999
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -96,6 +108,7 @@ class DirectImportActivity : Activity() {
                     "/search", paraName, paraValue,
                     {
                         bi.ui3DirectImportSearchLoading.visibility = View.INVISIBLE
+                        bi.ui3DirectImportList.visibility = View.VISIBLE
                         try {
                             val json = JSONObject(it)
                             when (json["ret"]) {
@@ -128,12 +141,99 @@ class DirectImportActivity : Activity() {
                     },
                     {
                         bi.ui3DirectImportSearchLoading.visibility = View.INVISIBLE
+                        bi.ui3DirectImportList.visibility = View.VISIBLE
                         HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                     },
                     "{\"ret\":\"0\",\"msg\":[{\"uid\":\"test01\",\"unit\":\"s\",\"name\":\"For Test Use Only\",\"model\":\"t-1\"},{\"uid\":\"test02\",\"unit\":\"s\",\"name\":\"For Test Use Only\",\"model\":\"t-2\"}]}\n"
                 )
             }
             keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER
+        }
+        bi.ui3DirectImportShelf.setOnClickListener {
+            startCapture(0x02)
+        }
+        bi.ui3DirectImportMin.setOnClickListener {
+            bi.ui3DirectImportCount.setText("0")
+        }
+        bi.ui3DirectImportMax.setOnClickListener {
+            bi.ui3DirectImportCount.setText(maxNum.toString())
+        }
+        bi.ui3DirectImportMinus.setOnClickListener {
+            try {
+                var current = bi.ui3DirectImportCount.text.toString().toInt() - 1
+                if (current < 0)
+                    current = 0
+                bi.ui3DirectImportCount.setText(current.toString())
+            } catch (_: Exception) {
+                bi.ui3DirectImportCount.setText("0")
+            }
+        }
+        bi.ui3DirectImportPlus.setOnClickListener {
+            try {
+                var current = bi.ui3DirectImportCount.text.toString().toInt() + 1
+                if (current > maxNum)
+                    current = maxNum
+                bi.ui3DirectImportCount.setText(current.toString())
+            } catch (_: Exception) {
+                bi.ui3DirectImportCount.setText(maxNum.toString())
+            }
+        }
+        bi.ui3DirectImportBtn.setOnClickListener {
+            HiroUtils.logSnackBar(bi.root,"需要提供用途")
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == 128) {
+            if (permissions[0] == Manifest.permission.CAMERA) {
+                var flag = true
+                grantResults.forEach {
+                    if (it != PackageManager.PERMISSION_GRANTED)
+                        flag = false
+                }
+                if (flag) {
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_permissions_refused))
+                } else {
+                    startCapture(0x02)
+                }
+            }
+        }
+
+    }
+
+    private fun startCapture(retCode: Int = 0x01) {
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE),
+                128
+            )
+        } else {
+            // 申请权限之后，调用DefaultView扫码界面。
+            ScanUtil.startScan(
+                this@DirectImportActivity, retCode, HmsScanAnalyzerOptions.Creator().setHmsScanTypes(
+                    HmsScan.ALL_SCAN_TYPE
+                ).create()
+            )
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK || data == null) {
+            return
+        }
+        // 从onActivityResult返回data中，用ScanUtil.RESULT作为key值取到HmsScan返回值。
+        else if (requestCode == 0x02) {
+            when (val obj: Parcelable? = data.getParcelableExtra(ScanUtil.RESULT)) {
+                is HmsScan -> {
+                    if (!TextUtils.isEmpty(obj.getOriginalValue())) {
+                        bi.ui3DirectImportShelf.text = obj.getOriginalValue()
+                    }
+                    return
+                }
+            }
         }
     }
 

@@ -2,17 +2,18 @@ package cn.rexio.vc.warehouser
 
 import HiroUtils
 import SpinnerAdapter
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.databinding.ActivityIoBinding
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class IOActivity : Activity() {
     private lateinit var bi: ActivityIoBinding
@@ -52,19 +53,69 @@ class IOActivity : Activity() {
             changeMode()
         }
         bi.ui3IoLog.setOnClickListener {
-            val intent = Intent(this@IOActivity, LogActivity::class.java)
-            intent.putExtra(
-                "log",
-                "2022-9-20 13:05:00 李四从仓库1-货架2-第4层 出库了 50个 螺丝（型号: A1, 唯一编码: 10000001），用于运输工作。\n" +
-                        "2022-9-21 16:00:00 张三向仓库1-货架2-第4层 入库了 70个 螺丝（型号: X2, 唯一编码: 10000004），并标记为运输用\n" +
-                        "2022-9-21 16:00:00 张三向仓库1-货架2-第4层 入库了 70个 螺丝（型号: X2, 唯一编码: 10000004），并标记为运输用\n" +
-                        "2022-9-21 16:00:00 张三向仓库1-货架2-第4层 入库了 70个 螺丝（型号: X2, 唯一编码: 10000004），并标记为运输用\n" +
-                        "2022-9-21 16:00:00 张三向仓库1-货架2-第4层 入库了 70个 螺丝（型号: X2, 唯一编码: 10000004），并标记为运输用\n" +
-                        "2022-9-21 16:00:00 张三向仓库1-货架2-第4层 入库了 70个 螺丝（型号: X2, 唯一编码: 10000004），并标记为运输用"
+            bi.ui3IoLog.isEnabled = false
+            HiroUtils.sendRequest(
+                "/log",
+                arrayListOf("username", "token", "device", "action", "mshelf", "sshelf", "uid"),
+                arrayListOf(
+                    HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null",
+                    "mobile", "2", shelf.main, shelf.sub, uid
+                ),
+                {
+                    try {
+                        val json = JSONObject(it)
+                        when (json["ret"]) {
+                            "0" -> {
+                                val ja = JSONArray(json["msg"].toString())
+                                var txt = ""
+                                for (i in 0 until ja.length()) {
+                                    val jai = ja[i] as JSONObject
+                                    txt =
+                                        txt + "${timeStamp2Date(jai["time"].toString())} ${jai["nickname"]} " +
+                                                "${
+                                                    if (jai["action"] == "0") getString(R.string.txt_import) else getString(
+                                                        R.string.txt_export
+                                                    )
+                                                } " +
+                                                " ${jai["name"]} ${jai["count"]}${jai["unit"]}"
+                                }
+                                val intent = Intent(this@IOActivity, LogActivity::class.java)
+                                intent.putExtra("log", txt)
+                                startActivity(intent)
+                            }
+
+                            else -> {
+                                HiroUtils.parseJsonRet(bi.root, this, it, json["msg"] as String?)
+                            }
+                        }
+                    } catch (ex: Exception) {
+                        HiroUtils.logError(this, ex)
+                    }
+                    bi.ui3IoLog.isEnabled = true
+                },
+                {
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
+                    bi.ui3IoLog.isEnabled = true
+                },
+                "{\"ret\":\"0\",\"msg\":[{\"uid\":\"test01\",\"unit\":\"s\",\"functions\":\"1\",\"sshelf\":\"1\",\"mshelf\":\"1\",\"count\":\"20\",\"nickname\":\"Hiro\",\"name\":\"For Test Use Only\",\"action\":\"0\",\"time\":\"1666139123\",\"user\":\"hiro\"}]}"
             )
-            startActivity(intent)
         }
         bi.ui3IoBtn.setOnClickListener {
+            try {
+                var current = bi.ui3IoCount.text.toString().toInt()
+                if (current > maxNum) {
+                    HiroUtils.logSnackBar(bi.root,getString(R.string.txt_io_format_error))
+                    return@setOnClickListener
+                }
+                if (current < 0) {
+                    HiroUtils.logSnackBar(bi.root,getString(R.string.txt_io_format_error))
+                    return@setOnClickListener
+                }
+                bi.ui3IoCount.setText(current.toString())
+            } catch (_: Exception) {
+                HiroUtils.logSnackBar(bi.root,getString(R.string.txt_io_format_error))
+                return@setOnClickListener
+            }
             bi.ui3IoLoading.visibility = View.VISIBLE
             bi.ui3IoRoot.isEnabled = false
             val para = arrayListOf("username", "token", "device", "action", "shelf", "uid", "count", "usage")
@@ -105,6 +156,44 @@ class IOActivity : Activity() {
                 },
                 "{\"ret\":\"0\"}"
             )
+        }
+        bi.ui3IoMin.setOnClickListener {
+            bi.ui3IoCount.setText("0")
+        }
+        bi.ui3IoMax.setOnClickListener {
+            bi.ui3IoCount.setText(maxNum.toString())
+        }
+        bi.ui3IoMinus.setOnClickListener {
+            try {
+                var current = bi.ui3IoCount.text.toString().toInt() - 1
+                if (current < 0)
+                    current = 0
+                bi.ui3IoCount.setText(current.toString())
+            } catch (_: Exception) {
+                bi.ui3IoCount.setText("0")
+            }
+        }
+        bi.ui3IoPlus.setOnClickListener {
+            try {
+                var current = bi.ui3IoCount.text.toString().toInt() + 1
+                if (current > maxNum)
+                    current = maxNum
+                bi.ui3IoCount.setText(current.toString())
+            } catch (_: Exception) {
+                bi.ui3IoCount.setText(maxNum.toString())
+            }
+        }
+    }
+
+    fun timeStamp2Date(time: String): String {
+        val timeLong = time.toLong() * 1000
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA) //要转换的时间格式
+        val date: Date
+        return try {
+            date = sdf.parse(sdf.format(timeLong)) as Date
+            sdf.format(date)
+        } catch (_: Exception) {
+            "{???}"
         }
     }
 

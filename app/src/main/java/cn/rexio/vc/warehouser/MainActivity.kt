@@ -18,7 +18,6 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import cn.rexio.vc.warehouser.databinding.MainLayoutBinding
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
@@ -47,7 +46,7 @@ class MainActivity : Activity() {
         initalize_Components()
         HiroUtils.setStatusBarColor(window, resources)
         loadSettings()
-        fakeData()
+        initialzeData()
     }
 
     fun loadSettings() {
@@ -76,7 +75,6 @@ class MainActivity : Activity() {
                         val json = JSONObject(it)
                         when (json["ret"]) {
                             "0" -> {
-                                HiroUtils.logSnackBar(bi.root, getString(R.string.txt_successed))
                             }
 
                             else -> {
@@ -279,7 +277,7 @@ class MainActivity : Activity() {
                 if (flag) {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_permissions_refused))
                 } else {
-                    startCapture()
+                    startCapture(0x02)
                 }
             }
         }
@@ -333,9 +331,8 @@ class MainActivity : Activity() {
     }
 
 
-    private fun fakeData() {
-        val mRecyclerView =
-            findViewById<View>(R.id.ui_include_main_function).findViewById<RecyclerView>(R.id.ui_shelf_item_list)
+    private fun initialzeData() {
+        val mRecyclerView = bi.uiIncludeMainFunction.uiShelfItemList
         mRecyclerAdapter = ShelfAdapter(
             ArrayList(),
             this, window, 0
