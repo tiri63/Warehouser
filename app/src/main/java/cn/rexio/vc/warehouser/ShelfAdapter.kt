@@ -70,10 +70,12 @@ class ShelfAdapter(
         if (type == 1) {
             holder.shelfView.visibility = View.INVISIBLE
             holder.countView.visibility = View.INVISIBLE
+            holder.unitView.visibility = View.INVISIBLE
         }
         else {
             holder.shelfView.visibility = View.VISIBLE
             holder.countView.visibility = View.VISIBLE
+            holder.unitView.visibility = View.VISIBLE
             holder.countView.text = item.count.toString()
             holder.unitView.text = item.unit ?: ""
         }

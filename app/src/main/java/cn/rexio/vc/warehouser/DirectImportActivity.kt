@@ -146,7 +146,8 @@ class DirectImportActivity : Activity() {
                         bi.ui3DirectImportList.visibility = View.VISIBLE
                         HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                     },
-                    "{\"ret\":\"0\",\"msg\":[{\"uid\":\"test01\",\"unit\":\"s\",\"name\":\"For Test Use Only\",\"model\":\"t-1\"},{\"uid\":\"test02\",\"unit\":\"s\",\"name\":\"For Test Use Only\",\"model\":\"t-2\"}]}\n"
+                    "{\"ret\":\"0\",\"msg\":[{\"uid\":\"screw-m20\",\"unit\":\"个\",\"name\":\"螺丝(M20)\",\"model\":\"m20\"},{\"uid\":\"screw-m25\",\"unit\":\"个\",\"name\":\"螺丝(M25)\",\"model\":\"m25\"}," +
+                            "{\"uid\":\"cable-10mm\",\"unit\":\"米\",\"name\":\"线缆(10mm)\",\"model\":\"10mm\"}]}\n"
                 )
             }
             keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER
@@ -181,7 +182,7 @@ class DirectImportActivity : Activity() {
             }
         }
         bi.ui3DirectImportBtn.setOnClickListener {
-            HiroUtils.logSnackBar(bi.root,"需要提供用途")
+            HiroUtils.logSnackBar(bi.root,"完成")
         }
     }
 

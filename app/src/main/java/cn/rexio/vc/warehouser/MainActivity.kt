@@ -90,7 +90,7 @@ class MainActivity : Activity() {
                     this.finishAffinity()
                 }
             },
-            "{\"ret\":\"0\",\"msg\":[{\"id\":1,\"name\":\"usage-1\",\"info\":\"test usage\"},{\"id\":2,\"name\":\"usage-2\",\"info\":\"test usage2\"}]}"
+            "{\"ret\":\"0\",\"msg\":[{\"id\":1,\"name\":\"暂存\",\"info\":\"test usage\"},{\"id\":2,\"name\":\"浇筑\",\"info\":\"test usage2\"},{\"id\":3,\"name\":\"冲天炉\",\"info\":\"test usage3\"}]}"
         )
     }
 
@@ -259,7 +259,8 @@ class MainActivity : Activity() {
                 }, {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                    "{\"ret\":\"0\",\"msg\":[{\"desp\":\"No description\",\"uid\":\"test01\",\"unit\":\"s\",\"sshelf\":\"1\",\"usage\":\"1\",\"mshelf\":\"1\",\"count\":\"40\",\"name\":\"For Test Use Only\",\"alias\":\"First Shelf\",\"model\":\"t-1\"}]}"
+                    "{\"ret\":\"0\",\"msg\":[{\"desp\":\"No description\",\"uid\":\"screw-m20\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"1\",\"mshelf\":\"1\",\"count\":\"40\",\"name\":\"螺丝(M20)\",\"alias\":\"左侧-1\",\"model\":\"M20\"}," +
+                            "{\"desp\":\"No description\",\"uid\":\"screw-m25\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"2,3\",\"mshelf\":\"1\",\"count\":\"30\",\"name\":\"螺丝(M25)\",\"alias\":\"左侧-1\",\"model\":\"M25\"}]}"
                 )
             }
             keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER

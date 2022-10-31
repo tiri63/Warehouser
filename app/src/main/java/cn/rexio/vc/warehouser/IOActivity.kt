@@ -71,6 +71,8 @@ class IOActivity : Activity() {
                                 var txt = ""
                                 for (i in 0 until ja.length()) {
                                     val jai = ja[i] as JSONObject
+                                    if (txt != "")
+                                        txt += "\r\n"
                                     txt =
                                         txt + "${timeStamp2Date(jai["time"].toString())} ${jai["nickname"]} " +
                                                 "${
@@ -79,6 +81,26 @@ class IOActivity : Activity() {
                                                     )
                                                 } " +
                                                 " ${jai["name"]} ${jai["count"]}${jai["unit"]}"
+                                    try {
+                                        var usage = getString(R.string.txt_log_for)
+                                        var usage_s = ""
+                                        val func = jai["functions"].toString().split(",")
+                                        func.forEach {
+                                            val fu = it.toInt()
+                                            HiroUtils.usageArray.forEach {
+                                                if (it.code == fu) {
+                                                    if (usage_s != "")
+                                                        usage_s = usage_s + "," + it.alias
+                                                    else
+                                                        usage_s = it.alias
+                                                }
+                                            }
+                                        }
+                                        usage = String.format(usage, usage_s)
+                                        txt += usage
+                                    } catch (ex: Exception) {
+                                        HiroUtils.logError(this, ex)
+                                    }
                                 }
                                 val intent = Intent(this@IOActivity, LogActivity::class.java)
                                 intent.putExtra("log", txt)
@@ -98,7 +120,8 @@ class IOActivity : Activity() {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                     bi.ui3IoLog.isEnabled = true
                 },
-                "{\"ret\":\"0\",\"msg\":[{\"uid\":\"test01\",\"unit\":\"s\",\"functions\":\"1\",\"sshelf\":\"1\",\"mshelf\":\"1\",\"count\":\"20\",\"nickname\":\"Hiro\",\"name\":\"For Test Use Only\",\"action\":\"0\",\"time\":\"1666139123\",\"user\":\"hiro\"}]}"
+                "{\"ret\":\"0\",\"msg\":[{\"uid\":\"screw-m25\",\"unit\":\"个\",\"functions\":\"1\",\"sshelf\":\"1\",\"mshelf\":\"1\",\"count\":\"20\",\"nickname\":\"Hiro\",\"name\":\"螺丝(M25)\",\"action\":\"0\",\"time\":\"1666139123\",\"user\":\"hiro\"}," +
+                        "{\"uid\":\"screw-m25\",\"unit\":\"个\",\"functions\":\"2,3\",\"sshelf\":\"1\",\"mshelf\":\"1\",\"count\":\"10\",\"nickname\":\"Hiro\",\"name\":\"螺丝(M25)\",\"action\":\"1\",\"time\":\"1666149123\",\"user\":\"hiro\"}]}"
             )
         }
         bi.ui3IoBtn.setOnClickListener {
