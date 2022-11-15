@@ -25,10 +25,6 @@ class IOActivity : Activity() {
     private var shelf: HiroUtils.Shelf = HiroUtils.Shelf("", "", "", "")
     private var usage = ArrayList<Int>()
     private var mode: Int = 0
-    lateinit var usageAdapter: SpinnerAdapter<HiroUtils.Usage>
-    lateinit var usagesubAdapter: SpinnerAdapter<HiroUtils.Usage>
-    val usageList = arrayListOf<HiroUtils.Usage>()
-    val usagesubList = arrayListOf<HiroUtils.Usage>()
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
@@ -246,24 +242,6 @@ class IOActivity : Activity() {
                 arrayOf(0f, -100f, 0f, 0f),
                 { it.visibility = View.VISIBLE },
                 { it.visibility = View.INVISIBLE })
-            HiroUtils.animateView(
-                bi.ui3IoForSpinner,
-                200,
-                arrayOf(0f, 1f),
-                arrayOf(100f, 0f, 0f, 0f),
-                { it.visibility = View.VISIBLE },
-                {
-                    it.visibility = View.VISIBLE
-                })
-            HiroUtils.animateView(
-                bi.ui3IoForSpinnerSub,
-                200,
-                arrayOf(0f, 1f),
-                arrayOf(100f, 0f, 0f, 0f),
-                { it.visibility = View.VISIBLE },
-                {
-                    it.visibility = View.VISIBLE
-                })
         } else {
             mode = 0
             bi.ui3IoReverse.text = getText(R.string.txt_cast_to_export)
@@ -275,42 +253,10 @@ class IOActivity : Activity() {
                 arrayOf(-100f, 0f, 0f, 0f),
                 { it.visibility = View.VISIBLE },
                 { it.visibility = View.VISIBLE })
-            HiroUtils.animateView(
-                bi.ui3IoForSpinner,
-                200,
-                arrayOf(1f, 0f),
-                arrayOf(0f, 100f, 0f, 0f),
-                { it.visibility = View.VISIBLE },
-                {
-                    it.visibility = View.INVISIBLE
-                })
-            HiroUtils.animateView(
-                bi.ui3IoForSpinnerSub,
-                200,
-                arrayOf(1f, 0f),
-                arrayOf(0f, 100f, 0f, 0f),
-                { it.visibility = View.VISIBLE },
-                {
-                    it.visibility = View.INVISIBLE
-                })
         }
     }
 
     private fun setSpinner() {
-        usageAdapter = SpinnerAdapter(this, usageList, "alias", HiroUtils.Usage::class.java)
-        usagesubAdapter = SpinnerAdapter(this, usagesubList, "alias", HiroUtils.Usage::class.java)
-        bi.ui3IoForSpinner.adapter = usageAdapter
-        bi.ui3IoForSpinnerSub.adapter = usagesubAdapter
-        usageList.add(HiroUtils.Usage(0, "维修", "维修"))
-        usageList.add(HiroUtils.Usage(1, "电机", "电机"))
-        usageList.add(HiroUtils.Usage(2, "器件", "器件"))
-        usageList.add(HiroUtils.Usage(3, "冲天炉", "冲天炉"))
-        usageList.add(HiroUtils.Usage(4, "办公室", "办公室"))
-        usageAdapter.notifyDataSetChanged()
-        usagesubList.add(HiroUtils.Usage(0, "借出", "借出"))
-        usagesubList.add(HiroUtils.Usage(1, "维护", "维护"))
-        usagesubList.add(HiroUtils.Usage(2, "废弃", "废弃"))
-        usagesubAdapter.notifyDataSetChanged()
     }
 
     private fun getExtraParameters() {
