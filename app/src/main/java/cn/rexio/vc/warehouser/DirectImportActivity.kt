@@ -33,6 +33,7 @@ class DirectImportActivity : Activity() {
     private var searchMethod = 0
     private lateinit var listAdapter: ShelfAdapter
     val maxNum = 999
+    private var usage: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -126,6 +127,7 @@ class DirectImportActivity : Activity() {
                                             jai["uid"] as String,
                                             HiroUtils.parseShelf(json),
                                             null,
+                                            null,
                                             null
                                         )
                                         itemList.add(item)
@@ -182,7 +184,56 @@ class DirectImportActivity : Activity() {
             }
         }
         bi.ui3DirectImportBtn.setOnClickListener {
-            HiroUtils.logSnackBar(bi.root,"完成")
+            if (!bi.ui3DirectImportShelf.text.contains(".*-.*-.*")) {
+                return@setOnClickListener
+            }
+            val para = arrayListOf("username", "token", "device", "action", "shelf", "uid", "count", "usage")
+            //0 for import and 1 for export, shelf is sfid
+            var usagetext = ""
+            usage.forEach {
+                if (usagetext == "")
+                    usagetext = it
+                else
+                    usagetext = "$usagetext,$it"
+            }
+            usagetext = "{$usagetext}"
+            val value =
+                arrayListOf(
+                    HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null", "mobile", "0",
+                    bi.ui3DirectImportShelf.text.toString(),
+                    bi.ui3DirectImportUid.text.toString(), bi.ui3DirectImportCount.text.toString(), usagetext
+                )
+            bi.ui3DirectImportBtnLoading.visibility = View.VISIBLE
+            bi.ui3DirectImportBtn.isEnabled = false
+            HiroUtils.sendRequest(
+                "/io", para, value,
+                {
+                    bi.ui3DirectImportBtnLoading.visibility = View.INVISIBLE
+                    try {
+                        val json = JSONObject(it)
+                        when (json["ret"]) {
+                            "0" -> {
+                                HiroUtils.logSnackBar(bi.root, getString(R.string.txt_successed))
+                                this.finish()
+                            }
+
+                            else -> {
+                                bi.ui3DirectImportBtn.isEnabled = true
+                                HiroUtils.parseJsonRet(bi.root, this, it, json["msg"] as String?)
+                            }
+                        }
+                    } catch (ex: Exception) {
+                        bi.ui3DirectImportBtn.isEnabled = true
+                        HiroUtils.logError(this, ex)
+                    }
+                },
+                {
+                    bi.ui3DirectImportBtnLoading.visibility = View.INVISIBLE
+                    bi.ui3DirectImportBtn.isEnabled = true
+                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
+                },
+                "{\"ret\":\"0\"}"
+            )
         }
     }
 
@@ -317,24 +368,29 @@ class DirectImportActivity : Activity() {
         }
     }
 
-    private fun syncUsage()
-    {
+    private fun syncUsage() {
         HiroUtils.usageArray.forEach {
-            val chip = Chip(this,)
+            val chip = Chip(this)
             chip.text = it.alias
+            chip.tag = it.code.toString()
             chip.setChipBackgroundColorResource(R.color.BackgroundColor)
             chip.setRippleColorResource(R.color.AccentColorDim)
             chip.setTextColor(getColor(R.color.FontColor))
             chip.setChipStrokeColorResource(R.color.FontColor)
             chip.setOnClickListener {
                 chip.isCheckable = !chip.isCheckable
-                if(chip.isCheckable) {
+                if (chip.isCheckable) {
                     chip.setChipBackgroundColorResource(R.color.AccentColor)
                     chip.setTextColor(getColor(R.color.BackgroundColor))
-                }
-                else {
+                    if (!usage.contains(chip.tag as String)) {
+                        usage.add(chip.tag as String)
+                    }
+                } else {
                     chip.setChipBackgroundColorResource(R.color.BackgroundColor)
                     chip.setTextColor(getColor(R.color.FontColor))
+                    if (usage.contains(chip.tag as String)) {
+                        usage.remove(chip.tag as String)
+                    }
                 }
             }
             bi.ui3DirectImportFor.addView(chip)

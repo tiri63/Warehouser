@@ -58,7 +58,7 @@ class MainActivity : Activity() {
         } else
             tryLogin(HiroUtils.userName, HiroUtils.userToken)
         HiroUtils.sendRequest(
-            "/usage", arrayListOf(), arrayListOf(),
+            "/usage", arrayListOf("action"), arrayListOf("2"),
             {
                 try {
                     val json = JSONObject(it)
@@ -69,12 +69,22 @@ class MainActivity : Activity() {
                             HiroUtils.usageArray.clear()
                             for (i in 0 until ja.length()) {
                                 val jai = ja[i] as JSONObject
-                                HiroUtils.usageArray.add(HiroUtils.Usage(jai["id"].toString().toInt(),jai["name"].toString(),jai["info"].toString()))
+                                HiroUtils.usageArray.add(
+                                    HiroUtils.Usage(
+                                        jai["id"].toString().toInt(),
+                                        jai["name"].toString(),
+                                        jai["info"].toString()
+                                    )
+                                )
                             }
                         }
 
                         else -> {
-                            HiroUtils.logWin(this, getString(R.string.txt_unable_to_connect), getString(R.string.txt_info_title)) {
+                            HiroUtils.logWin(
+                                this,
+                                getString(R.string.txt_info_title),
+                                getString(R.string.txt_unable_to_connect)
+                            ) {
                                 this.finishAffinity()
                             }
                         }
@@ -86,7 +96,11 @@ class MainActivity : Activity() {
                 }
             },
             {
-                HiroUtils.logWin(this, getString(R.string.txt_unable_to_connect), getString(R.string.txt_info_title)) {
+                HiroUtils.logWin(
+                    this,
+                    getString(R.string.txt_info_title),
+                    getString(R.string.txt_unable_to_connect)
+                ) {
                     this.finishAffinity()
                 }
             },
@@ -231,8 +245,11 @@ class MainActivity : Activity() {
                             "0" -> {
                                 val ja = JSONArray(json["msg"].toString())
                                 val itemList: MutableList<ShelfAdapter.ShelfItem> = ArrayList()
+
                                 for (i in 0 until ja.length()) {
                                     val jai = ja[i] as JSONObject
+                                    val depart =
+                                        if (jai.has("depart")) jai["depart"] as String else getText(R.string.txt_nodepart)
                                     val count = (jai["count"] as String).toInt()
                                     val item = ShelfAdapter.ShelfItem(
                                         jai["name"] as String,
@@ -241,7 +258,8 @@ class MainActivity : Activity() {
                                         jai["uid"] as String,
                                         HiroUtils.parseShelf(jai),
                                         jai["usage"] as String,
-                                        jai["unit"] as String
+                                        jai["unit"] as String,
+                                        depart.toString()
                                     )
                                     itemList.add(item)
                                 }
@@ -259,8 +277,8 @@ class MainActivity : Activity() {
                 }, {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                    "{\"ret\":\"0\",\"msg\":[{\"desp\":\"No description\",\"uid\":\"screw-m20\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"1\",\"mshelf\":\"1\",\"count\":\"40\",\"name\":\"螺丝(M20)\",\"alias\":\"左侧-1\",\"model\":\"M20\"}," +
-                            "{\"desp\":\"No description\",\"uid\":\"screw-m25\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"2,3\",\"mshelf\":\"1\",\"count\":\"30\",\"name\":\"螺丝(M25)\",\"alias\":\"左侧-1\",\"model\":\"M25\"}]}"
+                    "{\"ret\":\"0\",\"msg\":[{\"desp\":\"No description\",\"uid\":\"screw-m20\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"1\",\"mshelf\":\"1\",\"count\":\"40\",\"name\":\"螺丝(M20)\",\"alias\":\"左侧-1\",\"model\":\"M20\",\"depart\":\"熔炼\"}," +
+                            "{\"desp\":\"No description\",\"uid\":\"screw-m25\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"2,3\",\"mshelf\":\"1\",\"count\":\"30\",\"name\":\"螺丝(M25)\",\"alias\":\"左侧-1\",\"model\":\"M25\",\"depart\":\"造型\"}]}"
                 )
             }
             keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER
@@ -383,6 +401,7 @@ class MainActivity : Activity() {
             intent.putExtra("shelf.alias", it.shelf.alias)
             intent.putExtra("shelf.info", it.shelf.info)
             intent.putExtra("usage.code", it.usage)
+            intent.putExtra("depart", it.depart)
             startActivity(intent)
         }
         mRecyclerView.adapter = mRecyclerAdapter

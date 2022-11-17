@@ -47,7 +47,9 @@
         android:text="个"
         android:textColor="@color/FontColorDim"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/ui_shelf_item_count" app:layout_constraintTop_toTopOf="@+id/ui_shelf_item_count">
+        app:layout_constraintBottom_toBottomOf="@+id/ui_shelf_item_count"
+        app:layout_constraintStart_toEndOf="@+id/ui_shelf_item_count"
+        app:layout_constraintTop_toTopOf="@+id/ui_shelf_item_count">
 
     </TextView>
 
@@ -92,6 +94,20 @@
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/ui_shelf_item_name"
         app:layout_constraintTop_toBottomOf="@+id/ui_shelf_item_name">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/ui_goods_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Depart 3"
+        android:textColor="@color/FontColorDim"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_shelf_item_count"
+        app:layout_constraintStart_toEndOf="@+id/ui_shelf_item_unit"
+        app:layout_constraintTop_toTopOf="@+id/ui_shelf_item_count">
 
     </TextView>
 

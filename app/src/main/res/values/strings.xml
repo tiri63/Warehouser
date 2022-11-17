@@ -57,4 +57,5 @@
     <string name="txt_forget_pwd_tip">请联系管理员更新密码</string>
     <string name="txt_io_format_error">输入的格式不正确</string>
     <string name="txt_log_for">，用于 %s。</string>
+    <string name="txt_nodepart">无所属部门</string>
 </resources>

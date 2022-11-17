@@ -215,6 +215,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <ProgressBar
+                android:id="@+id/ui3_direct_import_btn_loading"
+                style="@style/Theme.UI3Theme.CircularProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ui3_direct_import_btn"
+                app:layout_constraintTop_toBottomOf="@+id/ui3_direct_import_btn"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

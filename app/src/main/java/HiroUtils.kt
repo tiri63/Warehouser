@@ -3,27 +3,35 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.content.*
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.LoginActivity
 import cn.rexio.vc.warehouser.MainActivity
 import cn.rexio.vc.warehouser.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.*
+import okio.IOException
 import org.json.JSONObject
 
 
 class HiroUtils {
-    class Shelf(var main: String, var sub: String, var alias: String?, var info: String?) {}
+    class Shelf(var depart: String, var main: String, var sub: String, var alias: String?, var info: String?) {}
     class Usage(var code: Int, var alias: String, var info: String) {}
     companion object Factory {
         @SuppressLint("StaticFieldLeak")
@@ -33,6 +41,7 @@ class HiroUtils {
         var userToken: String? = null
         var baseURL = "http://10.3.201.64/warehouser"
         var usageArray = ArrayList<Usage>()
+        var userDepart: String? = null
         fun setStatusBarColor(window: Window, resources: Resources) {
             val isLight =
                 (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO
@@ -51,14 +60,18 @@ class HiroUtils {
         }
 
         fun parseShelf(str: JSONObject): Shelf {
-            try {
-                val m = str["mshelf"] as String
-                val s = str["sshelf"] as String
+            return try {
                 val a = if (str.has("alias")) str["alias"] as String? else null
                 val d = if (str.has("desp")) str["desp"] as String? else null
-                return Shelf(m, s, a, d)
+                val shelf = str["shelf"] as String
+                val sarray = shelf.split("-")
+                if (sarray.size >= 3) {
+                    Shelf(sarray[0], sarray[1], sarray[2], a, d)
+                } else {
+                    Shelf("-1", "-1", "-1", a, d)
+                }
             } catch (ex: Exception) {
-                return Shelf("-1", "-1", null, null)
+                Shelf("-1", "-1", "-1", null, null)
             }
         }
 
@@ -104,11 +117,11 @@ class HiroUtils {
             success: String
         ) {
             val x_url = baseURL + url
-            onResponse.invoke(success)
+            //onResponse.invoke(success)
 
-            /*val num = paraName.count().coerceAtMost(paraValue.count())
+            val num = paraName.count().coerceAtMost(paraValue.count())
             val hBuilder = Headers.Builder()
-            for (lo in 0..num) {
+            for (lo in 0 until num) {
                 hBuilder.add(paraName[lo], paraValue[lo])
             }
             val request = Request.Builder()
@@ -119,13 +132,23 @@ class HiroUtils {
             OkHttpClient().newCall(request)
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        onFailure.invoke()
+                        GlobalScope.launch(Dispatchers.Main) {
+                            onFailure.invoke()
+                            mainWindowContext?.let { logError(it,e) }
+                        }
                     }
 
                     override fun onResponse(call: Call, response: Response) {
-                        onResponse.invoke(response.message)
+                        GlobalScope.launch(Dispatchers.Main) {
+                            response.body?.let {
+                                onResponse.invoke(it.string())
+                            }
+                                //Toast.makeText(mainWindowContext,it.string(),Toast.LENGTH_SHORT).show()}
+
+                            //mainWindowContext?.let { response.body?.let { it1 -> logWin(it,"ret", it1.string()) } }}
+                        }
                     }
-                })*/
+                })
         }
 
         fun logOut() {
@@ -163,19 +186,34 @@ class HiroUtils {
         }
 
         fun logWin(context: Context, title: String, content: String) {
-            MaterialAlertDialogBuilder(context).setTitle(title)
-                .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
+            try
+            {
+                MaterialAlertDialogBuilder(context).setTitle(title)
+                    .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
+                        dialogInterface.dismiss()
+                    }.create().show()
+            }
+            catch (ex:Exception)
+            {
+                Toast.makeText(context,content,Toast.LENGTH_SHORT).show()
+            }
 
-                    dialogInterface.dismiss()
-                }.create().show()
         }
 
         fun logWin(context: Context, title: String, content: String, OnBtnClicked: () -> Unit) {
-            MaterialAlertDialogBuilder(context).setTitle(title)
-                .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
-                    OnBtnClicked()
-                    dialogInterface.dismiss()
-                }.create().show()
+            try{
+                MaterialAlertDialogBuilder(context).setTitle(title)
+                    .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
+                        OnBtnClicked()
+                        dialogInterface.dismiss()
+                    }.create().show()
+            }
+            catch(ex:Exception)
+            {
+                Toast.makeText(context,content,Toast.LENGTH_SHORT).show()
+                OnBtnClicked()
+            }
+
         }
 
         fun logSnackBar(view: View, ex: Exception) {
@@ -214,27 +252,31 @@ class HiroUtils {
         }
 
         fun parseJsonRet(view: View, context: Context, json: String?, msg: String?) {
-            when (json) {
-                "ec-003" -> {
-                    logSnackBar(view, context.getString(R.string.txt_privilege_insufficient_title))
-                }
+            json?.let {
+                val js = JSONObject(json)
+                when (js["ret"]) {
+                    "ec-003" -> {
+                        logSnackBar(view, context.getString(R.string.txt_privilege_insufficient_title))
+                    }
 
-                "ec-011" -> {
-                    logSnackBar(view, context.getString(R.string.txt_token_expired_title))
-                    logOut()
-                }
+                    "ec-011" -> {
+                        logSnackBar(view, context.getString(R.string.txt_token_expired_title))
+                        logOut()
+                    }
 
-                null -> {
-                    logSnackBar(view, context.getString(R.string.txt_unable_to_connect))
-                }
+                    null -> {
+                        logSnackBar(view, context.getString(R.string.txt_unable_to_connect))
+                    }
 
-                else -> {
-                    logWin(
-                        context, json,
-                        msg ?: context.getString(R.string.txt_no_details)
-                    )
+                    else -> {
+                        logWin(
+                            context, msg ?: context.getString(R.string.txt_no_details),
+                            json
+                        )
+                    }
                 }
             }
+
         }
     }
 }

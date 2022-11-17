@@ -22,9 +22,10 @@ class IOActivity : Activity() {
     private var name: String = ""
     private var model: String = "x2"
     private var uid: String = "100000001"
-    private var shelf: HiroUtils.Shelf = HiroUtils.Shelf("", "", "", "")
+    private var shelf: HiroUtils.Shelf = HiroUtils.Shelf("", "", "", "", "")
     private var usage = ArrayList<Int>()
     private var mode: Int = 0
+    private var depart: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
@@ -53,10 +54,10 @@ class IOActivity : Activity() {
             bi.ui3IoLog.isEnabled = false
             HiroUtils.sendRequest(
                 "/log",
-                arrayListOf("username", "token", "device", "action", "mshelf", "sshelf", "uid"),
+                arrayListOf("username", "token", "device", "action", "shelf", "uid"),
                 arrayListOf(
                     HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null",
-                    "mobile", "2", shelf.main, shelf.sub, uid
+                    "mobile", "2", "${shelf.depart}-${shelf.main}-${shelf.sub}", uid
                 ),
                 {
                     try {
@@ -76,7 +77,7 @@ class IOActivity : Activity() {
                                                         R.string.txt_export
                                                     )
                                                 } " +
-                                                " ${jai["name"]} ${jai["count"]}${jai["unit"]}"
+                                                " ${jai["name"]}(${jai["depart"]}) ${jai["count"]}${jai["unit"]}"
                                     try {
                                         var usage = getString(R.string.txt_log_for)
                                         var usage_s = ""
@@ -139,7 +140,7 @@ class IOActivity : Activity() {
             bi.ui3IoLoading.visibility = View.VISIBLE
             bi.ui3IoRoot.isEnabled = false
             val para = arrayListOf("username", "token", "device", "action", "shelf", "uid", "count", "usage")
-            //0 for import and 1 for export, shelf is json
+            //0 for import and 1 for export, shelf is sfid
             var usagetext = ""
             usage.forEach {
                 if (usagetext == "")
@@ -151,12 +152,7 @@ class IOActivity : Activity() {
             val value =
                 arrayListOf(
                     HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null", "mobile", mode.toString(),
-                    object : JSONObject() {
-                        init {
-                            put("main", shelf.main)
-                            put("sub", shelf.sub)
-                        }
-                    }.toString(),
+                    "${shelf.depart}-${shelf.main}-${shelf.sub}",
                     uid, bi.ui3IoCount.text.toString(), usagetext
                 )
             HiroUtils.sendRequest(
@@ -168,17 +164,21 @@ class IOActivity : Activity() {
                         when (json["ret"]) {
                             "0" -> {
                                 HiroUtils.logSnackBar(bi.root, getString(R.string.txt_successed))
+                                this.finish()
                             }
 
                             else -> {
                                 HiroUtils.parseJsonRet(bi.root, this, it, json["msg"] as String?)
+                                bi.ui3IoRoot.isEnabled = true
                             }
                         }
                     } catch (ex: Exception) {
+                        bi.ui3IoRoot.isEnabled = true
                         HiroUtils.logError(this, ex)
                     }
                 },
                 {
+                    bi.ui3IoRoot.isEnabled = true
                     bi.ui3IoLoading.visibility = View.INVISIBLE
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
@@ -277,6 +277,7 @@ class IOActivity : Activity() {
         intent.getStringExtra("shelf.sub")?.let { shelf.sub = it }
         intent.getStringExtra("shelf.alias")?.let { shelf.alias = it }
         intent.getStringExtra("shelf.info")?.let { shelf.info = it }
+        intent.getStringExtra("depart")?.let { depart = it }
     }
 
     private fun setExtraParameters() {
@@ -284,6 +285,7 @@ class IOActivity : Activity() {
         bi.ui3IoModel.text = model
         bi.ui3IoUid.text = uid
         bi.ui3IoShelf.text = "${shelf.main} - ${shelf.sub} (${shelf.alias})"
+        bi.ui3IoDepart.text = depart ?: getText(R.string.txt_nodepart)
         var usagetxt = ""
         usage.forEach { it2 ->
             HiroUtils.usageArray.forEach {

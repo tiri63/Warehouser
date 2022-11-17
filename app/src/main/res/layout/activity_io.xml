@@ -84,7 +84,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/ui3_io_for"
+                android:id="@+id/ui3_io_depart"
                 style="@style/Theme.UI3Theme.Textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,11 +93,30 @@
                 android:paddingTop="14dp"
                 android:paddingRight="5dp"
                 android:paddingBottom="14dp"
-                android:text="@string/txt_nofor"
+                android:text="@string/txt_nodepart"
                 android:textColor="@color/FontColorDim"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/ui3_io_count"
                 app:layout_constraintStart_toStartOf="@+id/ui3_io_model">
+
+            </TextView>
+
+
+            <TextView
+                android:id="@+id/ui3_io_for"
+                style="@style/Theme.UI3Theme.Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="16dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="14dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="14dp"
+                android:text="@string/txt_nofor"
+                android:textColor="@color/FontColorDim"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/ui3_io_count" app:layout_constraintStart_toEndOf="@+id/ui3_io_depart">
 
             </TextView>
 
