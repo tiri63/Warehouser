@@ -59,4 +59,5 @@
 	<string name="txt_io_format_error">Input format incorrect</string>
 	<string name="txt_log_for">" for the usage of %s."</string>
 	<string name="txt_nodepart">No Department</string>
+	<string name="txt_loading">Loading...</string>
 </resources>

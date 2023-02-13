@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.UI3Theme.CircularProgressBar.Reverse" parent="@style/Widget.Material3.CircularProgressIndicator">
         <item name="indicatorColor">@color/BackgroundColor</item>
     </style>

@@ -88,7 +88,7 @@ class LoginActivity : Activity() {
                     bi.ui3LoginBtn.isEnabled = true
                     bi.ui3LoginForgetpwd.isEnabled = true
                 },
-                "{\"ret\":\"0\"}"
+                null
             )
         }
     }

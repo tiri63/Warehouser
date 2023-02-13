@@ -3,6 +3,7 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Application
 import android.content.*
 import android.content.res.Configuration
@@ -32,14 +33,16 @@ import org.json.JSONObject
 
 class HiroUtils {
     class Shelf(var depart: String, var main: String, var sub: String, var alias: String?, var info: String?) {}
-    class Usage(var code: Int, var alias: String, var info: String) {}
+    class Usage(var code: Int, var alias: String, var info: String, var hide: Boolean) {}
     companion object Factory {
         @SuppressLint("StaticFieldLeak")
         var mainWindowContext: Context? = null
         var userName: String? = null
         var userNickName: String? = null
         var userToken: String? = null
+
         var baseURL = "http://10.3.201.64/warehouser"
+        //var baseURL = "http://101.34.8.69/warehouser"//hiro's server
         var usageArray = ArrayList<Usage>()
         var userDepart: String? = null
         fun setStatusBarColor(window: Window, resources: Resources) {
@@ -63,7 +66,7 @@ class HiroUtils {
             return try {
                 val a = if (str.has("alias")) str["alias"] as String? else null
                 val d = if (str.has("desp")) str["desp"] as String? else null
-                val shelf = str["shelf"] as String
+                val shelf = str["fid"] as String
                 val sarray = shelf.split("-")
                 if (sarray.size >= 3) {
                     Shelf(sarray[0], sarray[1], sarray[2], a, d)
@@ -114,8 +117,12 @@ class HiroUtils {
             paraValue: List<String>,
             onResponse: (ret: String) -> Unit,
             onFailure: () -> Unit,
-            success: String
+            context: Context? = null
         ) {
+            var ld: AlertDialog? = null
+            context?.let {
+                ld = loadingDialog(context)
+            }
             val x_url = baseURL + url
             //onResponse.invoke(success)
 
@@ -133,17 +140,21 @@ class HiroUtils {
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
                         GlobalScope.launch(Dispatchers.Main) {
+                            ld?.dismiss()
                             onFailure.invoke()
-                            mainWindowContext?.let { logError(it,e) }
+                            e.localizedMessage?.let { Log.e("internet", it) }
+                            Log.e("internet", e.stackTraceToString())
+                            //mainWindowContext?.let { logError(it, e) }
                         }
                     }
 
                     override fun onResponse(call: Call, response: Response) {
                         GlobalScope.launch(Dispatchers.Main) {
+                            ld?.dismiss()
                             response.body?.let {
                                 onResponse.invoke(it.string())
                             }
-                                //Toast.makeText(mainWindowContext,it.string(),Toast.LENGTH_SHORT).show()}
+                            //Toast.makeText(mainWindowContext,it.string(),Toast.LENGTH_SHORT).show()}
 
                             //mainWindowContext?.let { response.body?.let { it1 -> logWin(it,"ret", it1.string()) } }}
                         }
@@ -175,6 +186,7 @@ class HiroUtils {
                 context.getString(R.string.txt_exception),
                 ex::class.java.toString() + "\r\n" + ex.localizedMessage
             )
+            Log.e("error",ex.stackTraceToString())
         }
 
         fun logError(context: Context, ex: Exception, onBtnClicked: () -> Unit) {
@@ -186,31 +198,28 @@ class HiroUtils {
         }
 
         fun logWin(context: Context, title: String, content: String) {
-            try
-            {
+            try {
                 MaterialAlertDialogBuilder(context).setTitle(title)
-                    .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
+                    .setMessage(content)
+                    .setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
                         dialogInterface.dismiss()
                     }.create().show()
-            }
-            catch (ex:Exception)
-            {
-                Toast.makeText(context,content,Toast.LENGTH_SHORT).show()
+            } catch (ex: Exception) {
+                Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
             }
 
         }
 
         fun logWin(context: Context, title: String, content: String, OnBtnClicked: () -> Unit) {
-            try{
+            try {
                 MaterialAlertDialogBuilder(context).setTitle(title)
-                    .setMessage(content).setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
+                    .setMessage(content)
+                    .setPositiveButton(R.string.txt_ok) { dialogInterface: DialogInterface, i: Int ->
                         OnBtnClicked()
                         dialogInterface.dismiss()
                     }.create().show()
-            }
-            catch(ex:Exception)
-            {
-                Toast.makeText(context,content,Toast.LENGTH_SHORT).show()
+            } catch (ex: Exception) {
+                Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
                 OnBtnClicked()
             }
 
@@ -277,6 +286,10 @@ class HiroUtils {
                 }
             }
 
+        }
+
+        fun loadingDialog(context: Context): AlertDialog {
+            return AlertDialog.Builder(context).setView(R.layout.activity_loading).create()
         }
     }
 }

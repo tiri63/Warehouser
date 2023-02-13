@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.WindowCompat
 import cn.rexio.vc.warehouser.databinding.ActivityIoBinding
@@ -61,6 +62,7 @@ class IOActivity : Activity() {
                 ),
                 {
                     try {
+                        Log.i("http", it)
                         val json = JSONObject(it)
                         when (json["ret"]) {
                             "0" -> {
@@ -71,30 +73,36 @@ class IOActivity : Activity() {
                                     if (txt != "")
                                         txt += "\r\n"
                                     txt =
-                                        txt + "${timeStamp2Date(jai["time"].toString())} ${jai["nickname"]} " +
+                                        txt + "${timeStamp2Date(jai["time"].toString())} " +
+                                                "${(jai["user"] as JSONObject)["nickname"]} " +
+                                                "(${((jai["user"] as JSONObject)["depart"] as JSONObject)["name"]}) " +
                                                 "${
                                                     if (jai["action"] == "0") getString(R.string.txt_import) else getString(
                                                         R.string.txt_export
                                                     )
                                                 } " +
-                                                " ${jai["name"]}(${jai["depart"]}) ${jai["count"]}${jai["unit"]}"
+                                                " ${(jai["uid"] as JSONObject)["name"]}" +
+                                                "${jai["count"]}${(jai["uid"] as JSONObject)["unit"]}"
                                     try {
                                         var usage = getString(R.string.txt_log_for)
                                         var usage_s = ""
-                                        val func = jai["functions"].toString().split(",")
-                                        func.forEach {
-                                            val fu = it.toInt()
-                                            HiroUtils.usageArray.forEach {
-                                                if (it.code == fu) {
-                                                    if (usage_s != "")
-                                                        usage_s = usage_s + "," + it.alias
-                                                    else
-                                                        usage_s = it.alias
+                                        if (jai.has("functions") && jai["functions"].toString() != "") {
+                                            val func =
+                                                jai["functions"].toString().split(",")
+                                            func.forEach {
+                                                val fu = it.toInt()
+                                                HiroUtils.usageArray.forEach {
+                                                    if (it.code == fu) {
+                                                        if (usage_s != "")
+                                                            usage_s = usage_s + "," + it.alias
+                                                        else
+                                                            usage_s = it.alias
+                                                    }
                                                 }
                                             }
+                                            usage = String.format(usage, usage_s)
+                                            txt += usage
                                         }
-                                        usage = String.format(usage, usage_s)
-                                        txt += usage
                                     } catch (ex: Exception) {
                                         HiroUtils.logError(this, ex)
                                     }
@@ -117,17 +125,17 @@ class IOActivity : Activity() {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                     bi.ui3IoLog.isEnabled = true
                 },
-                "{\"ret\":\"0\",\"msg\":[{\"uid\":\"screw-m25\",\"unit\":\"个\",\"functions\":\"1\",\"sshelf\":\"1\",\"mshelf\":\"1\",\"count\":\"20\",\"nickname\":\"Hiro\",\"name\":\"螺丝(M25)\",\"action\":\"0\",\"time\":\"1666139123\",\"user\":\"hiro\"}," +
-                        "{\"uid\":\"screw-m25\",\"unit\":\"个\",\"functions\":\"2,3\",\"sshelf\":\"1\",\"mshelf\":\"1\",\"count\":\"10\",\"nickname\":\"Hiro\",\"name\":\"螺丝(M25)\",\"action\":\"1\",\"time\":\"1666149123\",\"user\":\"hiro\"}]}"
+                this
             )
         }
         bi.ui3IoBtn.setOnClickListener {
             try {
                 var current = bi.ui3IoCount.text.toString().toInt()
-                if (current > maxNum) {
-                    HiroUtils.logSnackBar(bi.root, getString(R.string.txt_io_format_error))
-                    return@setOnClickListener
-                }
+                if (mode == 1)
+                    if (current > maxNum) {
+                        HiroUtils.logSnackBar(bi.root, getString(R.string.txt_io_format_error))
+                        return@setOnClickListener
+                    }
                 if (current < 0) {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_io_format_error))
                     return@setOnClickListener
@@ -139,7 +147,7 @@ class IOActivity : Activity() {
             }
             bi.ui3IoLoading.visibility = View.VISIBLE
             bi.ui3IoRoot.isEnabled = false
-            val para = arrayListOf("username", "token", "device", "action", "shelf", "uid", "count", "usage")
+            val para = arrayListOf("username", "token", "device", "action", "shelf", "uid", "count", "functions")
             //0 for import and 1 for export, shelf is sfid
             var usagetext = ""
             usage.forEach {
@@ -182,7 +190,7 @@ class IOActivity : Activity() {
                     bi.ui3IoLoading.visibility = View.INVISIBLE
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                "{\"ret\":\"0\"}"
+                this
             )
         }
         bi.ui3IoMin.setOnClickListener {
@@ -273,6 +281,7 @@ class IOActivity : Activity() {
         intent.getStringExtra("name")?.let { name = it }
         intent.getStringExtra("model")?.let { model = it }
         intent.getStringExtra("uid")?.let { uid = it }
+        intent.getStringExtra("shelf.depart")?.let { shelf.depart = it }
         intent.getStringExtra("shelf.main")?.let { shelf.main = it }
         intent.getStringExtra("shelf.sub")?.let { shelf.sub = it }
         intent.getStringExtra("shelf.alias")?.let { shelf.alias = it }
@@ -284,7 +293,7 @@ class IOActivity : Activity() {
         bi.ui3IoTitle.text = name
         bi.ui3IoModel.text = model
         bi.ui3IoUid.text = uid
-        bi.ui3IoShelf.text = "${shelf.main} - ${shelf.sub} (${shelf.alias})"
+        bi.ui3IoShelf.text = "${shelf.depart}-${shelf.main}-${shelf.sub}(${shelf.alias})"
         bi.ui3IoDepart.text = depart ?: getText(R.string.txt_nodepart)
         var usagetxt = ""
         usage.forEach { it2 ->

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/ui_loading_layout"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:paddingTop="20dp"
+	android:paddingBottom="20dp"
+	android:paddingEnd="30dp"
+	android:paddingStart="30dp">
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.52" app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+
+		<com.google.android.material.progressindicator.CircularProgressIndicator
+			style="Theme.UI3Theme.CircularProgressBar"
+			android:id="@+id/ui_loading_sign"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:indeterminate="true">
+
+		</com.google.android.material.progressindicator.CircularProgressIndicator>
+
+		<TextView
+			android:id="@+id/ui_loading_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="40dp"
+			android:text="@string/txt_loading"
+			app:layout_constraintBottom_toBottomOf="@+id/ui_loading_sign"
+			app:layout_constraintStart_toEndOf="@+id/ui_loading_sign"
+			app:layout_constraintTop_toTopOf="@+id/ui_loading_sign">
+
+		</TextView>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

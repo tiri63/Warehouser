@@ -54,7 +54,7 @@ class ProfileActivity : Activity() {
                 }, {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                "{\"ret\":\"0\"}"
+                this
             )
         }
     }

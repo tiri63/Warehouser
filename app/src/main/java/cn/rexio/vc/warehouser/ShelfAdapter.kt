@@ -60,7 +60,7 @@ class ShelfAdapter(
 
         holder.modelView.text = item.model ?: context.getText(R.string.txt_nomodel)
         holder.goodsno.text = item.uid ?: context.getText(R.string.txt_no_id)
-        holder.shelfView.text = "${item.shelf.main}-${item.shelf.sub}(${item.shelf.alias})"
+        holder.shelfView.text = "${item.shelf.depart}-${item.shelf.main}-${item.shelf.sub}(${item.shelf.alias})"
         holder.departView.text = item.depart ?: context.getText(R.string.txt_nodepart)
 
         holder.itemView.setOnClickListener {

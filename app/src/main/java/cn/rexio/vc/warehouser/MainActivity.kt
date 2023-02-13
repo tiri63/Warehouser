@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.TextUtils
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
@@ -24,6 +25,7 @@ import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import org.json.JSONArray
 import org.json.JSONObject
+import java.net.URLEncoder
 
 
 class MainActivity : Activity() {
@@ -73,7 +75,8 @@ class MainActivity : Activity() {
                                     HiroUtils.Usage(
                                         jai["id"].toString().toInt(),
                                         jai["name"].toString(),
-                                        jai["info"].toString()
+                                        jai["info"].toString(),
+                                        jai["hide"].toString() != "0"
                                     )
                                 )
                             }
@@ -104,7 +107,7 @@ class MainActivity : Activity() {
                     this.finishAffinity()
                 }
             },
-            "{\"ret\":\"0\",\"msg\":[{\"id\":1,\"name\":\"暂存\",\"info\":\"test usage\"},{\"id\":2,\"name\":\"浇筑\",\"info\":\"test usage2\"},{\"id\":3,\"name\":\"冲天炉\",\"info\":\"test usage3\"}]}"
+            this
         )
     }
 
@@ -124,6 +127,18 @@ class MainActivity : Activity() {
                         val json = JSONObject(it)
                         when (json["ret"]) {
                             "0" -> {
+                                SharedPref(this, "nickname", "null").setValue(
+                                    this,
+                                    MainActivity::username,
+                                    json["nickname"].toString()
+                                )
+                                HiroUtils.userNickName = json["nickname"].toString()
+                                SharedPref(this, "depart", "null").setValue(
+                                    this,
+                                    MainActivity::username,
+                                    json["depart"].toString()
+                                )
+                                HiroUtils.userDepart = json["depart"].toString()
                             }
 
                             else -> {
@@ -136,7 +151,7 @@ class MainActivity : Activity() {
                 }, {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                "{\"ret\":\"0\"}"
+                this
             )
         } else
             login()
@@ -236,29 +251,31 @@ class MainActivity : Activity() {
                 val paraValue: List<String> =
                     arrayListOf(
                         HiroUtils.userName ?: "null", HiroUtils.userToken ?: "null", "mobile",
-                        (10 + searchMethod).toString(), mSearchEdit.text.toString()
+                        (10 + searchMethod).toString(), URLEncoder.encode(mSearchEdit.text.toString(), "UTF-8")
                     )
                 HiroUtils.sendRequest(url, paraName, paraValue, {
                     try {
+                        Log.i("http",it)
                         val json = JSONObject(it)
                         when (json["ret"]) {
                             "0" -> {
                                 val ja = JSONArray(json["msg"].toString())
                                 val itemList: MutableList<ShelfAdapter.ShelfItem> = ArrayList()
-
                                 for (i in 0 until ja.length()) {
                                     val jai = ja[i] as JSONObject
+                                    var jau = jai["uid"] as JSONObject
+                                    var jas = jai["shelf"] as JSONObject
                                     val depart =
-                                        if (jai.has("depart")) jai["depart"] as String else getText(R.string.txt_nodepart)
+                                        if (jas.has("depart")) (jas["depart"] as JSONObject)["name"].toString() else getText(R.string.txt_nodepart)
                                     val count = (jai["count"] as String).toInt()
                                     val item = ShelfAdapter.ShelfItem(
-                                        jai["name"] as String,
+                                        jau["name"] as String,
                                         count,
-                                        jai["model"] as String,
-                                        jai["uid"] as String,
-                                        HiroUtils.parseShelf(jai),
-                                        jai["usage"] as String,
-                                        jai["unit"] as String,
+                                        jau["model"] as String,
+                                        jau["uid"] as String,
+                                        HiroUtils.parseShelf(jas),
+                                        jai["function"] as String,
+                                        jau["unit"] as String,
                                         depart.toString()
                                     )
                                     itemList.add(item)
@@ -277,8 +294,7 @@ class MainActivity : Activity() {
                 }, {
                     HiroUtils.logSnackBar(bi.root, getString(R.string.txt_unable_to_connect))
                 },
-                    "{\"ret\":\"0\",\"msg\":[{\"desp\":\"No description\",\"uid\":\"screw-m20\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"1\",\"mshelf\":\"1\",\"count\":\"40\",\"name\":\"螺丝(M20)\",\"alias\":\"左侧-1\",\"model\":\"M20\",\"depart\":\"熔炼\"}," +
-                            "{\"desp\":\"No description\",\"uid\":\"screw-m25\",\"unit\":\"个\",\"sshelf\":\"1\",\"usage\":\"2,3\",\"mshelf\":\"1\",\"count\":\"30\",\"name\":\"螺丝(M25)\",\"alias\":\"左侧-1\",\"model\":\"M25\",\"depart\":\"造型\"}]}"
+                    this
                 )
             }
             keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER
@@ -370,8 +386,12 @@ class MainActivity : Activity() {
                             findViewById<View>(R.id.ui_include_search_function).findViewById<EditText>(
                                 R.id.ui_search_bar
                             )
-                        Toast.makeText(this, obj.getOriginalValue(), Toast.LENGTH_SHORT).show()
                         ui_search_txt.setText(obj.getOriginalValue())
+                        if (ui_search_txt.text.startsWith(HiroUtils.baseURL + "/qr?i="))
+                            ui_search_txt.setText(
+                                ui_search_txt.text.removePrefix(HiroUtils.baseURL + "/qr?i="))
+                        else
+                            ui_search_txt.setText("")
                     }
                     return
                 }
@@ -396,6 +416,7 @@ class MainActivity : Activity() {
             intent.putExtra("name", it.name)
             intent.putExtra("model", if (it.model == null) getText(R.string.txt_nomodel) else it.model)
             intent.putExtra("uid", if (it.uid == null) getText(R.string.txt_no_id) else it.uid)
+            intent.putExtra("shelf.depart", it.shelf.depart)
             intent.putExtra("shelf.main", it.shelf.main)
             intent.putExtra("shelf.sub", it.shelf.sub)
             intent.putExtra("shelf.alias", it.shelf.alias)

@@ -58,4 +58,5 @@
     <string name="txt_io_format_error">输入的格式不正确</string>
     <string name="txt_log_for">，用于 %s。</string>
     <string name="txt_nodepart">无所属部门</string>
+    <string name="txt_loading">正在加载……</string>
 </resources>
